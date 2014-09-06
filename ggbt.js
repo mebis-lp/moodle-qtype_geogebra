@@ -56,32 +56,34 @@ M.form_ggbt.injectapplet = function (id) {
 
 M.form_ggbt.getrandvars = function () {
     var applet = document.ggbApplet;
-    var objNumber = applet.getObjectNumber();
-    var randomizedvar = document.getElementById('id_randomizedvar');
-
-    var stringforrandomizedvars = "";
-    i = 0;
-    for (var j = 0; j < objNumber; j++) {
-        strName = applet.getObjectName(j);
-        if (applet.getObjectType(strName) == "numeric" && applet.isIndependent(strName)) {
-            stringforrandomizedvars += strName + ",";
-        } else {
-            var answer = Y.one('#id_answer_' + i);
-
-            if (answer != null && applet.getObjectType(strName) == "boolean" && !answer.get('value')) {
-                answer.set('value', strName);
-                M.form_ggbt.update_feedback(answer);
-                i++;
+    if (!(typeof applet === 'undefined')) {
+        var objNumber = applet.getObjectNumber();
+        var randomizedvar = document.getElementById('id_randomizedvar');
+        var stringforrandomizedvars = "";
+        var i = 0;
+        for (var j = 0; j < objNumber; j++) {
+            var strName = applet.getObjectName(j);
+            if (applet.getObjectType(strName) == "numeric" && applet.isIndependent(strName)) {
+                stringforrandomizedvars += strName + ",";
+            } else {
+                var answer = Y.one('#id_answer_' + i);
+                if (!(typeof answer === 'undefined') && applet.getObjectType(strName) == "boolean") {
+                    if (!answer.get('value')) {
+                        answer.set('value', strName);
+                    }
+                    M.form_ggbt.update_feedback(answer);
+                    i++;
+                }
             }
+            randomizedvar.value = stringforrandomizedvars;
         }
-        randomizedvar.value = stringforrandomizedvars;
     }
 }
 
 M.form_ggbt.update_feedback = function (answernode) {
     var id = answernode.get('id').split("_").pop();
-    var varname = answernode.get('value')
-    var feedback = Y.one('input[name="feedback[' + id + ']"');
+    var varname = answernode.get('value');
+    var feedback = Y.one('input[name="feedback[' + id + ']"]');
     var feedbackfromfile = Y.one('#id_feedbackfromfile_' + id);
     var doc = Yggb.XML.parse(ggbApplet.getXML(varname));
     var elem = doc.getElementsByTagName('caption');
@@ -96,7 +98,6 @@ M.form_ggbt.update_feedback = function (answernode) {
         fbstring = 'Caption not set or variable name wrong.'; //this is rather an error condition but should be checked by the server
     }
     feedbackfromfile.set('value', fbstring);
-
 }
 
 // Function ggbOnInit gets called as soon as the applet is loaded.
@@ -117,7 +118,7 @@ function ggbOnInit(id) {
 
     var i = 0;
     var answer = Y.one('#id_answer_' + i);
-    while (answer != null) {
+    while (!(typeof answer === 'undefined')) {
         answer.on(['change', 'focus'], function (e) {
             e.preventDefault();
             M.form_ggbt.update_feedback(e.target)
