@@ -91,8 +91,7 @@ class qtype_geogebra extends question_type {
     /**
      * @return bool true if this question type sometimes requires manual grading.
      */
-    public
-    function is_manual_graded() {
+    public function is_manual_graded() {
         return true;
     }
 
@@ -100,8 +99,7 @@ class qtype_geogebra extends question_type {
      * @param qtype_geogebra_question $questiondata
      * @return null returning null since it is not possible to estimate.
      */
-    public
-    function get_random_guess_score($questiondata) {
+    public function get_random_guess_score($questiondata) {
         return null;
     }
 
@@ -112,8 +110,7 @@ class qtype_geogebra extends question_type {
      * @return true this report can analyse all the student responses
      * for things like the quiz statistics report.
      */
-    public
-    function can_analyse_responses() {
+    public function can_analyse_responses() {
         return true;
     }
 
@@ -132,8 +129,7 @@ class qtype_geogebra extends question_type {
      * @return array keys are the decimal representation of the (binary) responsestring,
      *                                              values are arrays of possible responses to that subquestion.
      */
-    public
-    function get_possible_responses($questiondata) {
+    public function get_possible_responses($questiondata) {
         // There are no possible answers which can be calculated if answers array is empty i.e. question is manually graded.
         if (empty($questiondata->options->answers)) {
             return array($questiondata->id => array(null => new question_possible_response("Response graded manually", null)));
@@ -193,8 +189,7 @@ class qtype_geogebra extends question_type {
      * @param question_definition $question     the question_definition we are creating.
      * @param object              $questiondata the question data loaded from the database.
      */
-    protected
-    function initialise_question_instance(question_definition $question, $questiondata) {
+    protected function initialise_question_instance(question_definition $question, $questiondata) {
         parent::initialise_question_instance($question, $questiondata);
         $this->initialise_question_answers($question, $questiondata);
     }

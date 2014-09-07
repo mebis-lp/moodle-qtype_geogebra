@@ -31,6 +31,9 @@ M.form_ggbt.init = function (Y, options) {
         e.preventDefault();
         M.form_ggbt.getrandvars();
     }, 'input[name="getvars"]');
+    if (parameters) {
+        applet1.inject("applet_container1", "preferHTML5");
+    }
 };
 
 M.form_ggbt.callback = function (params) {
@@ -67,18 +70,20 @@ M.form_ggbt.getrandvars = function () {
                 stringforrandomizedvars += strName + ",";
             } else {
                 var answer = Y.one('#id_answer_' + i);
-                if (!(typeof answer === 'undefined') && applet.getObjectType(strName) == "boolean") {
-                    if (!answer.get('value')) {
-                        answer.set('value', strName);
+                if (applet.getObjectType(strName) == "boolean") {
+                    if (!(answer === null)) {
+                        if (!answer.get('value')) {
+                            answer.set('value', strName);
+                        }
+                        M.form_ggbt.update_feedback(answer);
+                        i++;
                     }
-                    M.form_ggbt.update_feedback(answer);
-                    i++;
                 }
             }
             randomizedvar.value = stringforrandomizedvars;
         }
     }
-}
+};
 
 M.form_ggbt.update_feedback = function (answernode) {
     var id = answernode.get('id').split("_").pop();
@@ -98,12 +103,11 @@ M.form_ggbt.update_feedback = function (answernode) {
         fbstring = 'Caption not set or variable name wrong.'; //this is rather an error condition but should be checked by the server
     }
     feedbackfromfile.set('value', fbstring);
-}
+};
 
 // Function ggbOnInit gets called as soon as the applet is loaded.
 //noinspection JSUnusedGlobalSymbols
 function ggbOnInit(id) {
-    console.log(parameters);
     Y.one('input[name="ggbparameters"]').set('value', JSON.stringify(parameters));
     Y.one('input[name="ggbviews"]').set('value', JSON.stringify(applet1.getViews()));
     Y.one('input[name="ggbcodebaseversion"]').set('value', applet1.getHTML5CodebaseVersion());
@@ -118,7 +122,7 @@ function ggbOnInit(id) {
 
     var i = 0;
     var answer = Y.one('#id_answer_' + i);
-    while (!(typeof answer === 'undefined')) {
+    while (!(answer === null)) {
         answer.on(['change', 'focus'], function (e) {
             e.preventDefault();
             M.form_ggbt.update_feedback(e.target)

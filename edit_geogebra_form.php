@@ -99,8 +99,6 @@ class qtype_geogebra_edit_form extends question_edit_form {
      */
     protected function get_per_answer_fields($mform, $label, $gradeoptions,
             &$repeatedoptions, &$answersoption) {
-//        $repeated = parent::get_per_answer_fields($mform, $label, $gradeoptions,
-//                $repeatedoptions, $answersoption);
 
         $repeated = array();
         $answeroptions = array();
@@ -186,11 +184,10 @@ class qtype_geogebra_edit_form extends question_edit_form {
 <script type="text/javascript">
     var parameters = $this->ggbparameters;
     parameters.language = "$lang";
+    parameters.useBrowserForJS = true;
+    delete parameters.material_id;
     var views = $this->ggbviews;
     var applet1 = new GGBApplet($this->ggbcodebaseversion, parameters, views, true);
-    window.onload = function() {
-        applet1.inject("applet_container1", "preferHTML5")
-    }
 </script>
 EOD;
             $mform->addElement('html', $applet);
