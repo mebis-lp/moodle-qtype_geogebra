@@ -455,19 +455,29 @@ EOD;
                 But if sum of fractions is lower than 1 the question cannot be solved properly.
                 At least one combination of fractions should sum up to one. */
         if (isset($data['fraction'])) {
+            $manuallygraded = true;
+            $fractionok = true;
             if ($data['noanswers'] > 1) {
-                $fractionok = false;
-                $fractions = $data['fraction'];
-                $count = pow(2, count($fractions)) - 1;
-                for ($i = $count; $i > 0 && !$fractionok; $i--) {
-                    $sum = 0;
-                    $rem = $i;
-                    for ($k = count($fractions) - 1; $k >= 0; $k--) {
-                        $sum += ((int)($rem / pow(2, $k))) * $fractions[$k];
-                        $rem = $i % pow(2, $k);
+                for ($i = 0; $i < count($data['answer']); $i++) {
+                    if (!empty($data['answer'][$i]) && $data['fraction'][$i] > 0.000001) {
+                        $manuallygraded = false;
+                        $fractionok = false;
                     }
-                    if ($sum <= 1.000001 && $sum >= 0.999999) { // We have found a combination!
-                        $fractionok = true;
+                }
+                if (!$manuallygraded) {
+                    $fractionok = false;
+                    $fractions = $data['fraction'];
+                    $count = pow(2, count($fractions)) - 1;
+                    for ($i = $count; $i > 0 && !$fractionok; $i--) {
+                        $sum = 0;
+                        $rem = $i;
+                        for ($k = count($fractions) - 1; $k >= 0; $k--) {
+                            $sum += ((int)($rem / pow(2, $k))) * $fractions[$k];
+                            $rem = $i % pow(2, $k);
+                        }
+                        if ($sum <= 1.000001 && $sum >= 0.999999) { // We have found a combination!
+                            $fractionok = true;
+                        }
                     }
                 }
             } else {

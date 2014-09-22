@@ -130,4 +130,13 @@ function ggbOnInit(id) {
         M.form_ggbt.update_feedback(answer);
         answer = Y.one('#id_answer_' + ++i);
     }
+    document.querySelector('article').onkeypress = checkEnter;
 }
+
+
+function checkEnter(e){
+    e = e || event;
+    var txtArea = /textarea/i.test((e.target || e.srcElement).tagName);
+    return txtArea || (e.keyCode || e.which || e.charCode || 0) !== 13;
+}
+
