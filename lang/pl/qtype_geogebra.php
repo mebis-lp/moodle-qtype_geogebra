@@ -10,11 +10,11 @@
  * @license        http://www.geogebra.org/license
  */
 $string['pluginname'] = 'GeoGebra';
-$string['pluginname_link'] = 'question/type/geogebra';$string['addconstraints'] => 'Add constraints (conditions) to variables.';,
-$string['addmorevarblanks'] => 'Blanks for {no} more variable(s)';,
-$string['answerinvalid'] => 'The answer-string in the response is invalid. This should not happen.';,
-$string['answermissing'] => 'The answer in the response is missing. Probably JavaScript isn't turned on in the Browser or an unknown error occurred';,
-$string['answervar'] => 'Variables for automatic grading';,
+$string['pluginname_link'] = 'question/type/geogebra';$string['addconstraints'] => 'Dodaj ograniczenia (warunki) dla zmiennych';,
+$string['addmorevarblanks'] => 'Rubryki dla {no} kolejnej zmiennej / kolejnych zmiennych';,
+$string['answerinvalid'] => 'Łańcuch znakowy odpowiedzi jest nieprawidłowy. To nie powinno się zdarzyć.';,
+$string['answermissing'] => 'Brak treści odpowiedzi. Prawdopodobnie JavaScript nie jest włączony w przeglądarce lub zaistniał inny, nieznany błąd.';,
+$string['answervar'] => 'Zmienne do automatycznej klasyfikacji';,
 $string['answervar_help'] => 'For automatic grading: A name of a boolean object in GeoGebra which is true if the student solved the question (partly). Sums up all grades for all boolean variables. The question is correct if any combination exceeds 100%, but there should be at least one combination which sums up to exactly 100%. Leave blank for manual grading.';,
 $string['constraints'] => 'Constraints (conditions)';,
 $string['constraints_help'] => 'Are there any constraints for variables, such as a < b, which could not be declared using the slider options? Comma separated. Supported relations are: <, <=, >, >=. If you need an equality you have to use the same variable when creating the GeoGebra worksheet. Dynamic ranges, ie using variables for slider min/max are not supported.';,
