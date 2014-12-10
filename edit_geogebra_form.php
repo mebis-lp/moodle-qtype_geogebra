@@ -396,7 +396,7 @@ EOD;
                 $a = qtype_geogebra_question_helper::randomize_vars($vars, $inequalities, 1);
                 if (!empty($a)) {
                     $a->inequalities = htmlentities($data['constraints']);
-                    $errors['constraints'] = get_string('constraintswrongortohard', 'qtype_geogebra', $a);
+                    $errors['constraints'] = get_string('constraintswrongortoohard', 'qtype_geogebra', $a);
                 }
             }
         }
