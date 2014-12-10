@@ -20,7 +20,7 @@ $string['constraints'] = 'Ограничения (условия)';
 $string['constraints_help'] = 'Are there any constraints for variables, such as a < b, which could not be declared using the slider options? Comma separated. Supported relations are: <, <=, >, >=. If you need an equality you have to use the same variable when creating the GeoGebra worksheet. Dynamic ranges, ie using variables for slider min/max are not supported.';
 $string['constraintswrongortoohard'] = '{$a->inequalities} are wrong or too hard to meet, we tried (brute force) {$a->tries} times in {$a->time} seconds. Maybe we\'ll use a better method in the future...';
 $string['feedback'] = 'Обратна връзка, когато променливата е истина';
-$string['feedback_help'] = 'The feedback is automatically taken from caption of the variable in the GeoGebra file.';
+$string['feedback_help'] = 'Обратна връзка се получава автоматично от надписа на променливата в GeoGebra файла.';
 $string['geogebraapplet'] = 'GeoGebra аплет';
 $string['getvars'] = 'Получаване на променливи, които могат да бъдат направени произволни от аплета';
 $string['ggbfilemissing'] = 'Низът base64 в отговора липсва. Вероятно string JavaScript не е включен в браузъра или е възникнала неизвестна грешка';
