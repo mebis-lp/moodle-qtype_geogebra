@@ -10,7 +10,7 @@
  * @license        http://www.geogebra.org/license
  */
 $string['pluginname'] = 'GeoGebra';
-$string['pluginname_link'] = 'question/type/geogebra';$string['addconstraints'] = 'Add constraints (conditions) to variables.';
+$string['pluginname_link'] = 'question/type/geogebra';$string['addconstraints'] = 'Dodaj ograničenja (uvjete) za promjenljive.';
 $string['addmorevarblanks'] = 'Blanks for {no} more variable(s)';
 $string['answerinvalid'] = 'The answer-string in the response is invalid. This should not happen.';
 $string['answermissing'] = 'The answer in the response is missing. Probably JavaScript isn\'t turned on in the Browser or an unknown error occurred';
