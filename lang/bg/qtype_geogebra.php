@@ -11,7 +11,7 @@
  */
 $string['pluginname'] = 'GeoGebra';
 $string['pluginname_link'] = 'question/type/geogebra';$string['addconstraints'] = 'Добавяне на ограничения (условия) към променливи.';
-$string['addmorevarblanks'] = 'Празни места {no} за още променливи';
+$string['addmorevarblanks'] = 'Празни места за още {no} променливи';
 $string['answerinvalid'] = 'Низът отговор не е валиден. Това не трябва да се случва.';
 $string['answermissing'] = 'Липсва отговор. Вероятно JavaScript не е включена в браузъра или е възникнала неизвестна грешка.';
 $string['answervar'] = 'Променливи за автоматично оценяване';
