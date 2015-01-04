@@ -17,14 +17,14 @@ $string['answermissing'] = '响应中的答案丢失，可能 JavaScript 在浏�
 $string['answervar'] = '自动评分变量';
 $string['answervar_help'] = '对自动评分: 如果学生解决了问题（部分地），那么 GeoGebra 中的布尔运算对象名称为真. 合计所有布尔变量的所有分数. 如果任何组合都超过了 100%，那么问题就是正确的, 但是至少应该有一个组合的总分恰恰达到 100%. 对手动评分留下空白.';
 $string['constraints'] = '限制(条件)';
-$string['constraints_help'] = '如同不能在参数选项中作标识的 a < b 的变量，对它们有限制吗？ 以逗号分隔. 支持的关系有: <, <=, >, >=. 如需要等式，您就不得不在创建 GeoGebra 作业单时使用同一变量. 运用变量作为参数的最小值/最大值的动态区间是得不到支持的.';
+$string['constraints_help'] = '如同不能在参数选项中作标识的 a < b 的变量，对它们有限制吗？ 以逗号分隔. 支持的关系有: <, <=, >, >=. 如需要等式，您就不得不在创建 GeoGebra 课件时使用同一变量. 运用变量作为参数的最小值/最大值的动态区间是得不到支持的.';
 $string['constraintswrongortoohard'] = '{$a->inequalities} 是错误的或难以满足的, 在 {$a->time} 秒内我们(强力)尝试了 {$a->tries} 次. 也许我们将来会用更好的方法...';
 $string['feedback'] = '变量为真时的反馈';
 $string['feedback_help'] = '反馈自动地从 GeoGebra 文件中的变量标题中采纳.';
 $string['geogebraapplet'] = 'GeoGebra Applet';
 $string['getvars'] = '从 applet 中取得能被随机化的变量';
 $string['ggbfilemissing'] = '响应中的 Base64 编码字符串丢失，可能是浏览器中的 JavaScript 没有打开或者出现了未知的错误';
-$string['ggbturl'] = 'GeoGebraTube 作业单网址或者ID';
+$string['ggbturl'] = 'GeoGebraTube 课件网址或者ID';
 $string['ggbturl_help'] = '您或者可以使用 GeoGebraTube 中的分享按钮复制粘贴链接，或者使用 GeoGebraTube 库. Applet 和参数保存在数据库中, 除非有要求，Applet 将会从 GeoGebraTube 中重新载入. 只需提供 ID 或分享 Applet 的键不能能得到支持.';
 $string['ggbxmlmissing'] = '响应中的 XML 字符串丢失，可能是浏览器中的 JavaScript 没有打开或者出现了未知错误';
 $string['invalidinequality'] = '{$a} 无效';
