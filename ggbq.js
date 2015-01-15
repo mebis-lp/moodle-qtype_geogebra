@@ -49,17 +49,20 @@ M.form_ggbq.init = function (Y, options) {
 M.form_ggbq.getBase64andCheck = function (Y, options) {
     for (i = 0; i < answerinput.length; i++) {
         ggbApplet = window['ggbApplet' + i];
-        b64input[i].set('value', ggbApplet.getBase64());
-        xmlinput[i].set('value', ggbApplet.getXML());
-        responsestring = '';
-        responsevars[i].forEach(function (responsevar) {
-            if (ggbApplet.isDefined(responsevar)) {
-                responsestring += ggbApplet.getValue(responsevar);
-            } else {
-                responsestring += 0;
-            }
-        });
-        answerinput[i].set('value', responsestring);
+        if (!(typeof ggbApplet === "undefined")) {
+            b64input[i].set('value', ggbApplet.getBase64());
+            xmlinput[i].set('value', ggbApplet.getXML());
+
+            responsestring = '';
+            responsevars[i].forEach(function (responsevar) {
+                if (ggbApplet.isDefined(responsevar)) {
+                    responsestring += ggbApplet.getValue(responsevar);
+                } else {
+                    responsestring += 0;
+                }
+            });
+            answerinput[i].set('value', responsestring);
+        }
     }
 };
 
