@@ -50,7 +50,7 @@ class qtype_geogebra extends question_type {
         if (isset($question->answer)) {
             if (!empty($question->feedback) && !is_array($question->feedback[0])) {
                 foreach ($question->feedback as $key => $value) {
-                    $question->feedback[$key] = array('text' => $value, 'format' => FORMAT_HTML);
+                    $question->feedback[$key] = array('text' => $value.'<br>', 'format' => FORMAT_HTML);
                 }
             }
             $parentresult = parent::save_question_answers($question);
