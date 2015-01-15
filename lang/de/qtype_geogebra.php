@@ -48,3 +48,6 @@ $string['variablenamewrong'] = 'A variable with that name could not be found in 
 $string['variableno'] = 'Variable {$a}';
 $string['variables'] = 'Variablen';
 $string['willbereadfromfile'] = 'Wird aus GeoGebra gelesen... (siehe Hilfebutton)';
+$string['useafile'] = '... oder eine ggb-Datei verwenden';
+$string['dragndrop'] = 'GeoGebra Datei mit Hilfe von drag and drop (ziehen und ablegen) auf den GeoGebra Applet Bereich
+hinzufügen.';

@@ -113,6 +113,7 @@ class qtype_geogebra_edit_form extends question_edit_form {
      * @param moodlequickform $mform
      */
     protected function definition_inner($mform) {
+        global $COURSE;
         $mform->addElement('hidden', 'reload', 1);
         $mform->setType('reload', PARAM_INT);
 
@@ -145,8 +146,15 @@ class qtype_geogebra_edit_form extends question_edit_form {
         $ggbturlinput[] =& $mform->createElement('text', 'ggbturl', '', array('size' => '20'));
         $mform->setType('ggbturl', PARAM_RAW_TRIMMED);
         $mform->addGroup($ggbturlinput, 'ggbturlinput', get_string('ggbturl', 'qtype_geogebra'), array(' '), false);
-        $mform->addGroupRule('ggbturlinput', array('ggbturl' => array(array(null, 'required', null, 'client'))));
+
         $mform->addHelpButton('ggbturlinput', 'ggbturl', 'qtype_geogebra');
+        $mform->disabledIf('ggbturlinput', 'usefile', 'checked');
+
+
+        $mform->addElement('checkbox', 'usefile', get_string('useafile', 'qtype_geogebra'), get_string('dragndrop', 'qtype_geogebra'));
+        if (!empty($this->ggbparameters) && empty($this->ggbturl)) {
+            $mform->setDefault('usefile', true);
+        }
 
         /* Button to (Re)load Applet from GeoGebraTube */
         $loadappletgroup = array();
@@ -155,6 +163,7 @@ class qtype_geogebra_edit_form extends question_edit_form {
         $loadappletgroup[] =& $mform->createElement('html', '<span>&nbsp;</span>');
         $mform->addGroup($loadappletgroup, 'loadappletgroup', get_string('loadapplet', 'qtype_geogebra'), array(' '), false);
         $mform->addHelpButton('loadappletgroup', 'loadapplet', 'qtype_geogebra');
+        $mform->disabledIf('loadappletgroup', 'usefile', 'checked');
 
         $mform->addElement('html', $this->deployscript);
 

@@ -112,25 +112,27 @@ function ggbOnInit(id) {
     Y.one('input[name="ggbviews"]').set('value', JSON.stringify(applet1.getViews()));
     Y.one('input[name="ggbcodebaseversion"]').set('value', applet1.getHTML5CodebaseVersion());
 
-    var applet = document.ggbApplet;
-    Y.one('input[name="ggbxml"]').set('value', applet.getXML());
+    if (typeof(ggbcheckb) == "undefined") {
+        var applet = document.ggbApplet;
+        Y.one('input[name="ggbxml"]').set('value', applet.getXML());
 
-    var randomizedvar = document.getElementById('id_randomizedvar');
-    if (!randomizedvar.value) {
-        M.form_ggbt.getrandvars();
-    }
+        var randomizedvar = document.getElementById('id_randomizedvar');
+        if (!randomizedvar.value) {
+            M.form_ggbt.getrandvars();
+        }
 
-    var i = 0;
-    var answer = Y.one('#id_answer_' + i);
-    while (!(answer === null)) {
-        answer.on(['change', 'focus'], function (e) {
-            e.preventDefault();
-            M.form_ggbt.update_feedback(e.target)
-        });
-        M.form_ggbt.update_feedback(answer);
-        answer = Y.one('#id_answer_' + ++i);
+        var i = 0;
+        var answer = Y.one('#id_answer_' + i);
+        while (!(answer === null)) {
+            answer.on(['change', 'focus'], function (e) {
+                e.preventDefault();
+                M.form_ggbt.update_feedback(e.target)
+            });
+            M.form_ggbt.update_feedback(answer);
+            answer = Y.one('#id_answer_' + ++i);
+        }
+        document.querySelector('article').onkeypress = checkEnter;
     }
-    document.querySelector('article').onkeypress = checkEnter;
 }
 
 
@@ -140,3 +142,82 @@ function checkEnter(e) {
     return txtArea || (e.keyCode || e.which || e.charCode || 0) !== 13;
 }
 
+ggbf = document.getElementById('id_ggbtheader');
+if (ggbf === null) {
+    ggbf = document.getElementById('id_submissiontypes');
+    ggbcheckb = document.getElementById('id_assignsubmission_geogebra_enabled');
+}
+if (!(ggbf === null)) {
+    ggbf.addEventListener('dragenter', handleDragEnter, false);
+    ggbf.addEventListener('dragover', handleDragOver, false);
+    ggbf.addEventListener('dragleave', handleDragEndLeave, false);
+    ggbf.addEventListener('dragend', handleDragEndLeave, false);
+    ggbf.addEventListener('drop', handleDrop, false);
+}
+
+if (!(ggbcheckb === null)) {
+    ggbcheckb.addEventListener('change', handleggbdisable, false);
+    usefile = document.getElementById("id_usefile");
+}
+
+function handleggbdisable() {
+    if (!ggbcheckb.checked) {
+        document.getElementById('applet_container1').style.display = "none";
+        if (usefile.checked) {
+            usefile.click();
+        }
+    } else {
+        document.getElementById('applet_container1').style.display = "block";
+    }
+}
+
+function handleDragEnter() {
+    if (typeof(ggbcheckb) == "undefined" || ggbcheckb.checked) {
+        ggbf.classList.add('hover');
+        document.getElementById('applet_container1').style.visibility = "hidden";
+    }
+}
+
+function handleDragOver(e) {
+    if (typeof(ggbcheckb) == "undefined" || ggbcheckb.checked) {
+        if (e.preventDefault) {
+            e.preventDefault(); // Necessary. Allows us to drop.
+        }
+        ggbf.classList.add('hover');
+        document.getElementById('applet_container1').style.visibility = "hidden";
+        //e.dataTransfer.dropEffect = 'move';
+        return false;
+    }
+}
+
+function handleDragEndLeave() {
+    if (typeof(ggbcheckb) == "undefined" || ggbcheckb.checked) {
+        ggbf.classList.remove('hover');
+        document.getElementById('applet_container1').style.removeProperty("visibility");
+    }
+}
+
+function handleDrop(e) {
+    if (typeof(ggbcheckb) == "undefined" || ggbcheckb.checked) {
+        e.preventDefault();
+        e.stopPropagation();
+        file = e.dataTransfer.files[0];
+        ggbf.classList.remove('hover');
+        document.getElementById('applet_container1').style.removeProperty("visibility");
+        document.getElementById('id_ggbturl').value = "";
+        usefile = document.getElementById("id_usefile");
+        if (!usefile.checked) {
+            usefile.click();
+        }
+        var reader = new FileReader();
+        reader.onload = function (event) {
+            base64 = event.target.result.replace("data:application/vnd.geogebra.file;base64,", "");
+            parameters = {"ggbBase64": base64};
+            parameters.language = lang;
+            applet1 = new GGBApplet(parameters, true);
+            applet1.inject("applet_container1", "preferHTML5");
+        };
+
+        reader.readAsDataURL(file);
+    }
+}
