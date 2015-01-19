@@ -114,93 +114,18 @@ class qtype_geogebra_edit_form extends question_edit_form {
      */
     protected function definition_inner($mform) {
         global $COURSE;
-        $mform->addElement('hidden', 'reload', 1);
-        $mform->setType('reload', PARAM_INT);
 
-        $mform->addElement('hidden', 'ggbparameters');
-        $mform->setType('ggbparameters', PARAM_RAW);
-
-        $mform->addElement('hidden', 'ggbviews');
-        $mform->setType('ggbviews', PARAM_RAW);
-
-        $mform->addElement('hidden', 'ggbcodebaseversion');
-        $mform->setType('ggbcodebaseversion', PARAM_RAW);
-
-        $mform->addElement('hidden', 'ggbxml');
-        $mform->setType('ggbxml', PARAM_RAW);
+        $this->add_hidden_inputs($mform);
 
         $mform->addElement('header', 'ggbtheader', get_string('geogebraapplet', 'qtype_geogebra'));
 
-        /*
-         * URL of the GeoGebraTube Student Worksheet.
-         * Overcomes the Limitations of Moodle form element 'url',
-         * limits the repository to geogebratube
-         * and displays the applet on return.
-         */
-        $ggbturlinput = array();
-        $clientid = uniqid();
-        $fp = $this->initggtfilpicker($clientid, 'ggbturl');
-        $ggbturlinput[] =& $mform->createElement('html', $fp);
-        $ggbturlinput[] =& $mform->createElement('button', 'filepicker-button-' . $clientid, get_string('choosealink',
-                'repository'));
-        $ggbturlinput[] =& $mform->createElement('text', 'ggbturl', '', array('size' => '20'));
-        $mform->setType('ggbturl', PARAM_RAW_TRIMMED);
-        $mform->addGroup($ggbturlinput, 'ggbturlinput', get_string('ggbturl', 'qtype_geogebra'), array(' '), false);
+        $this->add_geogebra_file($mform);
 
-        $mform->addHelpButton('ggbturlinput', 'ggbturl', 'qtype_geogebra');
-        $mform->disabledIf('ggbturlinput', 'usefile', 'checked');
+        $this->add_applet_elements($mform);
 
+        $this->add_applet_options($mform);
 
-        $mform->addElement('checkbox', 'usefile', get_string('useafile', 'qtype_geogebra'), get_string('dragndrop', 'qtype_geogebra'));
-        if (!empty($this->ggbparameters) && empty($this->ggbturl)) {
-            $mform->setDefault('usefile', true);
-        }
-
-        /* Button to (Re)load Applet from GeoGebraTube */
-        $loadappletgroup = array();
-        $loadappletgroup[] =& $mform->createElement('button', 'loadapplet', get_string('loadapplet', 'qtype_geogebra'));
-        // Hack: the button doesn't support a HelpButton.
-        $loadappletgroup[] =& $mform->createElement('html', '<span>&nbsp;</span>');
-        $mform->addGroup($loadappletgroup, 'loadappletgroup', get_string('loadapplet', 'qtype_geogebra'), array(' '), false);
-        $mform->addHelpButton('loadappletgroup', 'loadapplet', 'qtype_geogebra');
-        $mform->disabledIf('loadappletgroup', 'usefile', 'checked');
-
-        $mform->addElement('html', $this->deployscript);
-
-        $mform->addElement('html', '<div class="fitem"><div id="applet_container1" class="felement"></div></div>');
-
-        if (!empty($this->ggbparameters) && !empty($this->ggbviews) && !empty($this->ggbcodebaseversion)) {
-            $lang = current_language();
-            $applet = <<<EOD
-<script type="text/javascript">
-    var parameters = $this->ggbparameters;
-    parameters.language = "$lang";
-    parameters.useBrowserForJS = true;
-    delete parameters.material_id;
-    var views = $this->ggbviews;
-    var applet1 = new GGBApplet($this->ggbcodebaseversion, parameters, views, true);
-</script>
-EOD;
-            $mform->addElement('html', $applet);
-        }
-
-        $mform->addElement('selectyesno', 'israndomized', get_string('israndomized', 'qtype_geogebra'));
-
-        /* Variables to randomize */
-        $randomizedvars = array();
-        $randomizedvars[] =& $mform->createElement('button', 'getvars', get_string('getvars', 'qtype_geogebra'));
-        $randomizedvars[] =& $mform->createElement('text', 'randomizedvar', null, array('size' => '20'));
-        $mform->setType('randomizedvar', PARAM_RAW);
-        $mform->addGroup($randomizedvars, 'randomizedvarsgroup', get_string("randomizedvar", "qtype_geogebra"), array(' '),
-                false);
-        $mform->addHelpButton('randomizedvarsgroup', 'randomizedvar', 'qtype_geogebra');
-        $mform->disabledIf('randomizedvarsgroup', 'israndomized', 'neq', 1);
-
-        /* Constraints */
-        $mform->addElement('text', 'constraints', get_string('constraints', 'qtype_geogebra'));
-        $mform->setType('constraints', PARAM_RAW);
-        $mform->disabledIf('constraints', 'israndomized', 'neq', 1);
-        $mform->addHelpButton('constraints', 'constraints', 'qtype_geogebra');
+        $this->add_randomizedvar_fields($mform);
 
         $this->add_per_answer_fields($mform, get_string('variableno', 'qtype_geogebra', '{no}'),
                 question_bank::fraction_options(), 4, 1);
@@ -477,6 +402,151 @@ EOD;
             if (!$fractionok) {
                 $errors['answeroptions[0]'] = get_string('nofractionsumeq1', 'qtype_geogebra');
             }
+        }
+    }
+
+    /**
+     * @param moodlequickform $mform
+     */
+    private function add_hidden_inputs($mform) {
+        $mform->addElement('hidden', 'reload', 1);
+        $mform->setType('reload', PARAM_INT);
+
+        $mform->addElement('hidden', 'ggbparameters');
+        $mform->setType('ggbparameters', PARAM_RAW);
+
+        $mform->addElement('hidden', 'ggbviews');
+        $mform->setType('ggbviews', PARAM_RAW);
+
+        $mform->addElement('hidden', 'ggbcodebaseversion');
+        $mform->setType('ggbcodebaseversion', PARAM_RAW);
+
+        $mform->addElement('hidden', 'ggbxml');
+        $mform->setType('ggbxml', PARAM_RAW);
+    }
+
+    /**
+     * @param moodlequickform $mform
+     * @throws coding_exception
+     */
+    private function add_randomizedvar_fields($mform) {
+        $mform->addElement('selectyesno', 'israndomized', get_string('israndomized', 'qtype_geogebra'));
+
+        /* Variables to randomize */
+        $randomizedvars = array();
+        $randomizedvars[] =& $mform->createElement('button', 'getvars', get_string('getvars', 'qtype_geogebra'));
+        $randomizedvars[] =& $mform->createElement('text', 'randomizedvar', null, array('size' => '20'));
+        $mform->setType('randomizedvar', PARAM_RAW);
+        $mform->addGroup($randomizedvars, 'randomizedvarsgroup', get_string("randomizedvar", "qtype_geogebra"), array(' '),
+                false);
+        $mform->addHelpButton('randomizedvarsgroup', 'randomizedvar', 'qtype_geogebra');
+        $mform->disabledIf('randomizedvarsgroup', 'israndomized', 'neq', 1);
+
+        /* Constraints */
+        $mform->addElement('text', 'constraints', get_string('constraints', 'qtype_geogebra'));
+        $mform->setType('constraints', PARAM_RAW);
+        $mform->disabledIf('constraints', 'israndomized', 'neq', 1);
+        $mform->addHelpButton('constraints', 'constraints', 'qtype_geogebra');
+    }
+
+    /**
+     * @param moodlequickform $mform
+     * @throws coding_exception
+     */
+    private function add_applet_elements($mform) {
+        /* Button to (Re)load Applet from GeoGebraTube */
+        $loadappletgroup = array();
+        $loadappletgroup[] =& $mform->createElement('button', 'loadapplet', get_string('loadapplet', 'qtype_geogebra'));
+        // Hack: the button doesn't support a HelpButton.
+        $loadappletgroup[] =& $mform->createElement('html', '<span>&nbsp;</span>');
+        $mform->addGroup($loadappletgroup, 'loadappletgroup', get_string('loadapplet', 'qtype_geogebra'), array(' '), false);
+        $mform->addHelpButton('loadappletgroup', 'loadapplet', 'qtype_geogebra');
+        $mform->disabledIf('loadappletgroup', 'usefile', 'checked');
+
+        $mform->addElement('html', $this->deployscript);
+
+        $mform->addElement('html', '<div class="fitem"><div id="applet_container1" class="felement"></div></div>');
+
+        if (!empty($this->ggbparameters) && !empty($this->ggbviews) && !empty($this->ggbcodebaseversion)) {
+            $lang = current_language();
+            $applet = <<<EOD
+<script type="text/javascript">
+    var parameters = $this->ggbparameters;
+    parameters.language = "$lang";
+    parameters.useBrowserForJS = true;
+    delete parameters.material_id;
+    parameters.moodle = "editingQuestion";
+    var views = $this->ggbviews;
+    var applet1 = new GGBApplet(parameters, views, true);
+</script>
+EOD;
+            $mform->addElement('html', $applet);
+        }
+    }
+
+    private function add_applet_options($mform) {
+
+        $applet_advanced_settings = get_string('applet_advanced_settings', 'qtype_geogebra');
+        $enable_label_drags = get_string('enable_label_drags', 'qtype_geogebra');
+        $enable_right_click = get_string('enable_right_click', 'qtype_geogebra');
+        $enable_shift_drag_zoom = get_string('enable_shift_drag_zoom', 'qtype_geogebra');
+        $show_algebra_input = get_string('show_algebra_input', 'qtype_geogebra');
+        $show_menu_bar = get_string('show_menu_bar', 'qtype_geogebra');
+        $show_reset_icon = get_string('show_reset_icon', 'qtype_geogebra');
+        $show_tool_bar = get_string('show_tool_bar', 'qtype_geogebra');
+
+        $options = <<<HTML
+<div id='applet_options' class="fitem" >
+    <div class="fitemtitle"><label for="applet_options">$applet_advanced_settings</label></div>
+    <fieldset class="felement fgroup">
+        <input type="checkbox" id="enableRightClick" name="enableRightClick" value="1">
+        <label for="enableRightClick">$enable_right_click</label><br>
+        <input type="checkbox" id="enableLabelDrags" name="enableLabelDrags" value="1">
+        <label for="enableLabelDrags">$enable_label_drags</label><br>
+        <input type="checkbox" id="showResetIcon" name="showResetIcon" value="1" checked="checked">
+        <label for="showResetIcon">$show_reset_icon</label><br>
+        <input type="checkbox" id="enableShiftDragZoom" name="enableShiftDragZoom" value="1" checked="checked">
+        <label for="enableShiftDragZoom">$enable_shift_drag_zoom</label><br>
+        <input type="checkbox" id="showMenuBar" name="showMenuBar" value="1">
+        <label for="showMenuBar">$show_menu_bar</label><br>
+        <input type="checkbox" id="showToolBar" name="showToolBar" value="1">
+        <label for="showToolBar">$show_tool_bar</label><br>
+        <input type="checkbox" id="showAlgebraInput" name="showAlgebraInput" value="1">
+        <label for="showAlgebraInput">$show_algebra_input</label><br>
+    </fieldset>
+</div>
+HTML;
+
+        $mform->addElement('html', $options, "advanced");
+    }
+
+    /**
+     * @param moodlequickform $mform
+     * @throws coding_exception
+     */
+    private function add_geogebra_file($mform) {
+        /*
+                 * URL of the GeoGebraTube Student Worksheet.
+                 * Overcomes the Limitations of Moodle form element 'url',
+                 * limits the repository to geogebratube
+                 * and displays the applet on return.
+                 */
+        $ggbturlinput = array();
+        $clientid = uniqid();
+        $fp = $this->initggtfilpicker($clientid, 'ggbturl');
+        $ggbturlinput[] =& $mform->createElement('html', $fp);
+        $ggbturlinput[] =& $mform->createElement('button', 'filepicker-button-' . $clientid, get_string('choosealink',
+                'repository'));
+        $ggbturlinput[] =& $mform->createElement('text', 'ggbturl', '', array('size' => '20'));
+        $mform->setType('ggbturl', PARAM_RAW_TRIMMED);
+        $mform->addGroup($ggbturlinput, 'ggbturlinput', get_string('ggbturl', 'qtype_geogebra'), array(' '), false);
+
+        $mform->addHelpButton('ggbturlinput', 'ggbturl', 'qtype_geogebra');
+        $mform->disabledIf('filepicker-button-' . $clientid, 'usefile', 'checked');
+
+        $mform->addElement('checkbox', 'usefile', get_string('useafile', 'qtype_geogebra'), get_string('dragndrop', 'qtype_geogebra'));
+        if (!empty($this->ggbparameters) && empty($this->ggbturl)) {
+            $mform->setDefault('usefile', true);
         }
     }
 }

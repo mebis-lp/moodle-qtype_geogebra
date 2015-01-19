@@ -26,12 +26,14 @@ M.form_ggbq.init = function (Y, options) {
         parameters.ggbBase64 = ggbBase64[id];
     }
     parameters.language = options.lang;
+    parameters.moodle = "takingQuiz";
+    delete parameters.material_id;
 
     parameters.id = 'ggbApplet' + id;
 
     views = JSON.parse(options.views);
 
-    applet1 = new GGBApplet(options.codebase, parameters, views, options.html5NoWebSimple);
+    applet1 = new GGBApplet(parameters, views, options.html5NoWebSimple);
     applet1.inject(options.div, "preferHTML5");
 
     Y.on('submit', M.form_ggbq.getBase64andCheck, '#responseform');

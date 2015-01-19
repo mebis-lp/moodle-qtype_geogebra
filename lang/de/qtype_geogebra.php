@@ -51,3 +51,11 @@ $string['willbereadfromfile'] = 'Wird aus GeoGebra gelesen... (siehe Hilfebutton
 $string['useafile'] = '... oder eine ggb-Datei verwenden';
 $string['dragndrop'] = 'GeoGebra Datei mit Hilfe von drag and drop (ziehen und ablegen) auf den GeoGebra Applet Bereich
 hinzufügen.';
+$string['applet_advanced_settings'] = 'Erweiterte Einstellungen...';
+$string['enable_label_drags'] = 'Ziehen von Beschriftungen aktivieren';
+$string['enable_right_click'] = 'Rechtsklick, Zoomen und Tastatur aktivieren';
+$string['enable_shift_drag_zoom'] = 'Bewegungen und Zoom mit Shift aktivieren';
+$string['show_algebra_input'] = 'Eingabezeile anzeigen';
+$string['show_menu_bar'] = 'Menü anzeigen';
+$string['show_reset_icon'] = 'Symbol zum Zurücksetzen der Konstruktion anzeigen';
+$string['show_tool_bar'] = 'Werkzeugleiste anzeigen';

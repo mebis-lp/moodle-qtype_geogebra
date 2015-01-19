@@ -1,6 +1,17 @@
 M.form_ggbt = {};
 var lang;
 var Yggb;
+var ggbf; // The section in the Moodleform which is used as drop target.
+var usefile; // The checkbox indicating we are using a file.
+var parameters;
+var applet1;
+var enable_label_drags;
+var enable_right_click;
+var enable_shift_drag_zoom;
+var show_algebra_input;
+var show_menu_bar;
+var show_reset_icon;
+var show_tool_bar;
 M.form_ggbt.init = function (Y, options) {
     options.formcallback = M.form_ggbt.callback;
     lang = options.lang;
@@ -14,6 +25,7 @@ M.form_ggbt.init = function (Y, options) {
         }
         M.core_filepicker.init(Y, options);
     }
+
     Y.on('click', function (e, client_id) {
         e.preventDefault();
         M.core_filepicker.instances[client_id].show();
@@ -27,13 +39,42 @@ M.form_ggbt.init = function (Y, options) {
         }
         M.form_ggbt.injectapplet(id);
     }, '#id_loadapplet');
+
     Y.on('click', function (e) {
         e.preventDefault();
         M.form_ggbt.getrandvars();
     }, 'input[name="getvars"]');
+
     if (parameters) {
         applet1.inject("applet_container1", "preferHTML5");
     }
+
+    ggbf = document.getElementById('id_ggbtheader');
+    usefile = document.getElementById("id_usefile");
+
+    if (ggbf === null) { // In this case we are editing a submission.
+        ggbf = document.getElementById('id_submissiontypes');
+        ggbcheckb = document.getElementById('id_assignsubmission_geogebra_enabled');
+        if (!(ggbcheckb === null)) {
+            ggbcheckb.addEventListener('change', handleggbdisable, false);
+        }
+    }
+
+    if (!(ggbf === null)) {
+        ggbf.addEventListener('dragenter', handleDragEnter, false);
+        ggbf.addEventListener('dragover', handleDragOver, false);
+        ggbf.addEventListener('dragleave', handleDragEndLeave, false);
+        ggbf.addEventListener('dragend', handleDragEndLeave, false);
+        ggbf.addEventListener('drop', handleDrop, false);
+        usefile.addEventListener('change', handleusefile, false);
+    }
+
+    if (usefile.checked) {
+        document.getElementById('applet_options').style.display = "block";
+    } else {
+        document.getElementById('applet_options').style.display = "none";
+    }
+    initoptions();
 };
 
 M.form_ggbt.callback = function (params) {
@@ -47,12 +88,13 @@ M.form_ggbt.callback = function (params) {
     M.form_ggbt.injectapplet(id);
 };
 
-var parameters;
-var applet1;
-
 M.form_ggbt.injectapplet = function (id) {
     parameters = {"material_id": id};
     parameters.language = lang;
+    parameters.moodle = "editingQuestionOrSubmission";
+
+    document.getElementById('applet_container1').style.display = "block";
+
     applet1 = new GGBApplet(parameters, true);
     applet1.inject("applet_container1", "preferHTML5");
 };
@@ -133,6 +175,11 @@ function ggbOnInit(id) {
         }
         document.querySelector('article').onkeypress = checkEnter;
     }
+
+    if (usefile.checked) {
+        document.getElementById('applet_container1').style.display = "block";
+        document.getElementById('applet_options').style.display = "block";
+    }
 }
 
 
@@ -142,27 +189,60 @@ function checkEnter(e) {
     return txtArea || (e.keyCode || e.which || e.charCode || 0) !== 13;
 }
 
-ggbf = document.getElementById('id_ggbtheader');
-if (ggbf === null) {
-    ggbf = document.getElementById('id_submissiontypes');
-    ggbcheckb = document.getElementById('id_assignsubmission_geogebra_enabled');
-}
-if (!(ggbf === null)) {
-    ggbf.addEventListener('dragenter', handleDragEnter, false);
-    ggbf.addEventListener('dragover', handleDragOver, false);
-    ggbf.addEventListener('dragleave', handleDragEndLeave, false);
-    ggbf.addEventListener('dragend', handleDragEndLeave, false);
-    ggbf.addEventListener('drop', handleDrop, false);
+function initoptions() {
+    //TODO: make 3 Lines!
+    enable_right_click = document.getElementById('enableRightClick');
+    enable_label_drags = document.getElementById('enableLabelDrags');
+    show_reset_icon = document.getElementById('showResetIcon');
+    enable_shift_drag_zoom = document.getElementById('enableShiftDragZoom');
+    show_algebra_input = document.getElementById('showAlgebraInput');
+    show_menu_bar = document.getElementById('showMenuBar');
+    show_tool_bar = document.getElementById('showToolBar');
+
+    if (!(typeof parameters === 'undefined')) {
+        enable_right_click.checked = parameters.enableRightClick;
+        enable_label_drags.checked = parameters.enableLabelDrags;
+        show_reset_icon.checked = parameters.showResetIcon;
+        enable_shift_drag_zoom.checked = parameters.enableShiftDragZoom;
+        show_algebra_input.checked = parameters.showAlgebraInput;
+        show_menu_bar.checked = parameters.showMenuBar;
+        show_tool_bar.checked = parameters.showToolBar;
+    }
+
+    enable_right_click.addEventListener('change', handlesettingschanged, false);
+    enable_label_drags.addEventListener('change', handlesettingschanged, false);
+    show_reset_icon.addEventListener('change', handlesettingschanged, false);
+    enable_shift_drag_zoom.addEventListener('change', handlesettingschanged, false);
+    show_algebra_input.addEventListener('change', handlesettingschanged, false);
+    show_menu_bar.addEventListener('change', handlesettingschanged, false);
+    show_tool_bar.addEventListener('change', handlesettingschanged, false);
 }
 
-if (!(ggbcheckb === null)) {
-    ggbcheckb.addEventListener('change', handleggbdisable, false);
-    usefile = document.getElementById("id_usefile");
+function handlesettingschanged(evt) {
+    parameters[evt.target.id] = (evt.target.checked);
+    Y.one('input[name="ggbparameters"]').set('value', JSON.stringify(parameters));
+    if (evt.target.id == "showToolBar" || evt.target.id == "showMenuBar") {
+        applet1 = new GGBApplet(parameters, true);
+        applet1.inject("applet_container1", "preferHTML5");
+    } else {
+        ggbApplet[evt.target.id](evt.target.checked);
+    }
+}
+
+function handleusefile() {
+    if (!usefile.checked) {
+        document.getElementById('applet_container1').style.display = "none";
+        document.getElementById('applet_options').style.display = "none";
+    } else {
+        document.getElementById('id_ggbturl').value = "";
+        document.getElementById('applet_container1').style.display = "none";
+    }
 }
 
 function handleggbdisable() {
     if (!ggbcheckb.checked) {
         document.getElementById('applet_container1').style.display = "none";
+        document.getElementById('applet_options').style.display = "none";
         if (usefile.checked) {
             usefile.click();
         }
@@ -181,11 +261,10 @@ function handleDragEnter() {
 function handleDragOver(e) {
     if (typeof(ggbcheckb) == "undefined" || ggbcheckb.checked) {
         if (e.preventDefault) {
-            e.preventDefault(); // Necessary. Allows us to drop.
+            e.preventDefault();
         }
         ggbf.classList.add('hover');
         document.getElementById('applet_container1').style.visibility = "hidden";
-        //e.dataTransfer.dropEffect = 'move';
         return false;
     }
 }
@@ -204,6 +283,8 @@ function handleDrop(e) {
         file = e.dataTransfer.files[0];
         ggbf.classList.remove('hover');
         document.getElementById('applet_container1').style.removeProperty("visibility");
+        document.getElementById('applet_options').style.display = "block";
+
         document.getElementById('id_ggbturl').value = "";
         usefile = document.getElementById("id_usefile");
         if (!usefile.checked) {
@@ -211,9 +292,18 @@ function handleDrop(e) {
         }
         var reader = new FileReader();
         reader.onload = function (event) {
-            base64 = event.target.result.replace("data:application/vnd.geogebra.file;base64,", "");
+            var base64 = event.target.result.replace("data:application/vnd.geogebra.file;base64,", "");
             parameters = {"ggbBase64": base64};
             parameters.language = lang;
+            parameters.useBrowserForJS = true;
+            parameters.enableRightClick = enable_right_click.checked;
+            parameters.enableLabelDrags = enable_label_drags.checked;
+            parameters.showResetIcon = show_reset_icon.checked;
+            parameters.enableShiftDragZoom = enable_shift_drag_zoom.checked;
+            parameters.showAlgebraInput = show_algebra_input.checked;
+            parameters.showMenuBar = show_menu_bar.checked;
+            parameters.showToolBar = show_tool_bar.checked;
+            parameters.moodle = "editingQuestionOrSubmission";
             applet1 = new GGBApplet(parameters, true);
             applet1.inject("applet_container1", "preferHTML5");
         };
