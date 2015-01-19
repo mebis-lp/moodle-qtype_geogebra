@@ -13,7 +13,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'qtype_geogebra';
-$plugin->version = 2014081905;
+$plugin->version = 2014081906;
 
 $plugin->requires = 2014051200;
 $plugin->dependencies = array(
@@ -23,4 +23,4 @@ $plugin->dependencies = array(
 
 $plugin->maturity = MATURITY_RC;
 
-$plugin->release = '0.9.5';
+$plugin->release = '0.9.6';
