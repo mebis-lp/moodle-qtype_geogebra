@@ -15,9 +15,9 @@ $string['addmorevarblanks'] = 'Празни места за още {no} пром
 $string['answerinvalid'] = 'Низът отговор не е валиден. Това не трябва да се случва.';
 $string['answermissing'] = 'Липсва отговор. Вероятно JavaScript не е включена в браузъра или е възникнала неизвестна грешка.';
 $string['answervar'] = 'Променливи за автоматично оценяване';
-$string['answervar_help'] = 'For automatic grading: A name of a boolean object in GeoGebra which is true if the student solved the question (partly). Sums up all grades for all boolean variables. The question is correct if any combination exceeds 100%, but there should be at least one combination which sums up to exactly 100%. Leave blank for manual grading.';
+$string['answervar_help'] = 'За автоматично оценяване: име на булев обект в GeoGebra, които е верен (истинен), ако ученикът е отговорил на въпроса (частично). Събират се всички оценки от всички булеви променливи. Въпросът е верен, ако някоя комбинация надвишава 100%, но трябва да има поне една комбинация, които има сбор точно 100%. Оставете празно за ръчно оценяване.';
 $string['constraints'] = 'Ограничения (условия)';
-$string['constraints_help'] = 'Are there any constraints for variables, such as a < b, which could not be declared using the slider options? Comma separated. Supported relations are: <, <=, >, >=. If you need an equality you have to use the same variable when creating the GeoGebra worksheet. Dynamic ranges, ie using variables for slider min/max are not supported.';
+$string['constraints_help'] = 'Има ли някакви ограничения за променливите, като например a < b, които не могат да бъдат декларирани чрез опциите на слайдера? Разделени със запетаи, поддържаните връзки са: <, <=, >, >=. Ако е необходимо, равенство може да използва същата променлива, когато се създава GeoGebra работен лист. Динамични диапазони, като например използване на променлива за минимум/максимум, не са поддържани.';
 $string['constraintswrongortoohard'] = '{$a->inequalities} are wrong or too hard to meet, we tried (brute force) {$a->tries} times in {$a->time} seconds. Maybe we\'ll use a better method in the future...';
 $string['feedback'] = 'Обратна връзка, когато променливата е истина';
 $string['feedback_help'] = 'Обратна връзка се получава автоматично от надписа на променливата в GeoGebra файла.';
