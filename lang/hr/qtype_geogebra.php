@@ -14,7 +14,7 @@ $string['pluginname_link'] = 'question/type/geogebra';$string['addconstraints'] 
 $string['addmorevarblanks'] = 'Blanks for {no} more variable(s)';
 $string['answerinvalid'] = 'The answer-string in the response is invalid. This should not happen.';
 $string['answermissing'] = 'The answer in the response is missing. Probably JavaScript isn\'t turned on in the Browser or an unknown error occurred';
-$string['answervar'] = 'Variables for automatic grading';
+$string['answervar'] = 'Varijable automatskog ocjenjivanja';
 $string['answervar_help'] = 'For automatic grading: A name of a boolean object in GeoGebra which is true if the student solved the question (partly). Sums up all grades for all boolean variables. The question is correct if any combination exceeds 100%, but there should be at least one combination which sums up to exactly 100%. Leave blank for manual grading.';
 $string['constraints'] = 'Constraints (conditions)';
 $string['constraints_help'] = 'Are there any constraints for variables, such as a < b, which could not be declared using the slider options? Comma separated. Supported relations are: <, <=, >, >=. If you need an equality you have to use the same variable when creating the GeoGebra worksheet. Dynamic ranges, ie using variables for slider min/max are not supported.';
@@ -27,7 +27,7 @@ $string['ggbfilemissing'] = 'The base64 string in the response is missing. Proba
 $string['ggbturl'] = 'URL or ID of GeoGebraTube Worksheet';
 $string['ggbturl_help'] = 'You could either use the share button on GeoGebraTube and copy and paste the link or use the GeoGebraTube repository. The applet and parameters are stored in the database, the applet will not be reloaded from GeoGebraTube unless requested. Just providing the ID or sharing key of the Applet is also supported.';
 $string['ggbxmlmissing'] = 'The XML string in the response is missing. Probably JavaScript isn\'t turned on in the Browser or an unknown error occurred';
-$string['invalidinequality'] = '{$a} is invalid';
+$string['invalidinequality'] = '{$a} je neispravna';
 $string['israndomized'] = 'Are there any variables which should be randomized?';
 $string['loadapplet'] = '(Re)load and show applet';
 $string['loadapplet_help'] = '(Re)load the applet from GeoGebraTube and store the new version from GeoGebraTube in the database.';
