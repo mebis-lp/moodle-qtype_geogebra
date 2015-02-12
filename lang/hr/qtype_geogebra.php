@@ -10,21 +10,21 @@
  * @license        http://www.geogebra.org/license
  */
 $string['pluginname'] = 'GeoGebra';
-$string['pluginname_link'] = 'question/type/geogebra';$string['addconstraints'] = 'Add constraints (conditions) to variables.';
-$string['addmorevarblanks'] = 'Blanks for {no} more variable(s)';
-$string['answerinvalid'] = 'The answer-string in the response is invalid. This should not happen.';
-$string['answermissing'] = 'The answer in the response is missing. Probably JavaScript isn\'t turned on in the Browser or an unknown error occurred';
+$string['pluginname_link'] = 'question/type/geogebra';$string['addconstraints'] = 'Dodavanje ograničenja (uvjeta) varijablama.';
+$string['addmorevarblanks'] = 'Prostor za još {no} varijablu(i)';
+$string['answerinvalid'] = 'Povratni niz znakova  je neispravan. To se ne bi trebalo dogoditi.';
+$string['answermissing'] = 'Nedostaje odgovor na ulazni zahtjev. Vjerojatno nije postavljen JavaScript u pregledniku ili je došlo do nepoznate greške.';
 $string['answervar'] = 'Varijable automatskog ocjenjivanja';
-$string['answervar_help'] = 'For automatic grading: A name of a boolean object in GeoGebra which is true if the student solved the question (partly). Sums up all grades for all boolean variables. The question is correct if any combination exceeds 100%, but there should be at least one combination which sums up to exactly 100%. Leave blank for manual grading.';
-$string['constraints'] = 'Constraints (conditions)';
-$string['constraints_help'] = 'Are there any constraints for variables, such as a < b, which could not be declared using the slider options? Comma separated. Supported relations are: <, <=, >, >=. If you need an equality you have to use the same variable when creating the GeoGebra worksheet. Dynamic ranges, ie using variables for slider min/max are not supported.';
-$string['constraintswrongortoohard'] = '{$a->inequalities} are wrong or too hard to meet, we tried (brute force) {$a->tries} times in {$a->time} seconds. Maybe we\'ll use a better method in the future...';
-$string['feedback'] = 'Feedback when the variable is true';
-$string['feedback_help'] = 'The feedback is automatically taken from caption of the variable in the GeoGebra file.';
-$string['geogebraapplet'] = 'GeoGebra Aplet';
+$string['answervar_help'] = 'Kod automatskog ocjenjivanja: naziv GeoGebra logičke varijable čija je vrijednost true ako je učenik (djelomiučno) riješio zadatak. Izračunavaju se sve ocjene za sve logičke  varijable. Zadatak je ispravan ukoliko neka kombinacija premaši 100%, ali treba postojati bar jedna kombinacija kod koje je izračun upravo  100%. Ostavite prazno za ručno ocjenjivanje.';
+$string['constraints'] = 'Ograničenja (uvjeti)';
+$string['constraints_help'] = 'Imaju li varijale bilo kakva ograničenja, recimo a < b, koja se  ne mogu zadati u postavkama klizača? Razdvojite zarezom. Podržani su: <, <=, >, >=. Trebate li jednakost, morate koristiti istu varijablu kod izrade GeoGebra uratka. Dinamički rasponi, tj. upotreba varijabli za  min/max kod klizača nisu podržani.';
+$string['constraintswrongortoohard'] = '{$a->inequalities} je neispravno ili je teško pronaći, pokušali smo (bez rezultata ) {$a->tries} puta u {$a->time} sekundi. Možda ćemo ubuduće koristiti uspješniju metodu...';
+$string['feedback'] = 'Povratna informacija ako je varijabla istinita';
+$string['feedback_help'] = 'Povratna informacija je automatski preuzeta iz natpisa varijable u GeoGebra datoteci.';
+$string['geogebraapplet'] = 'GeoGebra aplet';
 $string['getvars'] = 'Get variables which can be randomized from the applet';
 $string['ggbfilemissing'] = 'The base64 string in the response is missing. Probably JavaScript isn\'t turned on in the Browser or an unknown error occurred';
-$string['ggbturl'] = 'URL or ID of GeoGebraTube Worksheet';
+$string['ggbturl'] = 'URL ili ID ili GeoGebraTube uradak';
 $string['ggbturl_help'] = 'You could either use the share button on GeoGebraTube and copy and paste the link or use the GeoGebraTube repository. The applet and parameters are stored in the database, the applet will not be reloaded from GeoGebraTube unless requested. Just providing the ID or sharing key of the Applet is also supported.';
 $string['ggbxmlmissing'] = 'The XML string in the response is missing. Probably JavaScript isn\'t turned on in the Browser or an unknown error occurred';
 $string['invalidinequality'] = '{$a} je neispravna';
