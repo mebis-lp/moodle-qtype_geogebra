@@ -15,7 +15,7 @@ $string['addmorevarblanks'] = '{no} 更多变量空白';
 $string['answerinvalid'] = '响应中的回答字符串无效，这不应该发生.';
 $string['answermissing'] = '响应中的答案丢失，可能 JavaScript 在浏览器中没有打开或者出现了未知错误';
 $string['answervar'] = '自动评分变量';
-$string['answervar_help'] = '对自动评分: 如果学生解决了问题（部分地），那么 GeoGebra 中的布尔运算对象名称为真. 合计所有布尔变量的所有分数. 如果任何组合都超过了 100%，那么问题就是正确的, 但是至少应该有一个组合的总分恰恰达到 100%. 对手动评分留下空白.';
+$string['answervar_help'] = '对自动评分: 如果学生解决了问题（部分地），那么 GeoGebra 中的布尔运算对象名称为真. 合计所有布尔变量的所有分数. 如果任何组合都超过了 100%，那么问题就是正确的, 但是至少应该有一个组合的总分恰恰达到 100%. 为手动评分留下空白.';
 $string['constraints'] = '限制(条件)';
 $string['constraints_help'] = '如同不能在参数选项中作标识的 a < b 的变量，对它们有限制吗？ 以逗号分隔. 支持的关系有: <, <=, >, >=. 如需要等式，您就不得不在创建 GeoGebra 课件时使用同一变量. 运用变量作为参数的最小值/最大值的动态区间是得不到支持的.';
 $string['constraintswrongortoohard'] = '{$a->inequalities} 是错误的或难以满足的, 在 {$a->time} 秒内我们(强力)尝试了 {$a->tries} 次. 也许我们将来会用更好的方法...';
