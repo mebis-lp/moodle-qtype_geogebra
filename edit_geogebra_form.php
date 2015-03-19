@@ -473,7 +473,7 @@ class qtype_geogebra_edit_form extends question_edit_form {
 <script type="text/javascript">
     var parameters = $this->ggbparameters;
     parameters.language = "$lang";
-    parameters.useBrowserForJS = true;
+    parameters.useBrowserForJS = false;
     delete parameters.material_id;
     parameters.moodle = "editingQuestion";
     var views = $this->ggbviews;
@@ -534,16 +534,22 @@ HTML;
         $ggbturlinput = array();
         $clientid = uniqid();
         $fp = $this->initggtfilpicker($clientid, 'ggbturl');
-        $ggbturlinput[] =& $mform->createElement('html', $fp);
-        $ggbturlinput[] =& $mform->createElement('button', 'filepicker-button-' . $clientid, get_string('choosealink',
-                'repository'));
+        $ggbtrepo = repository::get_type_by_typename('geogebratube');
+        if ($ggbtrepo) {
+
+            $ggbturlinput[] =& $mform->createElement('html', $fp);
+            $ggbturlinput[] =& $mform->createElement('button', 'filepicker-button-' . $clientid, get_string('choosealink',
+                    'repository'));
+        }
         $ggbturlinput[] =& $mform->createElement('text', 'ggbturl', '', array('size' => '20'));
         $mform->setType('ggbturl', PARAM_RAW_TRIMMED);
         $mform->addGroup($ggbturlinput, 'ggbturlinput', get_string('ggbturl', 'qtype_geogebra'), array(' '), false);
 
         $mform->addHelpButton('ggbturlinput', 'ggbturl', 'qtype_geogebra');
-        $mform->disabledIf('filepicker-button-' . $clientid, 'usefile', 'checked');
+        if ($ggbtrepo) {
 
+            $mform->disabledIf('filepicker-button-' . $clientid, 'usefile', 'checked');
+        }
         $mform->addElement('checkbox', 'usefile', get_string('useafile', 'qtype_geogebra'), get_string('dragndrop', 'qtype_geogebra'));
         if (!empty($this->ggbparameters) && empty($this->ggbturl)) {
             $mform->setDefault('usefile', true);
