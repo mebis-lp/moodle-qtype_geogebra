@@ -12,6 +12,7 @@ var ggbxml = [];
 var currentvals = [];
 var answerinput = [];
 var responsevars = [];
+var exerciseresultinput = [];
 var id = 0;
 
 M.form_ggbq.init = function (Y, options) {
@@ -43,7 +44,7 @@ M.form_ggbq.init = function (Y, options) {
     currentvals[id] = options.vars;
 
     answerinput[id] = Y.one('input[name="' + options.answerinput + '"]');
-
+    exerciseresultinput[id] = Y.one('input[name="' + options.exerciseresultinput + '"]');
     responsevars[id] = options.responsevars;
     id++;
 };
@@ -64,17 +65,19 @@ M.form_ggbq.getBase64andCheck = function (Y, options) {
                 }
             });
             answerinput[i].set('value', responsestring);
+            exerciseresultinput[i].set('value', JSON.stringify(ggbApplet.getExerciseResult()));
         }
     }
+
 };
 
-function ggbOnInit(ggbAppletId) {
-    id = ggbAppletId.substring(9);
-    ggbApplet = window[ggbAppletId];
+function ggbAppletOnLoad(ggbAppletId) {
+    appletid = window[ggbAppletId].getAttribute("data-param-id");
+    id = appletid.substring(9);
+    ggbApplet = window[appletid];
     for (var label in currentvals[id]) {
         ggbApplet.setValue(label, currentvals[id][label]);
     }
-//    ggbApplet.registerUpdateListener("updateListener");
     b64input[id].set('value', ggbApplet.getBase64());
     xmlinput[id].set('value', ggbApplet.getXML());
     if (responsestring == '') {

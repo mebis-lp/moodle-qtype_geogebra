@@ -30,7 +30,7 @@ class qtype_geogebra extends question_type {
      */
     public function extra_question_fields() {
         return array('qtype_geogebra_options', 'ggbturl', 'ggbparameters', 'ggbviews', 'ggbcodebaseversion', 'ggbxml',
-                'israndomized', 'randomizedvar', 'constraints');
+                'israndomized', 'randomizedvar', 'constraints', 'isexercise');
     }
 
     /**
@@ -50,7 +50,7 @@ class qtype_geogebra extends question_type {
         if (isset($question->answer)) {
             if (!empty($question->feedback) && !is_array($question->feedback[0])) {
                 foreach ($question->feedback as $key => $value) {
-                    $question->feedback[$key] = array('text' => $value.'<br>', 'format' => FORMAT_HTML);
+                    $question->feedback[$key] = array('text' => $value . '<br>', 'format' => FORMAT_HTML);
                 }
             }
             $parentresult = parent::save_question_answers($question);
@@ -96,6 +96,7 @@ class qtype_geogebra extends question_type {
         return true;
     }
 
+    //TODO not correct any more
     /**
      * This method should return all the possible types of response that are
      * recognised for this question.
@@ -114,8 +115,12 @@ class qtype_geogebra extends question_type {
     public function get_possible_responses($questiondata) {
         // There are no possible answers which can be calculated if answers array is empty i.e. question is manually graded.
         if (empty($questiondata->options->answers)) {
+            if ($questiondata->options->isexercise) {
+                return array($questiondata->id => array(null => new question_possible_response("Response graded automatically", null)));
+            }
             return array($questiondata->id => array(null => new question_possible_response("Response graded manually", null)));
         }
+
 
         $responses = array();
         /*

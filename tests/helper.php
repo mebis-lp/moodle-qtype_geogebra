@@ -74,7 +74,7 @@ class qtype_geogebra_test_helper extends question_test_helper {
         $form->generalfeedback['format'] = '1';
         $form->generalfeedback['text'] = "Generalfeedback: Dragging a point isn't to hard";
 
-        $form->ggbturl = 'https://www.geogebratube.org/student/mI8RJzVzI';
+        $form->ggbturl = 'https://tube.geogebra.org/student/mI8RJzVzI';
         $form->ggbxml = ggbstringsfortesting::$pointxml;
         $form->ggbparameters = ggbstringsfortesting::$pointparameters;
         $form->ggbviews = ggbstringsfortesting::$views;
@@ -136,7 +136,7 @@ class qtype_geogebra_test_helper extends question_test_helper {
         $q->options->answers[0]->feedback = 'Very good.';
         $q->options->answers[0]->feedbackformat = FORMAT_HTML;
 
-        $q->options->ggbturl = 'https://www.geogebratube.org/student/mI8RJzVzI';
+        $q->options->ggbturl = 'https://tube.geogebra.org/student/mI8RJzVzI';
         $q->options->ggbxml = ggbstringsfortesting::$pointxml;
         $q->options->ggbparameters = ggbstringsfortesting::$pointparameters;
         $q->options->ggbviews = ggbstringsfortesting::$views;
@@ -159,7 +159,7 @@ class qtype_geogebra_test_helper extends question_test_helper {
         $geo->name = "Finding a point in the plane";
         $geo->questiontext = "Drag the point to ({a}/{b})";
         $geo->generalfeedback = 'Generalfeedback: Dragging a point isn\'t to hard.';
-        $geo->ggbturl = 'https://www.geogebratube.org/student/mI8RJzVzI';
+        $geo->ggbturl = 'https://tube.geogebra.org/student/mI8RJzVzI';
         $geo->ggbxml = ggbstringsfortesting::$pointxml;
         $geo->ggbparameters = ggbstringsfortesting::$pointparameters;
         $geo->ggbviews = ggbstringsfortesting::$views;

@@ -101,11 +101,6 @@ M.form_ggbt.injectapplet = function (id) {
 
     applet1.inject("applet_container1", "preferHTML5");
 
-    appOnLoad = parameters.appletOnLoad;
-    parameters.appletOnLoad = function () {
-        appOnLoad();
-        alert("test");
-    };
 };
 
 M.form_ggbt.getrandvars = function () {
@@ -166,6 +161,7 @@ function ggbAppletOnLoad(id) {
     if (typeof(ggbcheckb) == "undefined") {
         var applet = document.ggbApplet;
         Y.one('input[name="ggbxml"]').set('value', applet.getXML());
+        Y.one('input[name="ggbexercise"]').set('value', JSON.stringify(applet.getExerciseResult()));
 
         var randomizedvar = document.getElementById('id_randomizedvar');
         if (!randomizedvar.value) {
@@ -184,6 +180,7 @@ function ggbAppletOnLoad(id) {
         }
         document.querySelector('article').onkeypress = checkEnter;
     }
+
 
     if (usefile.checked) {
         document.getElementById('applet_container1').style.display = "block";
@@ -292,6 +289,7 @@ function handleDrop(e) {
         file = e.dataTransfer.files[0];
         ggbf.classList.remove('hover');
         document.getElementById('applet_container1').style.removeProperty("visibility");
+        document.getElementById('applet_container1').style.display = "block";
         document.getElementById('applet_options').style.display = "block";
 
         document.getElementById('id_ggbturl').value = "";

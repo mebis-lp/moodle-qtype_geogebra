@@ -30,7 +30,7 @@ class qtype_geogebra_renderer extends qtype_renderer {
      */
     public function formulation_and_controls(question_attempt $qa, question_display_options $options) {
         global $PAGE, $CFG;
-        $PAGE->requires->js(new moodle_url('https://www.geogebratube.org/scripts/deployggb.js'));
+        $PAGE->requires->js(new moodle_url('https://tube.geogebra.org/scripts/deployggb.js'));
 
         $result = '';
 
@@ -76,6 +76,19 @@ class qtype_geogebra_renderer extends qtype_renderer {
 
         $result .= html_writer::empty_tag('input', $answerinputattributes);
 
+        $exercisecurrent = $qa->get_last_qt_var('exerciseresult');
+        $exerciseinputname = $qa->get_qt_field_name('exerciseresult');
+
+        $exerciseinputattributes = array(
+                'type'  => 'hidden',
+                'name'  => $exerciseinputname,
+                'value' => $exercisecurrent,
+                'id'    => $exerciseinputname,
+                'size'  => 80,
+        );
+
+        $result .= html_writer::empty_tag('input', $exerciseinputattributes);
+
         $questiontext = $question->format_questiontext($qa);
 
         $result .= html_writer::tag('div', $questiontext, array('class' => 'qtext'));
@@ -90,17 +103,18 @@ class qtype_geogebra_renderer extends qtype_renderer {
             }
         }
 
-        $options = array('parameters'       => $question->ggbparameters,
-                         'views'            => $question->ggbviews,
-                         'codebase'         => $question->ggbcodebaseversion,
-                         'html5NoWebSimple' => true,
-                         'div'              => $ggbdivname,
-                         'vars'             => $question->currentvals,
-                         'b64input'         => $b64inputname,
-                         'xmlinput'         => $xmlinputname,
-                         'answerinput'      => $answerinputname,
-                         'responsevars'     => $responsevars,
-                         'lang'             => current_language()
+        $options = array('parameters'          => $question->ggbparameters,
+                         'views'               => $question->ggbviews,
+                         'codebase'            => $question->ggbcodebaseversion,
+                         'html5NoWebSimple'    => true,
+                         'div'                 => $ggbdivname,
+                         'vars'                => $question->currentvals,
+                         'b64input'            => $b64inputname,
+                         'xmlinput'            => $xmlinputname,
+                         'answerinput'         => $answerinputname,
+                         'exerciseresultinput' => $exerciseinputname,
+                         'responsevars'        => $responsevars,
+                         'lang'                => current_language()
         );
 
         // Loading the js in fullpath works on local test but not on server???
@@ -110,9 +124,10 @@ class qtype_geogebra_renderer extends qtype_renderer {
 
         if ($qa->get_state() == question_state::$invalid) {
             $result .= html_writer::nonempty_tag('div',
-                    $question->get_validation_error(array('answer'    => $answercurrent,
-                                                          'ggbxml'    => $xmlcurrent,
-                                                          'ggbbase64' => $b64current)),
+                    $question->get_validation_error(array('answer'         => $answercurrent,
+                                                          'ggbxml'         => $xmlcurrent,
+                                                          'ggbbase64'      => $b64current,
+                                                          'exerciseresult' => $exercisecurrent)),
                     array('class' => 'validationerror'));
         }
 

@@ -58,3 +58,6 @@ $string['show_algebra_input'] = 'Show Input Bar';
 $string['show_menu_bar'] = 'Show Menu';
 $string['show_reset_icon'] = 'Show Icon to Reset Construction';
 $string['show_tool_bar'] = 'Show Toolbar';
+$string['isexercise'] = 'Use GeoGebra-Exercise for checking the question';
+$string['isexercise_help'] = 'The applet contains userdefined tools which can be used for automatic checking of the exercise.
+Beware: All answers below are not applicable in this case!';

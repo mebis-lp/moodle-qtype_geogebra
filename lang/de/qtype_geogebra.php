@@ -59,3 +59,6 @@ $string['show_algebra_input'] = 'Eingabezeile anzeigen';
 $string['show_menu_bar'] = 'Menü anzeigen';
 $string['show_reset_icon'] = 'Symbol zum Zurücksetzen der Konstruktion anzeigen';
 $string['show_tool_bar'] = 'Werkzeugleiste anzeigen';
+$string['isexercise'] = 'Integrierte Aufgabenprüfung von GeoGebra zur Fragenüberprüfung verwenden';
+$string['isexercise_help'] = 'Die Aufgabe enthält benutzerdefinierte Werkzeuge zur automatischen Überprüfung der Konstruktion.
+Achtung: in diesem Fall werden KEINE Antworten (unten) berücksichtigt!';

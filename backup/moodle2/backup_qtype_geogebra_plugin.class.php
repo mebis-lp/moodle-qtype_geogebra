@@ -41,7 +41,7 @@ class backup_qtype_geogebra_plugin extends backup_qtype_plugin {
         // Now create the qtype own structures.
         $geogebra = new backup_nested_element('geogebra', array('id'),
                 array('ggbturl', 'ggbparameters', 'ggbviews', 'ggbcodebaseversion', 'ggbxml', 'israndomized', 'randomizedvar',
-                        'constraints'));
+                        'constraints', 'isexercise'));
 
         // Now the own qtype tree.
         $pluginwrapper->add_child($geogebra);
