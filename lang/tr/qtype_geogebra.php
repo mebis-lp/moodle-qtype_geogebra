@@ -11,7 +11,7 @@
  */
 $string['pluginname'] = 'GeoGebra';
 $string['pluginname_link'] = 'question/type/geogebra';$string['addconstraints'] = 'Değişkenlere kısıtlar (koşullar) ekle.';
-$string['addmorevarblanks'] = '{no} ek değişken için boşluklar';
+$string['addmorevarblanks'] = '{no} ek değişken(ler) için boşluklar';
 $string['answerinvalid'] = 'Yanıtınızdaki cevap-zinciri geçersizdir. Bu olamaz.';
 $string['answermissing'] = 'Yanıtınızdaki cevap eksiktir. Muhtemelen JavaScript, Tarayıcıda çalışmıyor veya bilinmeyen bir hata oluştu.';
 $string['answervar'] = 'Otomatik notlandırma için değişkenler';
