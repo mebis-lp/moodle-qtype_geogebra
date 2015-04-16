@@ -20,7 +20,7 @@ $string['constraints'] = 'Kekangan-kekangan (keadaan-keadaan)';
 $string['constraints_help'] = 'Adakah kekangan untuk pembolehubah-pembolehubah seperti a < b, yang tidak dapat diumumkan menggunakan opysyen slider? Koma mengasingkan. Perhubungan yang disokong adalah: <, <=, >, >=. Jika anda memerlukan ketaksamaan anda perlu gunakan pembolehubah yang sama apabila mencipta lembaran kerja GeoGebra. Julat dinamik, iaitu menggunakan pembolehubah-pembolehubah untuk slider minimum/mak adalah tidak disokong.';
 $string['constraintswrongortoohard'] = '{$a->inequalities} adalah salah atau sukar untuk dicapai, kami sudah cuba (dengan \'brute force\') {$a->tries} kali dalam {$a->time} saat. Mungkin kami akan gunakan kaedah yang lebih baik masa depan';
 $string['feedback'] = 'Maklumbalas apabila pembolehubah benar';
-$string['feedback_help'] = 'The feedback is automatically taken from caption of the variable in the GeoGebra file.';
+$string['feedback_help'] = 'Maklumbalas adalah dipetik secara automatik daripada pembolehubah kapsyen dalam fail GeoGebra.';
 $string['geogebraapplet'] = 'Aplet GeoGebra';
 $string['getvars'] = 'Dapatkan pembolehubah-pembolehubah yang boleh dirawakkan daripada aplet';
 $string['ggbfilemissing'] = 'Rentetan  asas64 (base64)  dalam respons hilang. Mungkin JavaScript tidak dipasang pada Pelayar atau satu ralat yang tidak dikenali berlaku';
