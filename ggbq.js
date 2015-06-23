@@ -72,6 +72,8 @@ M.form_ggbq.getBase64andCheck = function (Y, options) {
 };
 
 function ggbAppletOnLoad(ggbAppletId) {
+    //document.querySelector('article').onkeypress = checkEnter;
+    document.querySelector('article').onkeydown = checkEnter;
     appletid = window[ggbAppletId].getAttribute("data-param-id");
     id = appletid.substring(9);
     ggbApplet = window[appletid];
@@ -90,7 +92,6 @@ function ggbAppletOnLoad(ggbAppletId) {
         });
         answerinput[id].set('value', responsestring);
     }
-    document.querySelector('article').onkeypress = checkEnter;
 }
 
 
