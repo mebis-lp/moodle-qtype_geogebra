@@ -151,7 +151,7 @@ M.form_ggbt.update_feedback = function (answernode) {
     feedbackfromfile.set('value', fbstring);
 };
 
-// Function ggbOnInit gets called as soon as the applet is loaded.
+// Function ggbAppletOnLoad gets called as soon as the applet is loaded (as ggbOnInit).
 //noinspection JSUnusedGlobalSymbols
 function ggbAppletOnLoad(id) {
     Y.one('input[name="ggbparameters"]').set('value', JSON.stringify(parameters));
@@ -171,11 +171,13 @@ function ggbAppletOnLoad(id) {
         var i = 0;
         var answer = Y.one('#id_answer_' + i);
         while (!(answer === null)) {
-            answer.on(['change', 'focus'], function (e) {
-                e.preventDefault();
-                M.form_ggbt.update_feedback(e.target)
-            });
-            M.form_ggbt.update_feedback(answer);
+            if (answer.get('value')) {
+                answer.on(['change', 'focus'], function (e) {
+                    e.preventDefault();
+                    M.form_ggbt.update_feedback(e.target)
+                });
+                M.form_ggbt.update_feedback(answer);
+            }
             answer = Y.one('#id_answer_' + ++i);
         }
         document.querySelector('article').onkeypress = checkEnter;
