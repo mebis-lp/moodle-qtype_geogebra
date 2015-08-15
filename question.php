@@ -253,7 +253,6 @@ class qtype_geogebra_question extends question_graded_automatically {
                         } else {
                             $summary .= '; ' . get_string('total', 'grades') . ': ' . $res;
                         }
-
                     }
                 }
             }
@@ -288,6 +287,7 @@ class qtype_geogebra_question extends question_graded_automatically {
         return '';
     }
 
+    //TODO not correct anymore for automatically checked exercises
     /**
      * Categorise the student's response according to the categories defined by
      * get_possible_responses.
@@ -355,12 +355,46 @@ class qtype_geogebra_question extends question_graded_automatically {
                 if ($fraction > 1) {
                     $fraction = 1;
                 }
-                return array($fraction, question_state::graded_state_for_fraction($fraction));
             } else {
-                $result = json_decode($response['exerciseresult']);
-                return array($result->fractionsum, question_state::graded_state_for_fraction($result->fractionsum));
+                $exerciseresult = json_decode($response['exerciseresult']);
+                $fraction = $this->calculate_exercise_fraction($exerciseresult);
+            }
+            return array($fraction, question_state::graded_state_for_fraction($fraction));
+        }
+    }
+
+    /**
+     * The overall fraction of the Exercise
+     *
+     * If one Assignment has 100%, the overall fraction will be 1 minus the sum
+     * of the fractions of the Assignments having negative Fractions.<br>
+     * Otherwise the overall fraction will be the sum of all positive fractions
+     * capped at 1 minus all negative fractions and then capped at 0.
+     *
+     * @param stdClass $exerciseresult
+     * @return int the sum of fractions for all assignments
+     */
+    private function calculate_exercise_fraction(stdClass $exerciseresult) {
+        $fractionsumplus = 0;
+        $fractionsumminus = 0;
+        $singleCorrectIgnoreOthers = false;
+        foreach ($exerciseresult as $assignment) {
+            if ($assignment->fraction >= 0) {
+                if (0.999 < $assignment->fraction) {
+                    $singleCorrectIgnoreOthers = true;
+                }
+                $fractionsumplus += $assignment->fraction;
+            } else {
+                $fractionsumminus += $assignment->fraction;
             }
         }
+        if ($singleCorrectIgnoreOthers || $fractionsumplus >= 0.999) {
+            $fraction = 1;
+        } else {
+            $fraction = $fractionsumplus;
+        }
+        $fraction += $fractionsumminus;
+        return $fraction < 0.001 ? 0 : $fraction;
     }
 }
 

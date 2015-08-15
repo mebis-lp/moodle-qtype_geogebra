@@ -96,7 +96,7 @@ class qtype_geogebra extends question_type {
         return true;
     }
 
-    //TODO not correct any more
+    //TODO not correct if autochecking enabled
     /**
      * This method should return all the possible types of response that are
      * recognised for this question.

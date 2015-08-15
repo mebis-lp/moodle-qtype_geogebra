@@ -51,12 +51,12 @@ M.form_ggbq.init = function (Y, options) {
 
 M.form_ggbq.getBase64andCheck = function (Y, options) {
     for (i = 0; i < answerinput.length; i++) {
-        ggbApplet = window['ggbApplet' + i];
+        var ggbApplet = window['ggbApplet' + i];
         if (!(typeof ggbApplet === "undefined")) {
             b64input[i].set('value', ggbApplet.getBase64());
             xmlinput[i].set('value', ggbApplet.getXML());
 
-            responsestring = '';
+            var responsestring = '';
             responsevars[i].forEach(function (responsevar) {
                 if (ggbApplet.isDefined(responsevar)) {
                     responsestring += ggbApplet.getValue(responsevar);
@@ -74,15 +74,16 @@ M.form_ggbq.getBase64andCheck = function (Y, options) {
 function ggbAppletOnLoad(ggbAppletId) {
     //document.querySelector('article').onkeypress = checkEnter;
     document.querySelector('article').onkeydown = checkEnter;
-    appletid = window[ggbAppletId].getAttribute("data-param-id");
-    id = appletid.substring(9);
-    ggbApplet = window[appletid];
+    //appletid = window[ggbAppletId].getAttribute("data-param-id");
+    var id = ggbAppletId.substring(9);
+    var ggbApplet = window[ggbAppletId];
     for (var label in currentvals[id]) {
         ggbApplet.setValue(label, currentvals[id][label]);
     }
     b64input[id].set('value', ggbApplet.getBase64());
     xmlinput[id].set('value', ggbApplet.getXML());
-    if (responsestring == '') {
+    if (answerinput[id].get('value') == '') {
+        var responsestring = '';
         responsevars[id].forEach(function (responsevar) {
             if (ggbApplet.isDefined(responsevar)) {
                 responsestring += ggbApplet.getValue(responsevar);
