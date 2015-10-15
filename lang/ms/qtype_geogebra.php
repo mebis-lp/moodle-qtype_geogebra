@@ -15,7 +15,7 @@ $string['addmorevarblanks'] = 'Kosong untuk {no} lebih pembolehubah-pembolehubah
 $string['answerinvalid'] = '"answer-string" dalam responds adalah tak sah. Ini tidak harus berlaku.';
 $string['answermissing'] = 'Jawapan di respons adalah hilang. Mungkin JavaScript tidak dipasang pada Pelayar atau ralat yang tidak ketahui berlaku';
 $string['answervar'] = 'Pembolehubah-pembolehubah untuk pengredan automatik.';
-$string['answervar_help'] = 'For automatic grading: A name of a boolean object in GeoGebra which is true if the student solved the question (partly). Sums up all grades for all boolean variables. The question is correct if any combination exceeds 100%, but there should be at least one combination which sums up to exactly 100%. Leave blank for manual grading.';
+$string['answervar_help'] = 'Untuk pengredan secara automatik: Satu nama bagi satu objek boolean dalam GeoGebra yang benar kija pelajar menyelesaikan soalan (sebahagian). Menjumlahkan semua gred untuk semua pembolehubah boolean. Soalan itu betul jika sebarang kombinasi melebihi 100%, tetapi seharusnya wujud sekurang-kurangnya satu kombinasi yang jumlah tepat 100%. Tinggal kosong untuk pengredan secara manual.';
 $string['constraints'] = 'Kekangan-kekangan (keadaan-keadaan)';
 $string['constraints_help'] = 'Adakah kekangan untuk pembolehubah-pembolehubah seperti a < b, yang tidak dapat diumumkan menggunakan opysyen slider? Koma mengasingkan. Perhubungan yang disokong adalah: <, <=, >, >=. Jika anda memerlukan ketaksamaan anda perlu gunakan pembolehubah yang sama apabila mencipta lembaran kerja GeoGebra. Julat dinamik, iaitu menggunakan pembolehubah-pembolehubah untuk slider minimum/mak adalah tidak disokong.';
 $string['constraintswrongortoohard'] = '{$a->inequalities} adalah salah atau sukar untuk dicapai, kami sudah cuba (dengan \'brute force\') {$a->tries} kali dalam {$a->time} saat. Mungkin kami akan gunakan kaedah yang lebih baik masa depan';
@@ -38,7 +38,7 @@ $string['nofractionsumeq1'] = 'Sekurang-kurangnya satu kombinasi gred mesti juml
 $string['pluginname_help'] = 'Soalan-soalan di mana pelajar boleh menyelesaikannya menggunakan GeoGebra';
 $string['pluginnameadding'] = 'Menambah satu soalan GeoGebra';
 $string['pluginnameediting'] = 'Mengedit satu soalan GeoGebra';
-$string['pluginnamesummary'] = 'A version of calculated questions which uses GeoGebra to show the question and verify the answer when the quiz is taken.';
+$string['pluginnamesummary'] = 'Satu versi soalan-soalan terpilih di mna menggunakan GeoGebra untuk menunjukkan soalan dan pengesahan jawapan apabila kuiz di ambil.';
 $string['randomizedbutnovars'] = 'Anda telah memilih soalan-soalan yang harus diperawakkan, tetapi tidak nyatakan sebarang pembolehubah-pembolehubah yang sah untuk dirawakkan.';
 $string['randomizedvar'] = 'Pembolehubah-pembolehubah untuk dirawakkkan.';
 $string['randomizedvar_help'] = 'Pembolehubah-pembolehubah yang harus dirawakkan (diasingkan dengan koma). Gunakan opsyen slider dalam GeoGebra untuk menyatakan Minimum, Maksimum dan Tokokan. Pembolehubah-pembolehubah ini boleh digunakan teks soalan dengan menutupkannya dengan kurungan rungkup, sebagai contoh: {a}';
