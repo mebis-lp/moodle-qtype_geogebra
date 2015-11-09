@@ -19,8 +19,8 @@ $string['answervar_help'] = 'For automatic grading: A name of a boolean object i
 $string['constraints'] = 'Constraints (conditions)';
 $string['constraints_help'] = 'Are there any constraints for variables, such as a < b, which could not be declared using the slider options? Comma separated. Supported relations are: <, <=, >, >=. If you need an equality you have to use the same variable when creating the GeoGebra worksheet. Dynamic ranges, ie using variables for slider min/max are not supported.';
 $string['constraintswrongortoohard'] = '{$a->inequalities} are wrong or too hard to meet, we tried (brute force) {$a->tries} times in {$a->time} seconds. Maybe we\'ll use a better method in the future...';
-$string['feedback'] = 'Évaluation si la variable est "true"';
-$string['feedback_help'] = 'L\'évaluation est automatiquement activée par la légende de la variable du fichier GeoGebra.';
+$string['feedback'] = 'Appréciation si la variable est "true"';
+$string['feedback_help'] = 'L\'appréciation est automatiquement activée par la légende de la variable du fichier GeoGebra.';
 $string['geogebraapplet'] = 'Appliquette GeoGebra';
 $string['getvars'] = 'Get variables which can be randomized from the applet';
 $string['ggbfilemissing'] = 'The base64 string in the response is missing. Probably JavaScript isn\'t turned on in the Browser or an unknown error occurred';
