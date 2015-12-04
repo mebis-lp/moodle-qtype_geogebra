@@ -20,7 +20,7 @@ $string['constraints'] = 'Restricciones (condiciones)';
 $string['constraints_help'] = '¿Hay condiciones para las variables, tales como a < b, que no pueden declararse usando las opciones del deslizador?  Deben separase por comas. Se aceptan relaciones como: <, <=, >, >=. De precisar una igualdad, debe usarse la misma variable al crear la construcción de GeoGebra. No se admiten rangos dinámicas como, por ejemplo, parámetros para el máximo o mínimo de un deslizador.';
 $string['constraintswrongortoohard'] = '{$a->inequalities} son erróneas o muy difíciles de cumplir, se intentó (por fuerza bruta) {$a->tries} veces en {$a->time} segundos. Quizá se procure un método mejor en el futuro...';
 $string['feedback'] = 'Comentario de devolución cuando la variable resulte cierta';
-$string['feedback_help'] = 'El comentario de devolución de respuesta, se tomará automáticamente del subtítulo de la variable en el archivo GeoGebra.';
+$string['feedback_help'] = 'El comentario de devolución de respuesta se tomará automáticamente del subtítulo de la variable en el archivo GeoGebra.';
 $string['geogebraapplet'] = 'Applet de GeoGebra';
 $string['getvars'] = 'Obtener variables de asignación aleatoria desde el applet';
 $string['ggbfilemissing'] = 'Falta la cadena de caracteres en base64 en la respuesta. Probablemente JavaScript no se encuentra activado en el navegador o que haya surgido un error desconocido';
