@@ -88,10 +88,9 @@ class qtype_geogebra_renderer extends qtype_renderer {
         );
 
         $result .= html_writer::empty_tag('input', $exerciseinputattributes);
-
         $questiontext = $question->format_questiontext($qa);
 
-        $result .= html_writer::tag('div', $questiontext, array('class' => 'qtext'));
+        $result .= html_writer::tag('div', $questiontext, array('class' => 'qtext','style'=>'visibility: hidden;'));
 
         $ggbdivname = $qa->get_qt_field_name('ggbdiv');
         $result .= html_writer::div('', '', array('id' => $ggbdivname));
@@ -114,6 +113,7 @@ class qtype_geogebra_renderer extends qtype_renderer {
                          'answerinput'         => $answerinputname,
                          'exerciseresultinput' => $exerciseinputname,
                          'responsevars'        => $responsevars,
+                         'slot'                => $qa->get_slot(),
                          'lang'                => current_language()
         );
 

@@ -13,6 +13,7 @@ var currentvals = [];
 var answerinput = [];
 var responsevars = [];
 var exerciseresultinput = [];
+var qdiv = [];
 var id = 0;
 
 M.form_ggbq.init = function (Y, options) {
@@ -21,6 +22,7 @@ M.form_ggbq.init = function (Y, options) {
 
     xmlinput[id] = Y.one('input[name="' + options.xmlinput + '"]');
     ggbxml[id] = xmlinput[id].get('value');
+    qdiv[id] = Y.one("#q" + (options.slot) + " .qtext");
 
     parameters = JSON.parse(options.parameters);
     if (ggbBase64[id] != '') {
@@ -72,9 +74,7 @@ M.form_ggbq.getBase64andCheck = function (Y, options) {
 };
 
 function ggbAppletOnLoad(ggbAppletId) {
-    //document.querySelector('article').onkeypress = checkEnter;
     document.querySelector('article').onkeydown = checkEnter;
-    //appletid = window[ggbAppletId].getAttribute("data-param-id");
     var id = ggbAppletId.substring(9);
     var ggbApplet = window[ggbAppletId];
     for (var label in currentvals[id]) {
@@ -82,6 +82,11 @@ function ggbAppletOnLoad(ggbAppletId) {
     }
     b64input[id].set('value', ggbApplet.getBase64());
     xmlinput[id].set('value', ggbApplet.getXML());
+    var numvars = ggbApplet.startExercise();
+    for (var key in numvars) {
+        qdiv[id].set('innerHTML', qdiv[id].get('innerHTML').replace("{" + key + "}", numvars[key]));
+    }
+    qdiv[id].setStyle('visibility', 'visible')
     if (answerinput[id].get('value') == '') {
         var responsestring = '';
         responsevars[id].forEach(function (responsevar) {
