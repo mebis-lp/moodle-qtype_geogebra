@@ -17,7 +17,7 @@ $string['answermissing'] = 'The answer in the response is missing. Probably Java
 $string['answervar'] = 'Variables for automatic grading';
 $string['answervar_help'] = 'For automatic grading: A name of a boolean object in GeoGebra which is true if the student solved the question (partly). Sums up all grades for all boolean variables. The question is correct if any combination exceeds 100%, but there should be at least one combination which sums up to exactly 100%. Leave blank for manual grading.';
 $string['constraints'] = 'Constraints (conditions)';
-$string['constraints_help'] = 'Are there any constraints for variables, such as a < b, which could not be declared using the slider options? Comma separated. Supported relations are: <, <=, >, >=. If you need an equality you have to use the same variable when creating the GeoGebra worksheet. Dynamic ranges, ie using variables for slider min/max are not supported.';
+$string['constraints_help'] = 'Y a t\'il une contrainte sur les variables, par ex. a < b, ne pouvant être précisée dans les options du curseur ? Virgule comme séparateur. Relations supportées : <, <=, >, >=. Pour une égalité vous devez utiliser la même variable qu\'à la création de la feuille de travail. Intervalles dynamiques, via variables pour min/max de curseurs ne sont pas autorisés.';
 $string['constraintswrongortoohard'] = '{$a->inequalities} are wrong or too hard to meet, we tried (brute force) {$a->tries} times in {$a->time} seconds. Maybe we\'ll use a better method in the future...';
 $string['feedback'] = 'Appréciation si la variable est "true"';
 $string['feedback_help'] = 'L\'appréciation est automatiquement activée par la légende de la variable du fichier GeoGebra.';
