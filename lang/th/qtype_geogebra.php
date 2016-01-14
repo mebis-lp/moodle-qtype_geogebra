@@ -16,7 +16,7 @@ $string['answerinvalid'] = 'The answer-string in the response is invalid. This s
 $string['answermissing'] = 'The answer in the response is missing. Probably JavaScript isn\'t turned on in the Browser or an unknown error occurred';
 $string['answervar'] = 'Variables for automatic grading';
 $string['answervar_help'] = 'For automatic grading: A name of a boolean object in GeoGebra which is true if the student solved the question (partly). Sums up all grades for all boolean variables. The question is correct if any combination exceeds 100%, but there should be at least one combination which sums up to exactly 100%. Leave blank for manual grading.';
-$string['constraints'] = 'Constraints (conditions)';
+$string['constraints'] = 'เงื่อนไข (ข้อแม้)';
 $string['constraints_help'] = 'Are there any constraints for variables, such as a < b, which could not be declared using the slider options? Comma separated. Supported relations are: <, <=, >, >=. If you need an equality you have to use the same variable when creating the GeoGebra worksheet. Dynamic ranges, ie using variables for slider min/max are not supported.';
 $string['constraintswrongortoohard'] = '{$a->inequalities} are wrong or too hard to meet, we tried (brute force) {$a->tries} times in {$a->time} seconds. Maybe we\'ll use a better method in the future...';
 $string['feedback'] = 'ผลตอบกลับเมื่อตัวแปรเป็นความจริง';
