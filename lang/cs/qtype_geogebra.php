@@ -12,8 +12,8 @@
 $string['pluginname'] = 'GeoGebra';
 $string['pluginname_link'] = 'question/type/geogebra';$string['addconstraints'] = 'Přidat omezení (podmínky) pro proměnné.';
 $string['addmorevarblanks'] = 'Místo pro {no} proměnných';
-$string['answerinvalid'] = 'The answer-string in the response is invalid. This should not happen.';
-$string['answermissing'] = 'The answer in the response is missing. Probably JavaScript isn\'t turned on in the Browser or an unknown error occurred';
+$string['answerinvalid'] = 'Odpověď obsahuje neplatný řetězec. To by se nemělo stát.';
+$string['answermissing'] = 'Odpověď nebyla odeslána. Pravděpodobně není v prohlížeči zapnutý JavaScript nebo došlo k neznámé chybě.';
 $string['answervar'] = 'Proměné pro automatické hodnocení';
 $string['answervar_help'] = 'For automatic grading: A name of a boolean object in GeoGebra which is true if the student solved the question (partly). Sums up all grades for all boolean variables. The question is correct if any combination exceeds 100%, but there should be at least one combination which sums up to exactly 100%. Leave blank for manual grading.';
 $string['constraints'] = 'Podmínky (omezení)';
