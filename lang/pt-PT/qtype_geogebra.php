@@ -13,7 +13,7 @@ $string['pluginname'] = 'GeoGebra';
 $string['pluginname_link'] = 'question/type/geogebra';$string['addconstraints'] = 'Adicione restrições (condições) para as variáveis.';
 $string['addmorevarblanks'] = 'Espaços em branco para {no} mais variável(eis)';
 $string['answerinvalid'] = 'A seqüência de resposta na resposta é inválida. Isto não deveria acontecer.';
-$string['answermissing'] = 'A resposta na questão está falta. Provavelmente JavaScript não está ativado no navegador ou ocorreu um erro desconhecido';
+$string['answermissing'] = 'A resposta na questão está em falta. Provavelmente JavaScript não está ativado no navegador ou ocorreu um erro desconhecido';
 $string['answervar'] = 'Variáveis de classificação automática';
 $string['answervar_help'] = 'Para  classificação automática: um nome de um objeto booleano no GeoGebra que é "true" se o aluno resolveu a questão (em parte). Resume todas as notas para todas as variáveis booleanas. A questão é correta se qualquer combinação excede 100, mas deve haver pelo menos uma combinação que resume até exatamente 100. Deixe em branco para a classificação manual.';
 $string['applet_advanced_settings'] = 'Configurações avançadas...';
