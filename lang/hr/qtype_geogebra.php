@@ -20,7 +20,7 @@ $string['applet_advanced_settings'] = 'Advanced Settings...';
 $string['constraints'] = 'Ograničenja (uvjeti)';
 $string['constraints_help'] = 'Imaju li varijale bilo kakva ograničenja, recimo a < b, koja se  ne mogu zadati u postavkama klizača? Razdvojite zarezom. Podržani su: <, <=, >, >=. Trebate li jednakost, morate koristiti istu varijablu kod izrade GeoGebra uratka. Dinamički rasponi, tj. upotreba varijabli za  min/max kod klizača nisu podržani.';
 $string['constraintswrongortoohard'] = '{$a->inequalities} je neispravno ili je teško pronaći, pokušali smo (bez rezultata ) {$a->tries} puta u {$a->time} sekundi. Možda ćemo ubuduće koristiti uspješniju metodu...';
-$string['dragndrop'] = 'Drag and drop a GeoGebra file anywhere on the GeoGebra Applet section';
+$string['dragndrop'] = 'Povucite i pustite GeoGebra datoteku bilo gdje na području GeoGebra apleta';
 $string['enable_label_drags'] = 'Enable Dragging of Labels';
 $string['enable_right_click'] = 'Enable Right Click, Zooming and Keyboard Editing';
 $string['enable_shift_drag_zoom'] = 'Enable Shift-Drag & Zoom';
