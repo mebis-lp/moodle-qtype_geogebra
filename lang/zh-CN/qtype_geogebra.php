@@ -21,7 +21,7 @@ $string['constraints'] = '限制(条件)';
 $string['constraints_help'] = '如同不能在滑动条选项中作标识的 a < b 的变量, 对它们有限制吗? 以逗号分隔. 支持的关系有: <, <=, >, >=. 如需要等式, 你就不得不在创建 GeoGebra 课件时使用同一变量. 运用变量作为滑动条的最小值/最大值的动态区间是得不到支持的.';
 $string['constraintswrongortoohard'] = '{$a->inequalities} 是错误的或难以满足的, 在 {$a->time} 秒内我们(强力)尝试了 {$a->tries} 次. 也许我们将来会用更好的方法…';
 $string['dragndrop'] = '在 GeoGebra 小程序部分拖放 GeoGebra 文件';
-$string['enable_label_drags'] = '启用拖动标签';
+$string['enable_label_drags'] = '启用标签拖动';
 $string['enable_right_click'] = '启用右击和键盘编辑';
 $string['enable_shift_drag_zoom'] = '启用上档键-拖动及缩放';
 $string['feedback'] = '变量为真时反馈';
@@ -41,7 +41,7 @@ $string['loadapplet_help'] = '从 GeoGebra(重新)载入小程序并将 GeoGebra
 $string['mineqmax'] = '对于随机化的最小值和最大值为变量 {$a} 指定得不正确, 你或者还没有指定滑动条的最小值和最大值或者该元素根本就不是滑动条. 你可能不得不在 GeoGebra 文件中纠正它.';
 $string['minplusstepgtmax'] = '变量 {$a} 的最小值加上增量大于最大值, 你可能不得不在 GeoGebra 文件中纠正它.';
 $string['noappletloaded'] = '无小程序载入! 检查一下网址是否正确, 并确定选择一个链接或者(重新)载入小程序后是否能看见它';
-$string['nofractionsumeq1'] = '至少成绩的一个组合总和必须为 100%';
+$string['nofractionsumeq1'] = '至少成绩的一个组合总和必须达到 100%';
 $string['pluginname_help'] = '学生能用 GeoGebra 解决的问题';
 $string['pluginnameadding'] = '添加 GeoGebra 问题';
 $string['pluginnameediting'] = '编辑 GeoGebra 问题';
