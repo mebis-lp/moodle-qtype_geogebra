@@ -16,7 +16,7 @@ $string['answerinvalid'] = 'La cadena de caracters de la resposta no és vàlida
 $string['answermissing'] = 'No hi ha resultats. Probablement el JavaScript no se està activat en el vostre navegador (o ha succeït algun altre error desconegut).';
 $string['answervar'] = 'Variables per a la qualificació automàtica';
 $string['answervar_help'] = 'For automatic grading: A name of a boolean object in GeoGebra which is true if the student solved the question (partly). Sums up all grades for all boolean variables. The question is correct if any combination exceeds 100%, but there should be at least one combination which sums up to exactly 100%. Leave blank for manual grading.';
-$string['applet_advanced_settings'] = 'Advanced Settings...';
+$string['applet_advanced_settings'] = 'Configuració avançada...';
 $string['constraints'] = 'Restriccions (condicions)';
 $string['constraints_help'] = 'Hi ha alguns lligams o restriccions per a les variables del tipus a<b, que no es poden definir en el punt lliscant? Separeu-los per comes.\nLes relacions vàlides són: <, <=, >, >=. Si us cal una igualtat heu d\'utilitzar la mateixa variable en crear el nou full d\'activitats de GeoGebra. No es poden utilitzar rangs dinàmics, és a dir, utilitzar variables per als valors mínim i màxims d\'un punt lliscant.';
 $string['constraintswrongortoohard'] = '{$a->inequalities} are wrong or too hard to meet, we tried (brute force) {$a->tries} times in {$a->time} seconds. Maybe we\'ll use a better method in the future...';
