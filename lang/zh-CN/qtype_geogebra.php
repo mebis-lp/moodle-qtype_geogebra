@@ -19,7 +19,7 @@ $string['answervar_help'] = '对自动评分: 如果学生解决了问题(部分
 $string['applet_advanced_settings'] = '高级设置...';
 $string['constraints'] = '限制(条件)';
 $string['constraints_help'] = '如同不能在滑动条选项中作标识的 a < b 的变量, 对它们有限制吗? 以逗号分隔. 支持的关系有: <, <=, >, >=. 如需要等式, 你就不得不在创建 GeoGebra 课件时使用同一变量. 运用变量作为滑动条的最小值/最大值的动态区间是得不到支持的.';
-$string['constraintswrongortoohard'] = '{$a->inequalities} 是错误的或难以满足的, 在 {$a->time} 秒内我们(强力)尝试了 {$a->tries} 次. 也许我们将来会用更好的方法…';
+$string['constraintswrongortoohard'] = '{$a->inequalities} 是错误的或难以满足的, 在 {$a->time} 秒内我们(强力)尝试了 {$a->tries} 次. 也许我们将来会用更好的方法...';
 $string['dragndrop'] = '在 GeoGebra 小程序部分拖放 GeoGebra 文件';
 $string['enable_label_drags'] = '启用标签拖动';
 $string['enable_right_click'] = '启用右击和键盘编辑';
@@ -59,4 +59,4 @@ $string['valuecheckedfor'] = 'GeoGebra 中用于检查正确性的布尔对象';
 $string['variablenamewrong'] = '在 GeoGebra 文件中无法找到以此命名的变量.';
 $string['variableno'] = '变量 {$a}';
 $string['variables'] = '变量';
-$string['willbereadfromfile'] = '将从 GeoGebra 读取…(见帮助按钮)';
+$string['willbereadfromfile'] = '将从 GeoGebra 读取...(见帮助按钮)';
