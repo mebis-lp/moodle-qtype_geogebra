@@ -29,7 +29,7 @@ class qtype_geogebra_edit_form extends question_edit_form {
 
     public $ggbturl;
 
-    public $deployscript = '<script type="text/javascript" src="https://tube.geogebra.org/scripts/deployggb.js"></script>';
+    public $deployscript = '<script type="text/javascript" src="https://www.geogebra.org/scripts/deployggb.js"></script>';
 
     public $ggbparameters;
 
