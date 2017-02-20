@@ -35,7 +35,9 @@ M.form_ggbt.init = function (Y, options) {
         e.preventDefault();
         var id = Y.one('#id_ggbturl').get('value').split("/").pop();
         if (id.indexOf("m") == 0) {
-            id = id.substr(1);
+            if (isNumber(id.substr(1)) || (!isNumber(id.substr(1)) && id.length > 8)) {
+                id = id.substr(1);
+            }
         }
         M.form_ggbt.injectapplet(id);
     }, '#id_loadapplet');
@@ -83,7 +85,9 @@ M.form_ggbt.callback = function (params) {
     // inject applet to div layer
     var id = (params.file).split(".")[0];
     if (id.indexOf("m") == 0) {
-        id = id.substr(1);
+        if (isNumber(id.substr(1)) || (!isNumber(id.substr(1)) && id.length > 8)) {
+            id = id.substr(1);
+        }
     }
     M.form_ggbt.injectapplet(id);
 };
@@ -319,4 +323,8 @@ function handleDrop(e) {
 
         reader.readAsDataURL(file);
     }
+}
+
+function isNumber(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
 }
