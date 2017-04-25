@@ -21,7 +21,7 @@ $string['constraints'] = 'Constraints (conditions)';
 $string['constraints_help'] = 'Y a t\'il une contrainte sur les variables, par ex. a < b, ne pouvant être précisée dans les options du curseur ? Virgule comme séparateur. Relations supportées : <, <=, >, >=. Pour une égalité vous devez utiliser la même variable qu\'à la création de la feuille de travail. Intervalles dynamiques, via variables pour min/max de curseurs ne sont pas autorisés.';
 $string['constraintswrongortoohard'] = '{$a->inequalities} are wrong or too hard to meet, we tried (brute force) {$a->tries} times in {$a->time} seconds. Maybe we\'ll use a better method in the future...';
 $string['dragndrop'] = 'Drag and drop a GeoGebra file anywhere on the GeoGebra Applet section';
-$string['enable_label_drags'] = 'Enable Dragging of Labels';
+$string['enable_label_drags'] = 'Autoriser le déplacement des étiquettes';
 $string['enable_right_click'] = 'Enable Right Click and Keyboard Editing';
 $string['enable_shift_drag_zoom'] = 'Enable Shift-Drag & Zoom';
 $string['feedback'] = 'Appréciation si la variable est "true"';
