@@ -102,6 +102,7 @@ M.form_ggbt.injectapplet = function (id) {
     document.getElementById('applet_container1').style.display = "block";
 
     applet1 = new GGBApplet(parameters, true);
+    applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
 
     applet1.inject("applet_container1", "preferHTML5");
 
@@ -235,6 +236,7 @@ function handlesettingschanged(evt) {
     Y.one('input[name="ggbparameters"]').set('value', JSON.stringify(parameters));
     if (evt.target.id == "showToolBar" || evt.target.id == "showMenuBar" || evt.target.id == "showAlgebraInput") {
         applet1 = new GGBApplet(parameters, true);
+        applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
         applet1.inject("applet_container1", "preferHTML5");
     } else {
         ggbApplet[evt.target.id](evt.target.checked);
@@ -318,6 +320,7 @@ function handleDrop(e) {
             parameters.showToolBar = show_tool_bar.checked;
             parameters.moodle = "editingQuestionOrSubmission";
             applet1 = new GGBApplet(parameters, true);
+            applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
             applet1.inject("applet_container1", "preferHTML5");
         };
 
