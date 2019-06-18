@@ -30,7 +30,7 @@ class qtype_geogebra_renderer extends qtype_renderer {
      */
     public function formulation_and_controls(question_attempt $qa, question_display_options $options) {
         global $PAGE, $CFG;
-        $PAGE->requires->js(new moodle_url('https://www.geogebra.org/scripts/deployggb.js'));
+        $PAGE->requires->js(new moodle_url('https://cdn.geogebra.org/apps/deployggb.js'));
 
         $result = '';
 
