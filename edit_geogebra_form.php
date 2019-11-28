@@ -29,7 +29,7 @@ class qtype_geogebra_edit_form extends question_edit_form {
 
     public $ggbturl;
 
-    public $deployscript = '<script type="text/javascript" src="https://www.geogebra.org/scripts/deployggb.js"></script>';
+//    public $deployscript = '<script type="text/javascript" src="https://www.geogebra.org/scripts/deployggb.js"></script>';
 
     public $ggbparameters;
 
@@ -228,10 +228,11 @@ class qtype_geogebra_edit_form extends question_edit_form {
         // Print out file picker.
         $str = $OUTPUT->render($fp);
 
-        $module = array('name'     => 'form_ggbt',
-                        'fullpath' => new moodle_url($CFG->wwwroot . '/question/type/geogebra/ggbt.js'),
-                        'requires' => array('core_filepicker'));
-        $PAGE->requires->js_init_call('M.form_ggbt.init', array($options), true, $module);
+        //$module = array('name'     => 'form_ggbt',
+         //               'fullpath' => new moodle_url($CFG->wwwroot . '/question/type/geogebra/ggbt.js'),
+         //               'requires' => array('core_filepicker'));
+        //$PAGE->requires->js_init_call('M.form_ggbt.init', array($options), true, $module);
+
 
         return $str;
     }
@@ -470,6 +471,7 @@ class qtype_geogebra_edit_form extends question_edit_form {
      * @throws coding_exception
      */
     private function add_applet_elements($mform) {
+        global $PAGE;
         /* Button to (Re)load Applet from GeoGebraTube */
         $loadappletgroup = array();
         $loadappletgroup[] =& $mform->createElement('button', 'loadapplet', get_string('loadapplet', 'qtype_geogebra'));
@@ -479,25 +481,51 @@ class qtype_geogebra_edit_form extends question_edit_form {
         $mform->addHelpButton('loadappletgroup', 'loadapplet', 'qtype_geogebra');
         $mform->disabledIf('loadappletgroup', 'usefile', 'checked');
 
-        $mform->addElement('html', $this->deployscript);
+        //$mform->addElement('html', $this->deployscript);
 
-        $mform->addElement('html', '<div class="fitem"><div id="applet_container1" class="felement"></div></div>');
+        $mform->addElement('html', '<div class="form-group row  fitem" id="applet_container1_fitem"><div class="col-md-3">'. get_string('geogebraapplet', 'qtype_geogebra').'</div><div id="applet_container1" class="felement"></div></div>');
+
+        $lang = current_language();
+
 
         if (!empty($this->ggbparameters) && !empty($this->ggbviews) && !empty($this->ggbcodebaseversion)) {
-            $lang = current_language();
+//            $options = array('parameters'          => $this->ggbparameters,
+//                'views'               => $this->ggbviews,
+//                'codebase'            => $this->ggbcodebaseversion,
+//                'html5NoWebSimple'    => true,
+//                //'div'                 => $ggbdivname,
+//                //'vars'                => $question->currentvals,
+//                //'b64input'            => $b64inputname,
+//                //'xmlinput'            => $xmlinputname,
+//                //'answerinput'         => $answerinputname,
+//                //'exerciseresultinput' => $exerciseinputname,
+//                //'responsevars'        => $responsevars,
+//                //'slot'                => $qa->get_slot(),
+//                'lang'                => current_language()
+//            );
+//<script type="text/javascript">
+//    var parameters = $this->ggbparameters;
+//    parameters.language = "$lang";
+//    parameters.useBrowserForJS = false;
+//    delete parameters.material_id;
+//    parameters.moodle = "editingQuestion";
+//    var views = $this->ggbviews;
+//    var applet1 = new GGBApplet(parameters, views, true);
+//</script>
             $applet = <<<EOD
-<script type="text/javascript">
-    var parameters = $this->ggbparameters;
-    parameters.language = "$lang";
-    parameters.useBrowserForJS = false;
-    delete parameters.material_id;
-    parameters.moodle = "editingQuestion";
-    var views = $this->ggbviews;
-    var applet1 = new GGBApplet(parameters, views, true);
-</script>
+<article id="applet_parameters"
+  data-parameters=$this->ggbparameters 
+  data-views=$this->ggbviews
+  data-codebase=$this->ggbcodebaseversion
+  data-lang=$lang
+  data-html5NoWebSimple="true">
+</article>
+  
 EOD;
-            $mform->addElement('html', $applet);
+               $mform->addElement('html', $applet);
+
         }
+        $PAGE->requires->js_call_amd('qtype_geogebra/ggbt', 'init');
     }
 
     private function add_applet_options($mform) {
@@ -512,8 +540,10 @@ EOD;
         $show_tool_bar = get_string('show_tool_bar', 'qtype_geogebra');
 
         $options = <<<HTML
-<div id='applet_options' class="fitem" >
-    <div class="fitemtitle"><label for="applet_options">$applet_advanced_settings</label></div>
+<div id='applet_options' class="form-group row  fitem"><div class="col-md-3">
+<div class="fitemtitle"><label for="applet_options">$applet_advanced_settings</label></div>
+</div>
+<div  class="fitem col-md-9 felement" >
     <fieldset class="felement fgroup">
         <input type="checkbox" id="enableRightClick" name="enableRightClick" value="1">
         <label for="enableRightClick">$enable_right_click</label><br>
@@ -530,6 +560,7 @@ EOD;
         <input type="checkbox" id="showAlgebraInput" name="showAlgebraInput" value="1">
         <label for="showAlgebraInput">$show_algebra_input</label><br>
     </fieldset>
+</div>
 </div>
 HTML;
 
@@ -549,23 +580,23 @@ HTML;
                  */
         $ggbturlinput = array();
         $clientid = uniqid();
-        $fp = $this->initggtfilpicker($clientid, 'ggbturl');
-        $ggbtrepo = repository::get_type_by_typename('geogebratube');
-        if ($ggbtrepo) {
-
-            $ggbturlinput[] =& $mform->createElement('html', $fp);
-            $ggbturlinput[] =& $mform->createElement('button', 'filepicker-button-' . $clientid, get_string('choosealink',
-                    'repository'));
-        }
+        //$fp = $this->initggtfilpicker($clientid, 'ggbturl');
+        //$ggbtrepo = repository::get_type_by_typename('geogebratube');
+//        if ($ggbtrepo) {
+//
+//            $ggbturlinput[] =& $mform->createElement('html', $fp);
+//            $ggbturlinput[] =& $mform->createElement('button', 'filepicker-button-' . $clientid, get_string('choosealink',
+//                    'repository'));
+//        }
         $ggbturlinput[] =& $mform->createElement('text', 'ggbturl', '', array('size' => '20'));
         $mform->setType('ggbturl', PARAM_RAW_TRIMMED);
         $mform->addGroup($ggbturlinput, 'ggbturlinput', get_string('ggbturl', 'qtype_geogebra'), array(' '), false);
 
         $mform->addHelpButton('ggbturlinput', 'ggbturl', 'qtype_geogebra');
-        if ($ggbtrepo) {
-
-            $mform->disabledIf('filepicker-button-' . $clientid, 'usefile', 'checked');
-        }
+//        if ($ggbtrepo) {
+//
+//            $mform->disabledIf('filepicker-button-' . $clientid, 'usefile', 'checked');
+//        }
         $mform->addElement('checkbox', 'usefile', get_string('useafile', 'qtype_geogebra'), get_string('dragndrop', 'qtype_geogebra'));
         if (!empty($this->ggbparameters) && empty($this->ggbturl)) {
             $mform->setDefault('usefile', true);

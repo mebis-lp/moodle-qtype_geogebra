@@ -14,7 +14,8 @@ defined('MOODLE_INTERNAL') || die ();
 /**
  * Generates the output for geogebra questions.
  */
-class qtype_geogebra_renderer extends qtype_renderer {
+class qtype_geogebra_renderer extends qtype_renderer
+{
 
     /**
      * Generate the display of the formulation part of the question. This is the
@@ -24,13 +25,14 @@ class qtype_geogebra_renderer extends qtype_renderer {
      * We store base64 string and the answer string (in the form of zeros and ones) in a hidden field and load the applet and
      * some javascript used to update the hidden fields.
      *
-     * @param question_attempt         $qa      the question attempt to display.
+     * @param question_attempt $qa the question attempt to display.
      * @param question_display_options $options controls what should and should not be displayed.
      * @return string HTML fragment.
      */
-    public function formulation_and_controls(question_attempt $qa, question_display_options $options) {
+    public function formulation_and_controls(question_attempt $qa, question_display_options $options)
+    {
         global $PAGE, $CFG;
-        $PAGE->requires->js(new moodle_url('https://cdn.geogebra.org/apps/deployggb.js'));
+        //$PAGE->requires->js(new moodle_url('https://cdn.geogebra.org/apps/deployggb.js'));
 
         $result = '';
 
@@ -41,11 +43,11 @@ class qtype_geogebra_renderer extends qtype_renderer {
         $b64inputname = $qa->get_qt_field_name('ggbbase64');
 
         $b64inputattributes = array(
-                'type'  => 'hidden',
-                'name'  => $b64inputname,
-                'value' => $b64current,
-                'id'    => $b64inputname,
-                'size'  => 80,
+            'type' => 'hidden',
+            'name' => $b64inputname,
+            'value' => $b64current,
+            'id' => $b64inputname,
+            'size' => 80,
         );
 
         $result .= html_writer::empty_tag('input', $b64inputattributes);
@@ -54,11 +56,11 @@ class qtype_geogebra_renderer extends qtype_renderer {
         $xmlinputname = $qa->get_qt_field_name('ggbxml');
 
         $xmlinputattributes = array(
-                'type'  => 'hidden',
-                'name'  => $xmlinputname,
-                'value' => $xmlcurrent,
-                'id'    => $xmlinputname,
-                'size'  => 80,
+            'type' => 'hidden',
+            'name' => $xmlinputname,
+            'value' => $xmlcurrent,
+            'id' => $xmlinputname,
+            'size' => 80,
         );
 
         $result .= html_writer::empty_tag('input', $xmlinputattributes);
@@ -67,11 +69,11 @@ class qtype_geogebra_renderer extends qtype_renderer {
         $answerinputname = $qa->get_qt_field_name('answer');
 
         $answerinputattributes = array(
-                'type'  => 'hidden',
-                'name'  => $answerinputname,
-                'value' => $answercurrent,
-                'id'    => $answerinputname,
-                'size'  => 80,
+            'type' => 'hidden',
+            'name' => $answerinputname,
+            'value' => $answercurrent,
+            'id' => $answerinputname,
+            'size' => 80,
         );
 
         $result .= html_writer::empty_tag('input', $answerinputattributes);
@@ -80,11 +82,11 @@ class qtype_geogebra_renderer extends qtype_renderer {
         $exerciseinputname = $qa->get_qt_field_name('exerciseresult');
 
         $exerciseinputattributes = array(
-                'type'  => 'hidden',
-                'name'  => $exerciseinputname,
-                'value' => $exercisecurrent,
-                'id'    => $exerciseinputname,
-                'size'  => 80,
+            'type' => 'hidden',
+            'name' => $exerciseinputname,
+            'value' => $exercisecurrent,
+            'id' => $exerciseinputname,
+            'size' => 80,
         );
 
         $result .= html_writer::empty_tag('input', $exerciseinputattributes);
@@ -102,33 +104,54 @@ class qtype_geogebra_renderer extends qtype_renderer {
             }
         }
 
-        $options = array('parameters'          => $question->ggbparameters,
-                         'views'               => $question->ggbviews,
-                         'codebase'            => $question->ggbcodebaseversion,
-                         'html5NoWebSimple'    => true,
-                         'div'                 => $ggbdivname,
-                         'vars'                => $question->currentvals,
-                         'b64input'            => $b64inputname,
-                         'xmlinput'            => $xmlinputname,
-                         'answerinput'         => $answerinputname,
-                         'exerciseresultinput' => $exerciseinputname,
-                         'responsevars'        => $responsevars,
-                         'slot'                => $qa->get_slot(),
-                         'lang'                => current_language()
+        $options = array('parameters' => $question->ggbparameters,
+            'views' => $question->ggbviews,
+            'codebase' => $question->ggbcodebaseversion,
+            'html5NoWebSimple' => true,
+            'div' => $ggbdivname,
+            'vars' => $question->currentvals,
+            'b64input' => $b64inputname,
+            'xmlinput' => $xmlinputname,
+            'answerinput' => $answerinputname,
+            'exerciseresultinput' => $exerciseinputname,
+            'responsevars' => $responsevars,
+            'slot' => $qa->get_slot(),
+            'lang' => current_language()
         );
+        $lang = current_language();
+        $currentvals = json_encode($question->currentvals);
+        $responsevarsJSON = json_encode($responsevars);
+        $slot = $qa->get_slot();
+        $appletParametersId = $qa->get_qt_field_name('applet_parameters');
+        $applet = <<<EOD
+<article id=$appletParametersId
+  data-parameters=$question->ggbparameters
+  data-views=$question->ggbviews
+  data-codebase=$question->ggbcodebaseversion
+  data-html5NoWebSimple=true
+  data-div=$ggbdivname
+  data-vars=$currentvals
+  data-b64input=$b64inputname
+  data-xmlinput=$xmlinputname
+  data-answerinput=$answerinputname
+  data-exerciseresultinput=$exerciseinputname
+  data-responsevars=$responsevarsJSON
+  data-slot=$slot
+  data-lang=$lang>
+</article>
 
-        // Loading the js in fullpath works on local test but not on server???
-        $module = array('name'     => 'form_ggbq',
-                        'fullpath' => new moodle_url($CFG->wwwroot . '/question/type/geogebra/ggbq.js'));
-        $PAGE->requires->js_init_call('M.form_ggbq.init', array($options), true, $module);
+EOD;
+        $result .= $applet;
+        $PAGE->requires->js_call_amd('qtype_geogebra/ggbq', 'init', array($appletParametersId));//, array($options));
+        //$PAGE->requires->js_call_amd('qtype_geogebra/ggbq', 'init', array($options));
 
         if ($qa->get_state() == question_state::$invalid) {
             $result .= html_writer::nonempty_tag('div',
-                    $question->get_validation_error(array('answer'         => $answercurrent,
-                                                          'ggbxml'         => $xmlcurrent,
-                                                          'ggbbase64'      => $b64current,
-                                                          'exerciseresult' => $exercisecurrent)),
-                    array('class' => 'validationerror'));
+                $question->get_validation_error(array('answer' => $answercurrent,
+                    'ggbxml' => $xmlcurrent,
+                    'ggbbase64' => $b64current,
+                    'exerciseresult' => $exercisecurrent)),
+                array('class' => 'validationerror'));
         }
 
         return $result;
@@ -143,7 +166,8 @@ class qtype_geogebra_renderer extends qtype_renderer {
      * @param question_attempt $qa the question attempt to display.
      * @return string HTML fragment.
      */
-    public function specific_feedback(question_attempt $qa) {
+    public function specific_feedback(question_attempt $qa)
+    {
         /* @var $question qtype_geogebra_question */
         $question = $qa->get_question();
         $feedback = '';
@@ -160,7 +184,7 @@ class qtype_geogebra_renderer extends qtype_renderer {
                                 $feedback .= "<br>";
                             };
                             $feedback .= $question->format_text($assignment->hint, FORMAT_HTML,
-                                    $qa, 'question', 'answerfeedback', $itemid++);
+                                $qa, 'question', 'answerfeedback', $itemid++);
                         }
                     }
                 }
@@ -171,7 +195,7 @@ class qtype_geogebra_renderer extends qtype_renderer {
                                 $feedback .= "<br>";
                             };
                             $feedback .= $question->format_text($assignment->hint, FORMAT_HTML,
-                                    $qa, 'question', 'answerfeedback', $itemid++);
+                                $qa, 'question', 'answerfeedback', $itemid++);
                         }
                     }
                 }
@@ -181,7 +205,7 @@ class qtype_geogebra_renderer extends qtype_renderer {
                 foreach ($question->answers as $answer) {
                     if ((bool)substr($response, $i, 1)) {
                         $feedback .= $question->format_text($answer->feedback, $answer->feedbackformat,
-                                $qa, 'question', 'answerfeedback', $answer->id);
+                            $qa, 'question', 'answerfeedback', $answer->id);
                     }
                     $i++;
                 }

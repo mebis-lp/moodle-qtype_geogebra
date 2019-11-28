@@ -24,7 +24,7 @@ M.form_ggbq.init = function (Y, options) {
     ggbxml[id] = xmlinput[id].get('value');
     qdiv[id] = Y.one("#q" + (options.slot) + " .qtext");
 
-    parameters = JSON.parse(options.parameters);
+    var parameters = JSON.parse(options.parameters);
     if (ggbBase64[id] != '') {
         parameters.ggbBase64 = ggbBase64[id];
     }
@@ -34,15 +34,16 @@ M.form_ggbq.init = function (Y, options) {
 
     parameters.id = 'ggbApplet' + id;
 
-    views = JSON.parse(options.views);
+    var views = JSON.parse(options.views);
 
-    applet1 = new GGBApplet(parameters, views, options.html5NoWebSimple);
-    applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
+    var applet1 = new GGBApplet(parameters, views, options.html5NoWebSimple);
+    applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.410.0/web3d");
     applet1.inject(options.div, "preferHTML5");
 
     Y.on('submit', M.form_ggbq.getBase64andCheck, '#responseform');
 
-    Y.on('mouseleave', M.form_ggbq.getBase64andCheck, document.getElementById(options.div)); //YUI doesn't handle the colon in the id)
+    // YUI doesn't handle the colon in the id)
+    Y.on('mouseleave', M.form_ggbq.getBase64andCheck, document.getElementById(options.div));
 
     currentvals[id] = options.vars;
 
