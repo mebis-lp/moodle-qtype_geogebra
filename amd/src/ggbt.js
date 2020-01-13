@@ -130,10 +130,10 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function($, GGBApplet
 
             document.getElementById('applet_container1').style.display = "block";
 
-            this.applet1 = new GGBApplet(this.parameters, true);
-            this.applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
+            window.applet1 = new GGBApplet(this.parameters, true);
+            window.applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
 
-            this.applet1.inject("applet_container1", "preferHTML5");
+            window.applet1.inject("applet_container1", "preferHTML5");
 
         },
 
