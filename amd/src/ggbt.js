@@ -259,7 +259,7 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function($, GGBApplet
 
         handleDragEnter: function() {
             if (typeof (ggbcheckb) == "undefined" || window.GGBT.ggbcheckb.checked) {
-                window.GGBT.ggbf.classList.add('hover');
+                window.GGBT.ggbf.classList.add('qtype-geogebra-hover');
                 document.getElementById('applet_container1').style.visibility = "hidden";
             }
         },
@@ -269,7 +269,7 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function($, GGBApplet
                 if (e.preventDefault) {
                     e.preventDefault();
                 }
-                window.GGBT.ggbf.classList.add('hover');
+                window.GGBT.ggbf.classList.add('qtype-geogebra-hover');
                 document.getElementById('applet_container1').style.visibility = "hidden";
                 return false;
             }
@@ -277,7 +277,7 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function($, GGBApplet
 
         handleDragEndLeave: function() {
             if (typeof (window.GGBT.ggbcheckb) == "undefined" || window.GGBT.ggbcheckb.checked) {
-                window.GGBT.ggbf.classList.remove('hover');
+                window.GGBT.ggbf.classList.remove('qtype-geogebra-hover');
                 document.getElementById('applet_container1').style.removeProperty("visibility");
             }
         },
@@ -287,7 +287,7 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function($, GGBApplet
                 e.preventDefault();
                 e.stopPropagation();
                 var file = e.dataTransfer.files[0];
-                window.GGBT.ggbf.classList.remove('hover');
+                window.GGBT.ggbf.classList.remove('qtype-geogebra-hover');
                 document.getElementById('applet_container1').style.removeProperty("visibility");
                 document.getElementById('applet_container1').style.display = "block";
                 document.getElementById('applet_options').style.display = "flex";
