@@ -1,12 +1,12 @@
-# GeoGebra question type for Moodle 2.7+
+# GeoGebra question type for Moodle 3.5-3.6
 
 ## Introduction
 The GeoGebra question type plugin allows teachers to set up questions which can be solved and automatically checked using GeoGebra.
 
 ## Requirements
-Moodle 2.7 or above
-JavaScript enabled in your browser
-Modern browser
+- Moodle 3.5 or above
+- JavaScript enabled in your browser
+- Modern browser
 
 ## Installation
 - Place the "geogebra" directory within `your_moodle_install/question/type/`
