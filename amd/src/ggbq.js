@@ -91,6 +91,7 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function($, GGBApplet
             $('#responseform').on('submit', this.getBase64andCheck);
 
             $(document.getElementById(ggbDataset.div)).on('mouseleave', this.getBase64andCheck);
+            document.getElementsByClassName("ggb_preview")[0].style.zIndex = -1;
 
             this.currentvals[slot] = ggbDataset.vars;
             this.answerinput[slot] = $(document.getElementById(ggbDataset.answerinput));
