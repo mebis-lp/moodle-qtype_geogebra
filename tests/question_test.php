@@ -23,7 +23,7 @@ require_once($CFG->dirroot . '/question/type/geogebra/tests/fixtures/ggbstringsf
  * @copyright  (c) International GeoGebra Institute 2014
  * @license        http://www.geogebra.org/license
  */
-class qtype_geogebra_question_test extends advanced_testcase {
+class question_test extends advanced_testcase {
 
     public function test_is_complete_response() {
         /* @var $question qtype_geogebra_question */

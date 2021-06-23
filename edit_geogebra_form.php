@@ -87,7 +87,7 @@ class qtype_geogebra_edit_form extends question_edit_form {
         $answeroptions[] = $mform->createElement('text', 'answer',
                 $label, array('size' => 40));
         $answeroptions[] = $mform->createElement('select', 'fraction',
-                get_string('grade'), $gradeoptions);
+                get_string('grade', 'grades'), $gradeoptions);
         $repeated[0] = $mform->createElement('group', 'answeroptions',
                 $label, $answeroptions, null, false);
         $repeated[1] = $mform->createElement('hidden', 'feedback');
@@ -177,7 +177,7 @@ class qtype_geogebra_edit_form extends question_edit_form {
 
         $this->check_is_applet_present($data, $errors);
 
-        if (!$data['isexercise']) {
+        if (empty($data['isexercise'])) {
 
             $this->check_randomized_vars($data, $errors);
 
@@ -356,7 +356,7 @@ class qtype_geogebra_edit_form extends question_edit_form {
             $xml = simplexml_load_string($data['ggbxml']);
             foreach ($data['answer'] as $label) {
                 if (!empty($label)) {
-                    if ($data['isexercise']) {
+                    if (!empty($data['isexercise'])) {
                         $errors['isexercise'] = get_string('noanswersorrandomizationallowed', 'qtype_geogebra');
                     } else {
                         $varok = false;

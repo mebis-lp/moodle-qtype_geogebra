@@ -24,7 +24,7 @@ require_once($CFG->dirroot . '/question/type/geogebra/edit_geogebra_form.php');
  * @copyright  (c) International GeoGebra Institute 2014
  * @license        http://www.geogebra.org/license
  */
-class qtype_geogebra_test extends advanced_testcase {
+class questiontype_test extends advanced_testcase {
     public static $includecoverage = array(
             'question/type/questiontypebase.php',
             'question/type/geogebra/questiontype.php'
@@ -33,11 +33,11 @@ class qtype_geogebra_test extends advanced_testcase {
     /** @var qtype_geogebra The questiontype object */
     protected $qtype;
 
-    protected function setUp() {
+    protected function setUp() :void {
         $this->qtype = new qtype_geogebra();
     }
 
-    protected function tearDown() {
+    protected function tearDown() :void {
         $this->qtype = null;
     }
 
@@ -123,13 +123,13 @@ class qtype_geogebra_test extends advanced_testcase {
 
         foreach ($questiondata as $property => $value) {
             if (!in_array($property, array('options'))) {
-                $this->assertAttributeEquals($value, $property, $actualquestiondata);
+                $this->assertEquals($value, $actualquestiondata->{$property});
             }
         }
 
         foreach ($questiondata->options as $optionname => $value) {
             if (!in_array($optionname, array('answers'))) {
-                $this->assertAttributeEquals($value, $optionname, $actualquestiondata->options);
+                $this->assertEquals($value, $actualquestiondata->options->{$optionname});
             }
         }
 
@@ -138,7 +138,7 @@ class qtype_geogebra_test extends advanced_testcase {
             foreach ($answer as $ansproperty => $ansvalue) {
                 // This question does not use 'answerformat', will ignore it.
                 if (!in_array($ansproperty, array('id', 'question', 'answerformat'))) {
-                    $this->assertAttributeEquals($ansvalue, $ansproperty, $actualanswer);
+                    $this->assertEquals($ansvalue, $actualanswer->{$ansproperty});
                 }
             }
         }
