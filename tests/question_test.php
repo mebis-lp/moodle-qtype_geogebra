@@ -72,38 +72,39 @@ class question_test extends advanced_testcase {
         $this->assertFalse($question->is_gradable_response(array()), "empty response mustn't result in complete response");
         $this->assertFalse($question->is_gradable_response(array('ggbbase64' => 0)));
         $this->assertFalse($question->is_gradable_response(array('ggbbase64' => '')),
-                "empty ggbBase64 shouldn't result in complete response");
+            "empty ggbBase64 shouldn't result in complete response");
         // This isn't a ggbBase64 string but it's ok for testing...
         $this->assertFalse($question->is_gradable_response(array('ggbbase64' => 'adf')),
-                "if the question is automatically graded a missing answer mustn't result in a complete response");
+
+        "if the question is automatically graded a missing answer mustn't result in a complete response");
         $this->assertTrue($question->is_gradable_response(array('ggbbase64' => 'adf',
-                                                                'ggbxml'    => ggbstringsfortesting::$pointxml,
-                                                                'answer'    => '0')));
+                                                            'ggbxml'    => ggbstringsfortesting::$pointxml,
+                                                            'answer'    => '0')));
         $this->assertTrue($question->is_gradable_response(array('ggbbase64' => 'adf',
-                                                                'ggbxml'    => ggbstringsfortesting::$pointxml,
-                                                                'answer'    => '01')));
+                                                            'ggbxml'    => ggbstringsfortesting::$pointxml,
+                                                            'answer'    => '01')));
         $this->assertFalse($question->is_gradable_response(array('answer' => 'test')),
-                "missing ggbBase64 mustn't result in complete response");
+            "missing ggbBase64 mustn't result in complete response");
 
         $question = test_question_maker::make_question('geogebra', 'manually');
 
         $this->assertFalse($question->is_gradable_response(array()), "empty response mustn't result in complete response");
         $this->assertFalse($question->is_gradable_response(array('ggbbase64' => 0)));
         $this->assertFalse($question->is_gradable_response(array('ggbbase64' => '')),
-                "empty ggbBase64 shouldn't result in complete response");
+            "empty ggbBase64 shouldn't result in complete response");
         // This question is manually graded so ggbbase64 is enough.
         $this->assertTrue($question->is_gradable_response(array('ggbbase64' => 'adf',
-                                                                'ggbxml'    => ggbstringsfortesting::$pointxml)),
-                "if the question is manually graded answer should be empty");
+                                                            'ggbxml'    => ggbstringsfortesting::$pointxml)),
+            "if the question is manually graded answer should be empty");
         // ... nevertheless we don't check if the question is manually graded.
         $this->assertTrue($question->is_gradable_response(array('ggbbase64' => 'adf',
-                                                                'ggbxml'    => ggbstringsfortesting::$pointxml,
-                                                                'answer'    => '0')));
+                                                            'ggbxml'    => ggbstringsfortesting::$pointxml,
+                                                            'answer'    => '0')));
         $this->assertTrue($question->is_gradable_response(array('ggbbase64' => 'adf',
-                                                                'ggbxml'    => ggbstringsfortesting::$pointxml,
-                                                                'answer'    => '01')));
+                                                            'ggbxml'    => ggbstringsfortesting::$pointxml,
+                                                            'answer'    => '01')));
         $this->assertFalse($question->is_gradable_response(array('answer' => 'test')),
-                "missing ggbBase64 mustn't result in complete response");
+            "missing ggbBase64 mustn't result in complete response");
     }
 
     public function test_grading() {

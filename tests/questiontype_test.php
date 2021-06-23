@@ -25,19 +25,20 @@ require_once($CFG->dirroot . '/question/type/geogebra/edit_geogebra_form.php');
  * @license        http://www.geogebra.org/license
  */
 class questiontype_test extends advanced_testcase {
+
     public static $includecoverage = array(
-            'question/type/questiontypebase.php',
-            'question/type/geogebra/questiontype.php'
+        'question/type/questiontypebase.php',
+        'question/type/geogebra/questiontype.php'
     );
 
     /** @var qtype_geogebra The questiontype object */
     protected $qtype;
 
-    protected function setUp() :void {
+    protected function setUp(): void {
         $this->qtype = new qtype_geogebra();
     }
 
-    protected function tearDown() :void {
+    protected function tearDown(): void {
         $this->qtype = null;
     }
 
@@ -49,18 +50,18 @@ class questiontype_test extends advanced_testcase {
         $q->id = 1;
         $q->options = new stdClass();
         $q->options->answers[13] = (object)array(
-                'id'             => 13,
-                'answer'         => 'e',
-                'fraction'       => 1,
-                'feedback'       => 'yes',
-                'feedbackformat' => FORMAT_MOODLE,
+            'id'             => 13,
+            'answer'         => 'e',
+            'fraction'       => 1,
+            'feedback'       => 'yes',
+            'feedbackformat' => FORMAT_MOODLE,
         );
         $q->options->answers[14] = (object)array(
-                'id'             => 14,
-                'answer'         => 'e1',
-                'fraction'       => 0.5,
-                'feedback'       => 'yes',
-                'feedbackformat' => FORMAT_MOODLE,
+            'id'             => 14,
+            'answer'         => 'e1',
+            'fraction'       => 0.5,
+            'feedback'       => 'yes',
+            'feedbackformat' => FORMAT_MOODLE,
         );
 
         return $q;
@@ -87,13 +88,13 @@ class questiontype_test extends advanced_testcase {
         $q = $this->get_test_question_data();
 
         $this->assertEquals(array(
-                $q->id => array(
-                        3    => new question_possible_response('e=true, e1=true', 1),
-                        2    => new question_possible_response('e=true, e1=false', 1),
-                        1    => new question_possible_response('e=false, e1=true', 0.5),
-                        0    => new question_possible_response('e=false, e1=false', 0),
-                        null => question_possible_response::no_response()
-                ),
+            $q->id => array(
+                3    => new question_possible_response('e=true, e1=true', 1),
+                2    => new question_possible_response('e=true, e1=false', 1),
+                1    => new question_possible_response('e=false, e1=true', 0.5),
+                0    => new question_possible_response('e=false, e1=false', 0),
+                null => question_possible_response::no_response()
+            ),
         ), $this->qtype->get_possible_responses($q));
     }
 
