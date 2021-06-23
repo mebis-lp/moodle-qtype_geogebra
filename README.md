@@ -1,4 +1,4 @@
-# GeoGebra question type for Moodle 3.5-3.6
+# GeoGebra question type for Moodle 3.5-3.11
 
 ## Introduction
 The GeoGebra question type plugin allows teachers to set up questions which can be solved and automatically checked using GeoGebra.
