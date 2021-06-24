@@ -8,7 +8,7 @@
  * @copyright  (c) International GeoGebra Institute 2018
  * @license        http://www.geogebra.org/license
  */
-define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function($, GGBApplet) {
+define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function ($, GGBApplet) {
     /**
      * Created by Christoph on 25.08.19.
      */
@@ -27,13 +27,13 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function($, GGBApplet
         ggbDataset: [],
         //applet1,
 
-        init: function(appletParametersID) {
+        init: function (appletParametersID) {
             window.GGBQ = this;
 
             var ggbDataset = document.getElementById(appletParametersID).dataset;
             var slot = ggbDataset.slot;
 
-            window.ggbAppletOnLoad = function(ggbAppletId) {
+            window.ggbAppletOnLoad = function (ggbAppletId) {
                 if (ggbAppletId != -1) {
                     document.querySelector('article').onkeydown = this.checkEnter;
                     var id = ggbAppletId.substring(9);
@@ -50,9 +50,9 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function($, GGBApplet
                     }
                     window.GGBQ.qdiv[id].style.visibility = 'visible';
 
-                   if (window.GGBQ.answerinput[id].val() == '') {
+                    if (window.GGBQ.answerinput[id].val() == '') {
                         var responsestring = '';
-                        window.GGBQ.responsevars[id].forEach(function(responsevar) {
+                        window.GGBQ.responsevars[id].forEach(function (responsevar) {
                             if (ggbApplet.isDefined(responsevar)) {
                                 responsestring += ggbApplet.getValue(responsevar);
                             } else {
@@ -76,6 +76,14 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function($, GGBApplet
             if (this.ggbBase64[slot] != '') {
                 parameters.ggbBase64 = this.ggbBase64[slot];
             }
+
+            // To adjust the width of the ggbApplet to the available area.
+            var aspectratio = parameters.height / parameters.width;
+            if (aspectratio > 0) {
+                parameters.width = $(".qtext").parent().width();
+                parameters.height = parameters.width * aspectratio;
+            }
+
             parameters.language = ggbDataset.lang;
             parameters.moodle = "takingQuiz";
             delete parameters.material_id;
