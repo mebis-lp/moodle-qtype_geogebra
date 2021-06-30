@@ -131,7 +131,7 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function($, GGBApplet
             document.getElementById('applet_container1').style.display = "block";
 
             window.applet1 = new GGBApplet(this.parameters, true);
-            window.applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
+            // window.applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
 
             window.applet1.inject("applet_container1", "preferHTML5");
 
@@ -228,7 +228,7 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function($, GGBApplet
             $('input[name="ggbparameters"]').val(JSON.stringify(window.GGBT.parameters));
             if (evt.target.id == "showToolBar" || evt.target.id == "showMenuBar" || evt.target.id == "showAlgebraInput") {
                 window.applet1 = new GGBApplet(window.GGBT.parameters, true);
-                window.applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
+                // window.applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
                 window.applet1.inject("applet_container1", "preferHTML5");
             } else {
                 window.ggbApplet[evt.target.id](evt.target.checked);
@@ -312,7 +312,7 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function($, GGBApplet
                     window.GGBT.parameters.showToolBar = window.GGBT.show_tool_bar.checked;
                     window.GGBT.parameters.moodle = "editingQuestionOrSubmission";
                     window.applet1 = new GGBApplet(window.GGBT.parameters, true);
-                    window.applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
+                    // window.applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
                     window.applet1.inject("applet_container1");
                 };
 

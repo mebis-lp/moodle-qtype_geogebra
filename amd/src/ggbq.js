@@ -93,7 +93,7 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function ($, GGBApple
             var views = JSON.parse(ggbDataset.views);
 
             var applet1 = new GGBApplet(parameters, views, ggbDataset.html5NoWebSimple);
-            applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
+            // applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
             applet1.inject(ggbDataset.div, "preferHTML5");
 
             $('#responseform').on('submit', this.getBase64andCheck);
