@@ -56,7 +56,7 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function($, GGBApplet
                 this.parameters = JSON.parse(this.ggbDataset.parameters);
                 this.views = this.ggbDataset.views;
                 window.applet1 = new GGBApplet(this.parameters, this.views, true);
-                window.applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.410.0/web3d");
+                // window.applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.410.0/web3d");
                 this.lang = this.ggbDataset.lang;
             }
 
