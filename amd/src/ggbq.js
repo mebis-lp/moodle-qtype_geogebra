@@ -84,6 +84,8 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function ($, GGBApple
                 parameters.height = parameters.width * aspectratio;
             }
 
+            // parameters.currentvals = JSON.parse(ggbDataset.vars);
+            this.ggbDatasetVars = JSON.parse(ggbDataset.vars);
             parameters.language = ggbDataset.lang;
             parameters.moodle = "takingQuiz";
             delete parameters.material_id;
@@ -93,7 +95,7 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function ($, GGBApple
             var views = JSON.parse(ggbDataset.views);
 
             var applet1 = new GGBApplet(parameters, views, ggbDataset.html5NoWebSimple);
-            applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
+            // applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
             applet1.inject(ggbDataset.div, "preferHTML5");
 
             $('#responseform').on('submit', this.getBase64andCheck);
@@ -118,6 +120,11 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function ($, GGBApple
                 if (typeof ggbApplet !== "undefined") {
                     window.GGBQ.b64input[i].val(ggbApplet.getBase64());
                     window.GGBQ.xmlinput[i].val(ggbApplet.getXML());
+
+                    // Workaround, to set all randomized variables.
+                    for (const [key, value] of Object.entries(window.GGBQ.ggbDatasetVars)) {
+                        ggbApplet.evalCommand(`${key}=${value}`);
+                    }
 
                     var responsestring = '';
                     for (var j = 0; j < window.GGBQ.responsevars[i].length; j++) {

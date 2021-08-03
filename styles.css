@@ -8,3 +8,8 @@ article * input {
     background: rgba(192,192,192,0.5);
     opacity: 0.4;
 }
+
+/* Geogebra ggb_preview overlay fix */
+.ggb_preview {
+    z-index: 0 !important;
+}
