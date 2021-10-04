@@ -38,8 +38,9 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function ($, GGBApple
                     document.querySelector('article').onkeydown = this.checkEnter;
                     var id = ggbAppletId.substring(9);
                     var ggbApplet = window[ggbAppletId];
-                    for (var label in window.GGBQ.currentvals[id]) {
-                        ggbApplet.setValue(label, window.GGBQ.currentvals[id][label]);
+                    var curvals = JSON.parse(window.GGBQ.currentvals[id]);
+                    for (var label in curvals) {
+                        ggbApplet.setValue(label, curvals[label]);
                     }
                     window.GGBQ.b64input[id].val(ggbApplet.getBase64());
                     window.GGBQ.xmlinput[id].val(ggbApplet.getXML());

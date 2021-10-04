@@ -142,8 +142,8 @@ class qtype_geogebra_renderer extends qtype_renderer
 
 EOD;
         $result .= $applet;
-        $PAGE->requires->js_call_amd('qtype_geogebra/ggbq', 'init', array($appletParametersId));//, array($options));
-        //$PAGE->requires->js_call_amd('qtype_geogebra/ggbq', 'init', array($options));
+        $this->page->requires->js_call_amd('qtype_geogebra/ggbq', 'init', array($appletParametersId));//, array($options));
+        // $this->page->requires->js_call_amd('qtype_geogebra/ggbq', 'init', array($options));
 
         if ($qa->get_state() == question_state::$invalid) {
             $result .= html_writer::nonempty_tag('div',
