@@ -1,9 +1,10 @@
 /**
  * Javascript Controller to embed GGBApplet
  *
+ * STUDENT VIEW
+ *
  * This class provides all the functionality for the new assign module.
  *
- * @package        assignsubmission_geogebra
  * @author         Christoph Stadlbauer <christoph.stadlbauer@geogebra.org>
  * @copyright  (c) International GeoGebra Institute 2018
  * @license        http://www.geogebra.org/license
@@ -29,7 +30,6 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function ($, GGBApple
 
         init: function (appletParametersID) {
             window.GGBQ = this;
-
             var ggbDataset = document.getElementById(appletParametersID).dataset;
             var slot = ggbDataset.slot;
 
@@ -83,6 +83,9 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function ($, GGBApple
             if (aspectratio > 0) {
                 parameters.width = $(".qtext").parent().width();
                 parameters.height = parameters.width * aspectratio;
+            } else {
+                parameters.width = $(".qtext").parent().width();
+                parameters.height = $(".qtext").parent().width() / 1.333333;
             }
 
             // parameters.currentvals = JSON.parse(ggbDataset.vars);
