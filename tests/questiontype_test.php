@@ -7,7 +7,7 @@
  * @subpackage     geogebra
  * @author         Christoph Stadlbauer <christoph.stadlbauer@geogebra.org>
  * @copyright  (c) International GeoGebra Institute 2014
- * @license        http://www.geogebra.org/license
+ * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -22,7 +22,7 @@ require_once($CFG->dirroot . '/question/type/geogebra/edit_geogebra_form.php');
  * Unit tests for (some of) question/type/geogebra/questiontype.php.
  *
  * @copyright  (c) International GeoGebra Institute 2014
- * @license        http://www.geogebra.org/license
+ * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class questiontype_test extends advanced_testcase {
 

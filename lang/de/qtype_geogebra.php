@@ -7,7 +7,7 @@
  * @subpackage     geogebra
  * @author         Christoph Stadlbauer <christoph.stadlbauer@geogebra.org>
  * @copyright  (c) International GeoGebra Institute 2014
- * @license        http://www.geogebra.org/license
+ * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 $string['pluginname'] = 'GeoGebra';
 $string['pluginname_link'] = 'question/type/geogebra';$string['addconstraints'] = 'Bedingungen für die Variablen hinzufügen.';
