@@ -7,7 +7,7 @@
  *
  * @author         Christoph Stadlbauer <christoph.stadlbauer@geogebra.org>
  * @copyright  (c) International GeoGebra Institute 2018
- * @license        http://www.geogebra.org/license
+ * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function ($, GGBApplet) {
     /**

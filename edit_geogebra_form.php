@@ -7,7 +7,7 @@
  * @subpackage     geogebra
  * @author         Christoph Stadlbauer <christoph.stadlbauer@geogebra.org>
  * @copyright  (c) International GeoGebra Institute 2014
- * @license        http://www.geogebra.org/license
+ * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die ();
 
@@ -19,7 +19,7 @@ require_once($CFG->dirroot . '/question/type/geogebra/question.php');
  * editing form for the geogebra question type
  *
  * @copyright  (c) International GeoGebra Institute 2014
- * @license        http://www.geogebra.org/license
+ * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qtype_geogebra_edit_form extends question_edit_form {
 

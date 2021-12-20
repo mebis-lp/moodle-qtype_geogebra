@@ -5,7 +5,7 @@
  * @subpackage     backup-moodle2
  * @author         Christoph Stadlbauer <christoph.stadlbauer@geogebra.org>
  * @copyright  (c) International GeoGebra Institute 2014
- * @license        http://www.geogebra.org/license
+ * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -17,7 +17,7 @@ defined('MOODLE_INTERNAL') || die();
  *
  * @author         Christoph Stadlbauer <christoph.stadlbauer@geogebra.org>
  * @copyright  (c) International GeoGebra Institute 2014
- * @license        http://www.geogebra.org/license
+ * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class restore_qtype_geogebra_plugin extends restore_qtype_plugin {
 

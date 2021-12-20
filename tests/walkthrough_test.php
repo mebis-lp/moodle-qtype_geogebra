@@ -7,7 +7,7 @@
  * @subpackage     geogebra
  * @author         Christoph Stadlbauer <christoph.stadlbauer@geogebra.org>
  * @copyright  (c) International GeoGebra Institute 2014
- * @license        http://www.geogebra.org/license
+ * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -20,7 +20,7 @@ require_once($CFG->dirroot . '/question/type/geogebra/tests/helper.php');
  * Overall tests of GeoGebra questions.
  *
  * @copyright  (c) International GeoGebra Institute 2014
- * @license        http://www.geogebra.org/license
+ * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class walkthrough_test extends qbehaviour_walkthrough_test_base
 {
