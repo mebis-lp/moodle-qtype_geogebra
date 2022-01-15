@@ -46,6 +46,7 @@ $string['pluginname_help'] = 'Questions where the student can solve the question
 $string['pluginnameadding'] = 'Adding a GeoGebra question';
 $string['pluginnameediting'] = 'Editing a GeoGebra question';
 $string['pluginnamesummary'] = 'A version of calculated questions which uses GeoGebra to show the question and verify the answer when the quiz is taken.';
+$string['privacy:metadata'] = 'The Geogebra question type plugin does not store any personal data.';
 $string['randomizedbutnovars'] = 'You have selected that the question should be randomized, but you didn\'t specify any valid variables to be randomized.';
 $string['randomizedvar'] = 'Variables to be randomized';
 $string['randomizedvar_help'] = 'Variables which should be randomized (comma separated). Use the slider options in GeoGebra to declare Min, Max and Increment. These variables can also be used in the question text by enclosing them with curly braces, for example: {a}';
