@@ -123,6 +123,7 @@ class qtype_geogebra_renderer extends qtype_renderer
         $responsevarsJSON = json_encode($responsevars);
         $slot = $qa->get_slot();
         $appletParametersId = $qa->get_qt_field_name('applet_parameters');
+
         $applet = <<<EOD
 <article id=$appletParametersId
   data-parameters=$question->ggbparameters
