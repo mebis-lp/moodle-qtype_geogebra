@@ -13,14 +13,16 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'qtype_geogebra';
+
 $plugin->version = 2022013001;
 $plugin->release = '1.11.5';
 
+
 $plugin->requires = 2018051702;
 $plugin->dependencies = array(
-        'qtype_numerical'  => 2014051200,
-        'qtype_calculated' => 2014051200,
-	    'qtype_shortanswer' => 2018051400
+        'qtype_numerical'   => 2014051200,
+        'qtype_calculated'  => 2014051200,
+ 	      'qtype_shortanswer' => 2018051400
 );
 
 $plugin->maturity = MATURITY_STABLE;
