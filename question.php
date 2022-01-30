@@ -22,16 +22,35 @@ class qtype_geogebra_question extends question_graded_automatically {
     /** @var question_answer[] */
     public $answers;
 
+    /** @var string URL of Geogebra Applet to be loaded from a external server */
     public $ggbturl;
+
+    /** @var string in format ggbBase64, contains parameters for all the Geogebra Objects*/
     public $ggbparameters;
+
+    /** @var string in format {"is3D":false,"AV":false,"SV":false,"CV":false,"EV2":false,"CP":false,"PC":false,"DA":false,"FI":false,
+    "PV":false,"macro":false} for defining used views in Geogebra Applet */
     public $ggbviews;
+
+    /** @var  string contains version number of Geogebra Codebase, like "5.0" */
     public $ggbcodebaseversion;
+
+    /** @var  string xml of Geogebra-File*/
     public $ggbxml;
+
+    /** @var  */
     public $israndomized;
+
+    /** @var boolean  */
     public $isexercise;
+
+    /** @var  */
     public $randomizedvar;
+
+    /** @var  */
     public $constraints;
 
+    /** @var array  */
     public $currentvals = array();
 
     /** @var qtype_calculated_variable_substituter stores the dataset we are using. */
@@ -211,19 +230,25 @@ class qtype_geogebra_question extends question_graded_automatically {
      * @return string a plain text summary of that response, that could be used in reports.
      */
     public function summarise_response(array $response) {
+
+//        print_object($response);
+//        die();
+
         if (empty($this->answers) && !$this->isexercise) {
             return "Response graded manually";
         } else {
-            $resp = $response['answer'];
-            if ($resp === '' && !$this->isexercise) {
+            $resp_answer_value = $response['answer']; // binary string left to right, each place stands for correctness of one answer
+            // no answer has been given.
+            if ($resp_answer_value === '' && !$this->isexercise) {
                 return get_string('noresponse', 'question');
-            } else {
+            } else { // there is an answer
                 if (!$this->isexercise) {
                     $j = 0;
                     $fraction = 0;
                     $summary = '';
                     foreach ($this->answers as $answer) {
-                        $correct = (bool)substr($resp, $j, 1);
+                        // binary to boolean conversion
+                        $correct = (bool)substr($resp_answer_value, $j, 1);
                         if ($summary !== '') {
                             $summary .= ', ';
                         }

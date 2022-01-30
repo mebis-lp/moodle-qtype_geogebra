@@ -12,6 +12,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+global $CFG;
+$ggbxml_from_file = file_get_contents($CFG->dirroot . "/question/type/geogebra/tests/fixtures/geogebra_xml_for_testing.xml");
+define("GGBTESTINGXML", $ggbxml_from_file);
 /**
  * Class ggbstringsfortesting
  */
@@ -19,7 +22,9 @@ class ggbstringsfortesting {
     public static $views = '{"is3D":false,"AV":false,"SV":false,"CV":false,"EV2":false,"CP":false,"PC":false,"DA":false,"FI":false,
         "PV":false,"macro":false}';
     public static $pointparameters = 'asd'; // This isn't a ggbBase64 string but it's ok for testing...
-    public static $pointxml = <<<EOT
+
+    public static $pointxml = GGBTESTINGXML;
+/*    public static $pointxml = <<<EOT
 <?xml version="1.0" encoding="utf-8"?>
  <geogebra format="5.0" version="4.9.314.0" id="94863160-8073-49ff-b877-950ce82a175b"  xsi:noNamespaceSchemaLocation="http://www.geogebra.org/ggb.xsd" xmlns="" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" >
  <gui>
@@ -130,6 +135,6 @@ class ggbstringsfortesting {
  </element>
  </construction>
  </geogebra>
-EOT;
+EOT;*/
 
 }
