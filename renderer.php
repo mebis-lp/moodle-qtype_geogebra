@@ -34,7 +34,7 @@ class qtype_geogebra_renderer extends qtype_renderer
         global $PAGE, $CFG;
         //$PAGE->requires->js(new moodle_url('https://cdn.geogebra.org/apps/deployggb.js'));
 
-        $result = '';
+        $result = html_writer::start_div('ggbscalingcontainer');
 
         /* @var $question qtype_geogebra_question */
         $question = $qa->get_question();
@@ -154,6 +154,7 @@ EOD;
                 array('class' => 'validationerror'));
         }
 
+        $result .= html_writer::end_div();
         return $result;
     }
 

@@ -14,6 +14,15 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function ($, GGBApple
      * Created by Christoph on 25.08.19.
      */
 
+    let resizeTimeout;
+    /**
+     * Resizes the ggb scaling containers to make the ggb applet scale properly to fit into its container.
+     */
+    const resizeScalingContainer = () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => $(".ggbscalingcontainer").width($(".qtext").parent().parent().width(), 250));
+    };
+
     return {
         b64input: [],
         ggbBase64: [],
@@ -42,6 +51,14 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function ($, GGBApple
                     for (var label in curvals) {
                         ggbApplet.setValue(label, curvals[label]);
                     }
+
+                    // Set the initial size of the container so GeoGebra applet scales a first time correctly after loading.
+                    resizeScalingContainer();
+                    // Unregister old event listeners in case we have multiple GeoGebra questions on one page.
+                    // We only need one for the whole page.
+                    window.removeEventListener('resize', resizeScalingContainer);
+                    window.addEventListener('resize', resizeScalingContainer);
+
                     window.GGBQ.b64input[id].val(ggbApplet.getBase64());
                     window.GGBQ.xmlinput[id].val(ggbApplet.getXML());
                     var numvars = ggbApplet.startExercise();
@@ -78,15 +95,8 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function ($, GGBApple
                 parameters.ggbBase64 = this.ggbBase64[slot];
             }
 
-            // To adjust the width of the ggbApplet to the available area.
-            var aspectratio = parameters.height / parameters.width;
-            if (aspectratio > 0) {
-                parameters.width = $(".qtext").parent().width();
-                parameters.height = parameters.width * aspectratio;
-            } else {
-                parameters.width = $(".qtext").parent().width();
-                parameters.height = $(".qtext").parent().width() / 1.333333;
-            }
+            parameters.scaleContainerClass = 'ggbscalingcontainer';
+            parameters.autoHeight = true;
 
             // parameters.currentvals = JSON.parse(ggbDataset.vars);
             this.ggbDatasetVars = JSON.parse(ggbDataset.vars);
