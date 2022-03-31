@@ -42,7 +42,7 @@ class qtype_geogebra_renderer extends qtype_renderer {
      */
     public function formulation_and_controls(question_attempt $qa, question_display_options $options) {
 
-        $result = '';
+        $result = html_writer::start_div('ggbscalingcontainer');
 
         /* @var $question qtype_geogebra_question the question object */
         $question = $qa->get_question();
@@ -161,6 +161,7 @@ EOD;
                 array('class' => 'validationerror'));
         }
 
+        $result .= html_writer::end_div();
         return $result;
     }
 
