@@ -20,6 +20,8 @@
                 <FIELD NAME="randomizedvar" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Variable name to be randomized"/>
                 <FIELD NAME="constraints" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="The XML for constraints on vars"/>
                 <FIELD NAME="isexercise" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
+                <FIELD NAME="width" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Width of GeoGebra applet to be forced"/>
+                <FIELD NAME="height" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Height of GeoGebra applet to be forced"/>
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
