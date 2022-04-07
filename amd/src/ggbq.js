@@ -12,6 +12,7 @@
 define(['jquery', 'qtype_geogebra/deployggb'], function ($, GGBApplet) {
     /**
      * Created by Christoph on 25.08.19.
+     * Modified for use of local Geogebra by Martin Putzlocher on 30.01.22.
      */
 
     /**

@@ -20,7 +20,7 @@ $plugin->requires = 2018051702;
 $plugin->dependencies = array(
         'qtype_numerical'  => 2014051200,
         'qtype_calculated' => 2014051200,
-	    'qtype_shortanswer' => 2018051400
+        'qtype_shortanswer' => 2018051400
 );
 
 $plugin->maturity = MATURITY_STABLE;

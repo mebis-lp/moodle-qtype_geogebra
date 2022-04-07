@@ -22,19 +22,25 @@ require_once($CFG->dirroot . '/question/type/geogebra/question.php');
  * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qtype_geogebra_edit_form extends question_edit_form {
-
+    /** @var question_type Object of this question type */
     public $qtypeobj;
 
+    /** @var bool  */
     public $reload = false;
 
+    /** @var string URL of Geogebra Applet to be loaded from a external server */
     public $ggbturl;
 
 //    public $deployscript = '<script type="text/javascript" src="https://www.geogebra.org/scripts/deployggb.js"></script>';
 
+    /** @var string in format ggbBase64, contains parameters for all the Geogebra Objects*/
     public $ggbparameters;
 
+    /** @var string in format {"is3D":false,"AV":false,"SV":false,"CV":false,"EV2":false,"CP":false,"PC":false,"DA":false,"FI":false,
+    "PV":false,"macro":false} for defining used views in Geogebra Applet */
     public $ggbviews;
 
+    /** @var  string contains version number of Geogebra Codebase, like "5.0" */
     public $ggbcodebaseversion;
 
     /**
@@ -504,7 +510,10 @@ class qtype_geogebra_edit_form extends question_edit_form {
 
         //$mform->addElement('html', $this->deployscript);
 
-        $mform->addElement('html', '<div class="form-group row  fitem" id="applet_container1_fitem"><div class="col-md-3">'. get_string('geogebraapplet', 'qtype_geogebra').'</div><div id="applet_container1" class="felement"></div></div>');
+        $mform->addElement('html',
+            '<div class="form-group row  fitem" id="applet_container1_fitem"><div class="col-md-3">'.
+                get_string('geogebraapplet', 'qtype_geogebra').
+            '</div><div id="applet_container1" class="felement"></div></div>');
 
         $lang = current_language();
 
@@ -533,18 +542,28 @@ class qtype_geogebra_edit_form extends question_edit_form {
 //    var views = $this->ggbviews;
 //    var applet1 = new GGBApplet(parameters, views, true);
 //</script>
-            $applet = <<<EOD
+
+// BAD CODE
+$applet = <<<EOD
 <article id="applet_parameters"
   data-parameters=$this->ggbparameters 
   data-views=$this->ggbviews
   data-codebase=$this->ggbcodebaseversion
   data-lang=$lang
   data-html5NoWebSimple="true">
-</article>
-  
+</article>  
 EOD;
-               $mform->addElement('html', $applet);
-
+            // new definition of applet element
+/*            $applet_attributes = [
+                'id' => "applet_parameters",
+                'data-parameters' => $this->ggbparameters,
+                'data-views' => $this->ggbviews,
+                'data-codebase' => $this->ggbcodebaseversion,
+                'data-lang' => $lang,
+                'data-html5NoWebSimple' => "true"
+            ];
+            $applet = html_writer::div("",$applet_attributes);*/
+            $mform->addElement('html', $applet);
         }
         $PAGE->requires->js_call_amd('qtype_geogebra/ggbt', 'init');
     }
