@@ -34,7 +34,8 @@ class qtype_geogebra_renderer extends qtype_renderer
         global $PAGE, $CFG;
         //$PAGE->requires->js(new moodle_url('https://cdn.geogebra.org/apps/deployggb.js'));
 
-        $result = '';
+        $scalingcontainerclass = $qa->get_qt_field_name('scalingcontainer');
+        $result = html_writer::start_div($scalingcontainerclass);
 
         /* @var $question qtype_geogebra_question */
         $question = $qa->get_question();
@@ -123,6 +124,8 @@ class qtype_geogebra_renderer extends qtype_renderer
         $responsevarsJSON = json_encode($responsevars);
         $slot = $qa->get_slot();
         $appletParametersId = $qa->get_qt_field_name('applet_parameters');
+        $width = $question->width ?: 0;
+        $height = $question->height ?: 0;
         $applet = <<<EOD
 <article id=$appletParametersId
   data-parameters=$question->ggbparameters
@@ -137,9 +140,11 @@ class qtype_geogebra_renderer extends qtype_renderer
   data-exerciseresultinput=$exerciseinputname
   data-responsevars=$responsevarsJSON
   data-slot=$slot
-  data-lang=$lang>
+  data-lang=$lang
+  data-width=$width
+  data-height=$height
+  data-scalingcontainerclass=$scalingcontainerclass
 </article>
-
 EOD;
         $result .= $applet;
         $this->page->requires->js_call_amd('qtype_geogebra/ggbq', 'init', array($appletParametersId));//, array($options));
@@ -154,6 +159,7 @@ EOD;
                 array('class' => 'validationerror'));
         }
 
+        $result .= html_writer::end_div();
         return $result;
     }
 
