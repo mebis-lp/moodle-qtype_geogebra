@@ -9,10 +9,17 @@
  * @copyright  (c) International GeoGebra Institute 2018
  * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function ($, GGBApplet) {
+define(['jquery', 'qtype_geogebra/deployggb'], function ($, GGBApplet) {
     /**
      * Created by Christoph on 25.08.19.
      */
+
+    /**
+     * GGB Codebase: necessary for loading GGB-Bundle locally.
+     * @type {string}
+     */
+    const GGBcodebase = M.cfg.wwwroot +
+        '/question/type/geogebra/js/geogebra-math-apps-bundle/GeoGebra/HTML5/5.0/web3d/';
 
     const scalingContainers = {};
     let resizeTimeout;
@@ -139,6 +146,7 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function ($, GGBApple
 
             var applet1 = new GGBApplet(parameters, views, ggbDataset.html5NoWebSimple);
             // applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
+            applet1.setHTML5Codebase(GGBcodebase);
             applet1.inject(ggbDataset.div, "preferHTML5");
 
             $('#responseform').on('submit', this.getBase64andCheck);
