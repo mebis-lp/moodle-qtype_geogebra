@@ -141,13 +141,20 @@ class qtype_geogebra_edit_form extends question_edit_form {
         $mform->addElement('selectyesno', 'isexercise', get_string('isexercise', 'qtype_geogebra'));
         $mform->addHelpButton('isexercise', 'isexercise', 'qtype_geogebra');
 
+        $mform->addElement('advcheckbox', 'forcedimensions', get_string('forcedimensionsenable', 'qtype_geogebra'),
+            get_string('forcedimensions', 'qtype_geogebra'));
+
+        $mform->setDefault('forcedimensions', 0);
+
         $mform->addElement('text', 'width', get_string('width', 'qtype_geogebra'));
         $mform->setType('width', PARAM_INT);
         $mform->addHelpButton('width', 'width', 'qtype_geogebra');
+        $mform->hideIf('width', 'forcedimensions');
 
         $mform->addElement('text', 'height', get_string('height', 'qtype_geogebra'));
         $mform->setType('height', PARAM_INT);
         $mform->addHelpButton('height', 'height', 'qtype_geogebra');
+        $mform->hideIf('height', 'forcedimensions');
 
         $this->add_per_answer_fields($mform, get_string('variableno', 'qtype_geogebra', '{no}'),
                 question_bank::fraction_options(), 4, 1);
@@ -209,7 +216,7 @@ class qtype_geogebra_edit_form extends question_edit_form {
             $this->check_is_exercise_present($data, $errors);
         }
 
-        $this->check_width_and_height_present($data, $errors);
+        $this->check_force_dimensions($data, $errors);
 
         return $errors;
     }
@@ -267,10 +274,15 @@ class qtype_geogebra_edit_form extends question_edit_form {
      * @param $data
      * @param $errors
      */
-    private function check_width_and_height_present($data, &$errors) {
-        if (empty($data['width']) && !empty($data['height']) || !empty($data['width']) && empty($data['height'])) {
-            $errors['width'] = get_string('onlywidthorheight', 'qtype_geogebra');
-            $errors['height'] = get_string('onlywidthorheight', 'qtype_geogebra');
+    private function check_force_dimensions($data, &$errors) {
+        if (!empty($data['forcedimensions'])) {
+            // If forcedimensions is being activated, height and width both must not be empty or zero.
+            if (empty($data['width'])) {
+                $errors['width'] = get_string('widthnotzero', 'qtype_geogebra');
+            }
+            if (empty($data['height'])) {
+                $errors['height'] = get_string('heightnotzero', 'qtype_geogebra');
+            }
         }
     }
 

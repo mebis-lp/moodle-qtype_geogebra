@@ -132,6 +132,7 @@ class qtype_geogebra_renderer extends qtype_renderer {
         $responsevarsjson = json_encode($responsevars);
         $slot = $qa->get_slot();
         $appletparametersid = $qa->get_qt_field_name('applet_parameters');
+        $forcedimensions = $question->forcedimensions ?: 0;
         $width = $question->width ?: 0;
         $height = $question->height ?: 0;
         $applet = <<<EOD
@@ -149,6 +150,7 @@ class qtype_geogebra_renderer extends qtype_renderer {
   data-responsevars=$responsevarsjson
   data-slot=$slot
   data-lang=$lang
+  data-forcedimensions=$forcedimensions
   data-width=$width
   data-height=$height
   data-scalingcontainerclass=$scalingcontainerclass

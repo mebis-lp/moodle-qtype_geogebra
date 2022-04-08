@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="question/type/geogebra/db" VERSION="20140426" COMMENT="XMLDB file for Moodle question/type/geogebra"
+<XMLDB PATH="question/type/geogebra/db" VERSION="20220408" COMMENT="XMLDB file for Moodle question/type/geogebra"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="../../../../lib/xmldb/xmldb.xsd"
         >
@@ -20,6 +20,7 @@
                 <FIELD NAME="randomizedvar" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Variable name to be randomized"/>
                 <FIELD NAME="constraints" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="The XML for constraints on vars"/>
                 <FIELD NAME="isexercise" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
+                <FIELD NAME="forcedimensions" TYPE="int" LENGTH="1" NOTNULL="false" SEQUENCE="false"/>
                 <FIELD NAME="width" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Width of GeoGebra applet to be forced"/>
                 <FIELD NAME="height" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Height of GeoGebra applet to be forced"/>
             </FIELDS>

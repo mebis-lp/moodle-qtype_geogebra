@@ -109,7 +109,7 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function ($, GGBApple
             }
 
             // Check if width and height have been manually set. The default would be "no", so we use the scaling container feature.
-            if ((!ggbDataset.width || ggbDataset.width === '0') && (!ggbDataset.height || ggbDataset.height === '0')) {
+            if (!ggbDataset.forcedimensions || ggbDataset.forcedimensions === '0') {
                 parameters.scaleContainerClass = scalingContainers[slot];
                 parameters.autoHeight = true;
             } else {
