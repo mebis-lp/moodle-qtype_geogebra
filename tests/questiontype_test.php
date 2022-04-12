@@ -25,6 +25,15 @@
 
 namespace qtype_geogebra;
 
+use advanced_testcase;
+use core_question_generator;
+use qtype_geogebra;
+use qtype_geogebra_edit_form;
+use qtype_geogebra_test_helper;
+use question_possible_response;
+use stdClass;
+use test_question_maker;
+
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;

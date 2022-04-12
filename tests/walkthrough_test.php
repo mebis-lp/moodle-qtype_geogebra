@@ -25,6 +25,10 @@
 
 namespace qtype_geogebra;
 
+use qbehaviour_walkthrough_test_base;
+use question_state;
+use test_question_maker;
+
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;

@@ -23,7 +23,7 @@
  * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace qtype_geogebra;
+use qtype_geogebra\ggbstringsfortesting;
 
 defined('MOODLE_INTERNAL') || die();
 
