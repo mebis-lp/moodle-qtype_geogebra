@@ -26,8 +26,6 @@ namespace qtype_geogebra\privacy;
 
 use core_privacy\local\metadata\null_provider;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Privacy Subsystem for qtype_geogebra implementing null_provider.
  *

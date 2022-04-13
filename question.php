@@ -1,10 +1,23 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
  * GeoGebra question
  *
- * @package        qtype
- * @subpackage     geogebra
+ * @package        qtype_geogebra
  * @author         Christoph Stadlbauer <christoph.stadlbauer@geogebra.org>
  * @copyright  (c) International GeoGebra Institute 2014
  * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -89,7 +102,9 @@ class qtype_geogebra_question extends question_graded_automatically {
     public function apply_attempt_state(question_attempt_step $step) {
         if ($this->israndomized) {
             $vars = explode(',', $this->randomizedvar);
+            // phpcs:disable
             // Probably better: $step->get_qt_data() as $name => $value (see calculated).
+            // phpcs:enable
             foreach ($vars as $label) {
                 if (!empty($label)) {
                     $this->currentvals[$label] = (float)$step->get_qt_var('_var_' . $label);
@@ -127,7 +142,7 @@ class qtype_geogebra_question extends question_graded_automatically {
      * @return null while we have no strategy for generating the answer
      */
     public function get_correct_response() {
-        //  Not sure if we could compute a correct answer.
+        // Not sure if we could compute a correct answer.
         return null;
     }
 
@@ -137,7 +152,7 @@ class qtype_geogebra_question extends question_graded_automatically {
      * should move to the COMPLETE or INCOMPLETE state.
      *
      * @param array $response responses, as returned by
-     *                        {@link question_attempt_step::get_qt_data()}.
+     *                        {@see question_attempt_step::get_qt_data()}.
      * @return bool whether this response is a complete answer to this question.
      */
     public function is_complete_response(array $response) {
@@ -159,7 +174,7 @@ class qtype_geogebra_question extends question_graded_automatically {
      * of responses can safely be discarded.
      *
      * @param array $prevresponse the responses previously recorded for this question,
-     *                            as returned by {@link question_attempt_step::get_qt_data()}
+     *                            as returned by {@see question_attempt_step::get_qt_data()}
      * @param array $newresponse  the new responses, in the same format.
      * @return bool whether the two sets of responses are the same - that is
      *                            whether the new set of responses can safely be discarded.
@@ -193,7 +208,7 @@ class qtype_geogebra_question extends question_graded_automatically {
     }
 
     /**
-     * Calls {@link is_complete_response} and returns its result
+     * Calls {@see is_complete_response} and returns its result
      *
      * @param array $response
      * @return bool
@@ -206,7 +221,7 @@ class qtype_geogebra_question extends question_graded_automatically {
     /**
      * Produce a plain text summary of a response.
      *
-     * @param array $response    a response, as might be passed to {@link grade_response()}
+     * @param array $response    a response, as might be passed to {@see grade_response()}
      *                           .
      * @return string a plain text summary of that response, that could be used in reports.
      */
@@ -287,14 +302,14 @@ class qtype_geogebra_question extends question_graded_automatically {
         return '';
     }
 
-    //TODO not correct anymore for automatically checked exercises
+    // TODO not correct anymore for automatically checked exercises.
     /**
      * Categorise the student's response according to the categories defined by
      * get_possible_responses.
      *
-     * @param array $response    a response, as might be passed to {@link grade_response()}
+     * @param array $response    a response, as might be passed to {@see grade_response()}
      *                           .
-     * @return array subpartid => {@link question_classified_response} objects.
+     * @return array subpartid => {@see question_classified_response} objects.
      *                           returns an empty array if no analysis is possible.
      */
     public function classify_response(array $response) {
@@ -332,11 +347,11 @@ class qtype_geogebra_question extends question_graded_automatically {
 
     /**
      * Grade a response to the question, returning a fraction between
-     * get_min_fraction() and get_max_fraction(), and the corresponding {@link question_state}
+     * get_min_fraction() and get_max_fraction(), and the corresponding {@see question_state}
      * right, partial or wrong.
      *
      * @param array $response responses, as returned by
-     *                        {@link question_attempt_step::get_qt_data()}.
+     *                        {@see question_attempt_step::get_qt_data()}.
      * @return array (float, integer) the fraction, and the state.
      */
     public function grade_response(array $response) {
@@ -377,18 +392,18 @@ class qtype_geogebra_question extends question_graded_automatically {
     private function calculate_exercise_fraction(stdClass $exerciseresult) {
         $fractionsumplus = 0;
         $fractionsumminus = 0;
-        $singleCorrectIgnoreOthers = false;
+        $singlecorrectignoreothers = false;
         foreach ($exerciseresult as $assignment) {
             if ($assignment->fraction >= 0) {
                 if (0.999 < $assignment->fraction) {
-                    $singleCorrectIgnoreOthers = true;
+                    $singlecorrectignoreothers = true;
                 }
                 $fractionsumplus += $assignment->fraction;
             } else {
                 $fractionsumminus += $assignment->fraction;
             }
         }
-        if ($singleCorrectIgnoreOthers || $fractionsumplus >= 0.999) {
+        if ($singlecorrectignoreothers || $fractionsumplus >= 0.999) {
             $fraction = 1;
         } else {
             $fraction = $fractionsumplus;
@@ -418,7 +433,7 @@ class qtype_geogebra_question_helper {
      * Checks if vars in inequality is part of randomizedvars
      *
      * @param string $inequality    valid inequality
-     *                              check first with {@link is_valid_inequality}
+     *                              check first with {@see is_valid_inequality}
      * @param string $randomizedvar comma separated list of variables to be randomized
      * @return bool true if all variables in the $inequality are part of the randomizedvars, false otherwise
      */
@@ -435,7 +450,7 @@ class qtype_geogebra_question_helper {
      * to the sliders min and max values.
      *
      * @param string $inequality    valid inequality for this question,
-     *                              check first with {@link is_valid_inequality_for_randomizedvars}
+     *                              check first with {@see is_valid_inequality_for_randomizedvars}
      * @param string $randomizedvar comma separated list of variables to be randomized
      * @param string $ggbxml        the ggbxml of the question applet
      * @return bool true if everything is ok
@@ -519,14 +534,14 @@ class qtype_geogebra_question_helper {
     /**
      * Randomize all variables in the question given the constraints.
      *
-     * Used by {@link \qtype_geogebra_edit_form::validation} on creating a question with timelimit 1,
+     * Used by {@see \qtype_geogebra_edit_form::validation} on creating a question with timelimit 1,
      * if it doesn't find a inequality in 1 second it returns a stdClass with information on the number of tries ($a->tries).
      *
-     * Used by {@link \qtype_geogebra_edit_form::start_attempt} with no timelimit
+     * Used by {@see \qtype_geogebra_edit_form::start_attempt} with no timelimit
      *
-     * @param array $vars         as returned by {@link \qtype_geogebra_question_helper::get_variables}
+     * @param array $vars         as returned by {@see \qtype_geogebra_question_helper::get_variables}
      * @param array $inequalities valid inequalities for this question,
-     *                            check first with {@link is_valid_inequality_for_randomizedvars}
+     *                            check first with {@see is_valid_inequality_for_randomizedvars}
      * @param float $timelimit    Maximum time allowed for creation. Default: INF
      * @return stdClass with fields time and tries
      */
@@ -561,7 +576,7 @@ class qtype_geogebra_question_helper {
     }
 
     /**
-     * Used by set {@link set_random_values} for calculating random values valid for the slider definition
+     * Used by set {@see set_random_values} for calculating random values valid for the slider definition
      *
      * @param int|float $min       Min value
      * @param int|float $max       Max value
@@ -575,7 +590,7 @@ class qtype_geogebra_question_helper {
     /**
      * Sets all variables to a random incremented value
      *
-     * @param array $vars as returned by {@link \qtype_geogebra_question_helper::get_variables} as reference
+     * @param array $vars as returned by {@see \qtype_geogebra_question_helper::get_variables} as reference
      */
     private static function set_random_values(array &$vars) {
         foreach ($vars as &$var) {

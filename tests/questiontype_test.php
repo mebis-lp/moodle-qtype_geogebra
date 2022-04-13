@@ -1,14 +1,38 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
  * Unit tests for (some of) question/type/geogebra/questiontype.php.
  *
- * @package        qtype
- * @subpackage     geogebra
+ * @package        qtype_geogebra
  * @author         Christoph Stadlbauer <christoph.stadlbauer@geogebra.org>
  * @copyright  (c) International GeoGebra Institute 2014
  * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+namespace qtype_geogebra;
+
+use advanced_testcase;
+use core_question_generator;
+use qtype_geogebra;
+use qtype_geogebra_edit_form;
+use qtype_geogebra_test_helper;
+use question_possible_response;
+use stdClass;
+use test_question_maker;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -105,7 +129,7 @@ class questiontype_test extends advanced_testcase {
         $questiondata = test_question_maker::get_question_data('geogebra');
         $formdata = test_question_maker::get_question_form_data('geogebra');
 
-        /* @var $generator core_question_generator */
+        /* @var $generator core_question_generator the question generator object */
         $generator = $this->getDataGenerator()->get_plugin_generator('core_question');
         $cat = $generator->create_question_category(array());
 

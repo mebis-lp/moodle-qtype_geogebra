@@ -1,14 +1,34 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
  * Unit tests for the GeoGebra question definition class.
  *
- * @package        qtype
- * @subpackage     geogebra
+ * @package        qtype_geogebra
  * @author         Christoph Stadlbauer <christoph.stadlbauer@geogebra.org>
  * @copyright  (c) International GeoGebra Institute 2014
  * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+namespace qtype_geogebra;
+
+use advanced_testcase;
+use qtype_geogebra_question;
+use question_state;
+use test_question_maker;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -26,7 +46,7 @@ require_once($CFG->dirroot . '/question/type/geogebra/tests/fixtures/ggbstringsf
 class question_test extends advanced_testcase {
 
     public function test_is_complete_response() {
-        /* @var $question qtype_geogebra_question */
+        /* @var $question qtype_geogebra_question the question object */
         $question = test_question_maker::make_question('geogebra', 'point');
 
         $this->assertFalse($question->is_complete_response(array()), "empty response mustn't result in complete response");
@@ -66,7 +86,7 @@ class question_test extends advanced_testcase {
     }
 
     public function test_is_gradable_response() {
-        /* @var $question qtype_geogebra_question */
+        /* @var $question qtype_geogebra_question the question object */
         $question = test_question_maker::make_question('geogebra', 'point');
 
         $this->assertFalse($question->is_gradable_response(array()), "empty response mustn't result in complete response");
@@ -108,7 +128,7 @@ class question_test extends advanced_testcase {
     }
 
     public function test_grading() {
-        /* @var $question qtype_geogebra_question */
+        /* @var $question qtype_geogebra_question the question object */
         $question = test_question_maker::make_question('geogebra', 'point');
 
         $this->assertEquals(array(0, question_state::$gradedwrong),
@@ -118,7 +138,7 @@ class question_test extends advanced_testcase {
     }
 
     public function test_summarise_response() {
-        /* @var $question qtype_geogebra_question */
+        /* @var $question qtype_geogebra_question the question object */
         $question = test_question_maker::make_question('geogebra', 'point');
         $summary = $question->summarise_response(array('ggbbase64' => 'adf', 'answer' => '0'));
         $this->assertEquals('e=false, Grade: 0; Total: 0', $summary);
