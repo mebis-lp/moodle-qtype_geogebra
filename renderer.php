@@ -42,7 +42,8 @@ class qtype_geogebra_renderer extends qtype_renderer {
      */
     public function formulation_and_controls(question_attempt $qa, question_display_options $options) {
 
-        $result = '';
+        $scalingcontainerclass = $qa->get_qt_field_name('scalingcontainer');
+        $result = html_writer::start_div($scalingcontainerclass);
 
         /* @var $question qtype_geogebra_question the question object */
         $question = $qa->get_question();
@@ -131,6 +132,9 @@ class qtype_geogebra_renderer extends qtype_renderer {
         $responsevarsjson = json_encode($responsevars);
         $slot = $qa->get_slot();
         $appletparametersid = $qa->get_qt_field_name('applet_parameters');
+        $forcedimensions = $question->forcedimensions ?: 0;
+        $width = $question->width ?: 0;
+        $height = $question->height ?: 0;
         $applet = <<<EOD
 <article id=$appletparametersid
   data-parameters=$question->ggbparameters
@@ -145,9 +149,12 @@ class qtype_geogebra_renderer extends qtype_renderer {
   data-exerciseresultinput=$exerciseinputname
   data-responsevars=$responsevarsjson
   data-slot=$slot
-  data-lang=$lang>
+  data-lang=$lang
+  data-forcedimensions=$forcedimensions
+  data-width=$width
+  data-height=$height
+  data-scalingcontainerclass=$scalingcontainerclass
 </article>
-
 EOD;
         $result .= $applet;
         $this->page->requires->js_call_amd('qtype_geogebra/ggbq', 'init', array($appletparametersid));
@@ -161,6 +168,7 @@ EOD;
                 array('class' => 'validationerror'));
         }
 
+        $result .= html_writer::end_div();
         return $result;
     }
 

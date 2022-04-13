@@ -47,5 +47,31 @@ function xmldb_qtype_geogebra_upgrade($oldversion) {
         // Geogebra savepoint reached.
         upgrade_plugin_savepoint(true, 2014081908, 'qtype', 'geogebra');
     }
+    if ($oldversion < 2022040800) {
+
+        // Define field width to be added to qtype_geogebra_options.
+        $table = new xmldb_table('qtype_geogebra_options');
+
+        $field = new xmldb_field('forcedimensions', XMLDB_TYPE_INTEGER, '1', null, null, null, null, 'isexercise');
+        // Conditionally launch add field forcedimensions.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        $field = new xmldb_field('width', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'forcedimensions');
+        // Conditionally launch add field width.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        $field = new xmldb_field('height', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'width');
+        // Conditionally launch add field height.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Geogebra savepoint reached.
+        upgrade_plugin_savepoint(true, 2022040800, 'qtype', 'geogebra');
+    }
     return true;
 }

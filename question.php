@@ -44,6 +44,9 @@ class qtype_geogebra_question extends question_graded_automatically {
     public $isexercise;
     public $randomizedvar;
     public $constraints;
+    public $forcedimensions;
+    public $width;
+    public $height;
 
     public $currentvals = array();
 

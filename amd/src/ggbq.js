@@ -9,10 +9,30 @@
  * @copyright  (c) International GeoGebra Institute 2018
  * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function ($, GGBApplet) {
+define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GGBApplet) {
     /**
      * Created by Christoph on 25.08.19.
      */
+
+    const scalingContainers = {};
+    let resizeTimeout;
+    /**
+     * Resizes the ggb scaling containers to make the ggb applet scale properly to fit into its container.
+     */
+    const resizeScalingContainer = () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(
+            () => Object.values(scalingContainers).forEach((containerClass) => {
+                    // We need to use getElementsByClassName because colons are not allowed for jquery and Vanilla JS querySelector.
+                    const scalingContainer = document.getElementsByClassName(containerClass)[0];
+                    // We retrieve the formulation div container, because this gives us the correct width to adapt
+                    // the scaling container to.
+                    const formulationDivStyle = window.getComputedStyle(
+                        scalingContainer.querySelector('.qtext').parentElement.parentElement);
+                    scalingContainer.style.width = parseInt(formulationDivStyle.width)
+                        - parseInt(formulationDivStyle.paddingLeft) - parseInt(formulationDivStyle.paddingRight) + 'px';
+                }), 250);
+    };
 
     return {
         b64input: [],
@@ -32,6 +52,8 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function ($, GGBApple
             window.GGBQ = this;
             var ggbDataset = document.getElementById(appletParametersID).dataset;
             var slot = ggbDataset.slot;
+            // Add current scaling container to the object store for being able to access it later on.
+            scalingContainers[slot] = ggbDataset.scalingcontainerclass;
 
             window.ggbAppletOnLoad = function (ggbAppletId) {
                 if (ggbAppletId != -1) {
@@ -42,6 +64,14 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function ($, GGBApple
                     for (var label in curvals) {
                         ggbApplet.setValue(label, curvals[label]);
                     }
+
+                    // Set the initial size of the scaling containers so GeoGebra applet scale a first time correctly after loading.
+                    resizeScalingContainer();
+                    // Unregister old event listeners in case we have multiple GeoGebra questions on one page.
+                    // We only need one for the whole page.
+                    window.removeEventListener('resize', resizeScalingContainer);
+                    window.addEventListener('resize', resizeScalingContainer);
+
                     window.GGBQ.b64input[id].val(ggbApplet.getBase64());
                     window.GGBQ.xmlinput[id].val(ggbApplet.getXML());
                     var numvars = ggbApplet.startExercise();
@@ -78,14 +108,23 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function ($, GGBApple
                 parameters.ggbBase64 = this.ggbBase64[slot];
             }
 
-            // To adjust the width of the ggbApplet to the available area.
-            var aspectratio = parameters.height / parameters.width;
-            if (aspectratio > 0) {
-                parameters.width = $(".qtext").parent().width();
-                parameters.height = parameters.width * aspectratio;
+            // Check if width and height have been manually set. The default would be "no", so we use the scaling container feature.
+            if (!ggbDataset.forcedimensions || ggbDataset.forcedimensions === '0') {
+                parameters.scaleContainerClass = scalingContainers[slot];
+                parameters.autoHeight = true;
             } else {
-                parameters.width = $(".qtext").parent().width();
-                parameters.height = $(".qtext").parent().width() / 1.333333;
+                // Width and height are specified in this case, so we use the given fixed width and height settings
+                // of the plugin instance. Form validation of the settings asserts that both width and height are being set.
+                parameters.width = ggbDataset.width;
+                parameters.height = ggbDataset.height;
+                // We need to use getElementsByClassName because colons are not allowed for jquery and Vanilla JS querySelector.
+                const scalingContainer = document.getElementsByClassName(scalingContainers[slot])[0];
+                // We should always find this container, just check to be extra safe.
+                if (scalingContainer) {
+                    // Width of the scaling container is being set after the applet has been loaded. So no need to specify it here.
+                    scalingContainer.style.overflowX = 'auto';
+                    scalingContainer.style.overflowY = 'hidden';
+                }
             }
 
             // parameters.currentvals = JSON.parse(ggbDataset.vars);
