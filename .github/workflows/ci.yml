@@ -1,6 +1,6 @@
 name: qtype_geogebra Github actions
 
-on: [push, pull_request]
+on: [ push, pull_request ]
 
 jobs:
   test:
@@ -48,6 +48,24 @@ jobs:
             database: 'mariadb'
           - php: '7.3'
             moodle-branch: 'MOODLE_311_STABLE'
+            database: 'pgsql'
+          - php: '7.4'
+            moodle-branch: 'MOODLE_39_STABLE'
+            database: 'mariadb'
+          - php: '7.4'
+            moodle-branch: 'MOODLE_39_STABLE'
+            database: 'pgsql'
+          - php: '7.3'
+            moodle-branch: 'MOODLE_39_STABLE'
+            database: 'mariadb'
+          - php: '7.3'
+            moodle-branch: 'MOODLE_39_STABLE'
+            database: 'pgsql'
+          - php: '7.2'
+            moodle-branch: 'MOODLE_39_STABLE'
+            database: 'mariadb'
+          - php: '7.2'
+            moodle-branch: 'MOODLE_39_STABLE'
             database: 'pgsql'
 
     steps:
