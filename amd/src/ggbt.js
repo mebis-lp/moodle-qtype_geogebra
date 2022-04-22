@@ -23,7 +23,6 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function($, GGBApplet
                 if (typeof (this.ggbcheckb) == "undefined") {
                     var applet = document.ggbApplet;
                     $('input[name="ggbxml"]').val(applet.getXML());
-                    $('input[name="ggbexercise"]').val(JSON.stringify(applet.getExerciseResult()));
 
                     var randomizedvar = document.getElementById('id_randomizedvar');
                     if (!randomizedvar.value) {
