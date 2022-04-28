@@ -7,7 +7,7 @@
  * @copyright  (c) International GeoGebra Institute 2018
  * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function($, GGBApplet) {
+ define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GGBApplet) {
     /**
      * Created by Christoph on 25.08.19.
      */
@@ -23,7 +23,6 @@ define(['jquery', '//www.geogebra.org/apps/deployggb.js'], function($, GGBApplet
                 if (typeof (this.ggbcheckb) == "undefined") {
                     var applet = document.ggbApplet;
                     $('input[name="ggbxml"]').val(applet.getXML());
-                    $('input[name="ggbexercise"]').val(JSON.stringify(applet.getExerciseResult()));
 
                     var randomizedvar = document.getElementById('id_randomizedvar');
                     if (!randomizedvar.value) {

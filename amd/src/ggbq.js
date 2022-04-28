@@ -74,13 +74,8 @@ define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GG
 
                     window.GGBQ.b64input[id].val(ggbApplet.getBase64());
                     window.GGBQ.xmlinput[id].val(ggbApplet.getXML());
-                    var numvars = ggbApplet.startExercise();
-                    for (var key in numvars) {
-                        window.GGBQ.qdiv[id].innerHTML =
-                            window.GGBQ.qdiv[id].innerHTML.replace("{" + key + "}", numvars[key]);
-                    }
-                    window.GGBQ.qdiv[id].style.visibility = 'visible';
 
+                    window.GGBQ.qdiv[id].style.visibility = 'visible';
                     if (window.GGBQ.answerinput[id].val() == '') {
                         var responsestring = '';
                         window.GGBQ.responsevars[id].forEach(function (responsevar) {
@@ -179,7 +174,6 @@ define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GG
                     }
 
                     window.GGBQ.answerinput[i].val(responsestring);
-                    window.GGBQ.exerciseresultinput[i].val(JSON.stringify(ggbApplet.getExerciseResult()));
                 }
             }
         },
