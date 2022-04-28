@@ -1,15 +1,29 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
  * Test helpers for the geogebra question type.
  *
- * @package        qtype
- * @subpackage     geogebra
+ * @package        qtype_geogebra
  * @author         Christoph Stadlbauer <christoph.stadlbauer@geogebra.org>
  * @copyright  (c) International GeoGebra Institute 2014
  * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace qtype_geogebra;
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
@@ -22,6 +36,7 @@ class ggbstringsfortesting {
     public static $views = '{"is3D":false,"AV":false,"SV":false,"CV":false,"EV2":false,"CP":false,"PC":false,"DA":false,"FI":false,
         "PV":false,"macro":false}';
     public static $pointparameters = 'asd'; // This isn't a ggbBase64 string but it's ok for testing...
+    // phpcs:disable
 
     public static $pointxml = GGBTESTINGXML;
 /*    public static $pointxml = <<<EOT
@@ -136,5 +151,5 @@ class ggbstringsfortesting {
  </construction>
  </geogebra>
 EOT;*/
-
+// phpcs:enable
 }

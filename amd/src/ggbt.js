@@ -31,7 +31,6 @@ define(['jquery', 'qtype_geogebra/deployggb'], function($, GGBApplet) {
                 if (typeof (this.ggbcheckb) == "undefined") {
                     var applet = document.ggbApplet;
                     $('input[name="ggbxml"]').val(applet.getXML());
-                    $('input[name="ggbexercise"]').val(JSON.stringify(applet.getExerciseResult()));
 
                     var randomizedvar = document.getElementById('id_randomizedvar');
                     if (!randomizedvar.value) {
@@ -322,7 +321,6 @@ define(['jquery', 'qtype_geogebra/deployggb'], function($, GGBApplet) {
                     window.GGBT.parameters.moodle = "editingQuestionOrSubmission";
                     window.applet1 = new GGBApplet(window.GGBT.parameters, true);
                     // window.applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
-                    window.applet1.setHTML5Codebase(GGBcodebase);
                     window.applet1.inject("applet_container1");
                 };
 

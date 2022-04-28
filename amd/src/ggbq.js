@@ -42,6 +42,26 @@ define(['jquery', 'qtype_geogebra/deployggb'], function ($, GGBApplet) {
                 }), 250);
     };
 
+    const scalingContainers = {};
+    let resizeTimeout;
+    /**
+     * Resizes the ggb scaling containers to make the ggb applet scale properly to fit into its container.
+     */
+    const resizeScalingContainer = () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(
+            () => Object.values(scalingContainers).forEach((containerClass) => {
+                    // We need to use getElementsByClassName because colons are not allowed for jquery and Vanilla JS querySelector.
+                    const scalingContainer = document.getElementsByClassName(containerClass)[0];
+                    // We retrieve the formulation div container, because this gives us the correct width to adapt
+                    // the scaling container to.
+                    const formulationDivStyle = window.getComputedStyle(
+                        scalingContainer.querySelector('.qtext').parentElement.parentElement);
+                    scalingContainer.style.width = parseInt(formulationDivStyle.width)
+                        - parseInt(formulationDivStyle.paddingLeft) - parseInt(formulationDivStyle.paddingRight) + 'px';
+                }), 250);
+    };
+
     return {
         b64input: [],
         ggbBase64: [],
@@ -82,13 +102,8 @@ define(['jquery', 'qtype_geogebra/deployggb'], function ($, GGBApplet) {
 
                     window.GGBQ.b64input[id].val(ggbApplet.getBase64());
                     window.GGBQ.xmlinput[id].val(ggbApplet.getXML());
-                    var numvars = ggbApplet.startExercise();
-                    for (var key in numvars) {
-                        window.GGBQ.qdiv[id].innerHTML =
-                            window.GGBQ.qdiv[id].innerHTML.replace("{" + key + "}", numvars[key]);
-                    }
-                    window.GGBQ.qdiv[id].style.visibility = 'visible';
 
+                    window.GGBQ.qdiv[id].style.visibility = 'visible';
                     if (window.GGBQ.answerinput[id].val() == '') {
                         var responsestring = '';
                         window.GGBQ.responsevars[id].forEach(function (responsevar) {
@@ -117,7 +132,7 @@ define(['jquery', 'qtype_geogebra/deployggb'], function ($, GGBApplet) {
             }
 
             // Check if width and height have been manually set. The default would be "no", so we use the scaling container feature.
-            if ((!ggbDataset.width || ggbDataset.width === '0') && (!ggbDataset.height || ggbDataset.height === '0')) {
+            if (!ggbDataset.forcedimensions || ggbDataset.forcedimensions === '0') {
                 parameters.scaleContainerClass = scalingContainers[slot];
                 parameters.autoHeight = true;
             } else {
@@ -188,7 +203,6 @@ define(['jquery', 'qtype_geogebra/deployggb'], function ($, GGBApplet) {
                     }
 
                     window.GGBQ.answerinput[i].val(responsestring);
-                    window.GGBQ.exerciseresultinput[i].val(JSON.stringify(ggbApplet.getExerciseResult()));
                 }
             }
         },

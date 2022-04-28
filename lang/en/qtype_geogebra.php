@@ -1,10 +1,23 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
  * Strings for component 'qtype_geogebra'
  *
- * @package        qtype
- * @subpackage     geogebra
+ * @package        qtype_geogebra
  * @author         Christoph Stadlbauer <christoph.stadlbauer@geogebra.org>
  * @copyright  (c) International GeoGebra Institute 2014
  * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -17,6 +30,9 @@ $string['answermissing'] = 'The answer in the response is missing. Probably Java
 $string['answervar'] = 'Variables for automatic grading';
 $string['answervar_help'] = 'For automatic grading: A name of a boolean object in GeoGebra which is true if the student solved the question (partly). Sums up all grades for all boolean variables. The question is correct if any combination exceeds 100%, but there should be at least one combination which sums up to exactly 100%. Leave blank for manual grading.';
 $string['applet_advanced_settings'] = 'Advanced Settings...';
+$string['forcedimensions'] = 'Force applet dimensions';
+$string['forcedimensions_help'] = 'By default the GeoGebra applet is being scaled automatically into the quiz layout. Enabling this option will allow you to specify width and height of the plugin manually and disable automatic scaling.';
+$string['forcedimensionsenable'] = 'Specify width and height manually';
 $string['constraints'] = 'Constraints (conditions)';
 $string['constraints_help'] = 'Are there any constraints for variables, such as a < b, which could not be declared using the slider options? Comma separated. Supported relations are: <, <=, >, >=. If you need an equality you have to use the same variable when creating the GeoGebra worksheet. Dynamic ranges, ie using variables for slider min/max are not supported.';
 $string['constraintswrongortoohard'] = '{$a->inequalities} are wrong or too hard to meet, we tried (brute force) {$a->tries} times in {$a->time} seconds. Maybe we\'ll use a better method in the future...';
@@ -33,6 +49,7 @@ $string['ggbturl'] = 'URL or ID of GeoGebra Worksheet';
 $string['ggbturl_help'] = 'You could either use the share button on GeoGebra and copy and paste the link or use the GeoGebra repository. The applet and parameters are stored in the database, the applet will not be reloaded from GeoGebra unless requested. Just providing the ID or sharing key of the Applet is also supported.';
 $string['ggbxmlmissing'] = 'The XML string in the response is missing. Probably JavaScript isn\'t turned on in the Browser or an unknown error occurred';
 $string['height'] = 'Height';
+$string['heightnotzero'] = 'You have to specify a value greater than zero for the height';
 $string['height_help'] = 'By default the GeoGebra applet will be scaled automatically to fit the quiz layout. If for some reasons this does not fit your needs, you can specify width and height manually. If the values are too high students will see a scrollbar on small screens to display the full applet.';
 $string['invalidinequality'] = '{$a} is invalid';
 $string['isexercise'] = 'Use GeoGebra-Exercise for checking the question';
@@ -64,5 +81,6 @@ $string['variablenamewrong'] = 'A variable with that name could not be found in 
 $string['variableno'] = 'Variable {$a}';
 $string['variables'] = 'Variables';
 $string['width'] = 'Width';
+$string['widthnotzero'] = 'You have to specify a value greater than zero for the width';
 $string['width_help'] = 'By default the GeoGebra applet will be scaled automatically to fit the quiz layout. If for some reasons this does not fit your needs, you can specify width and height manually. If the values are too high students will see a scrollbar on small screens to display the full applet.';
 $string['willbereadfromfile'] = 'Will be read from GeoGebra... (see help button)';

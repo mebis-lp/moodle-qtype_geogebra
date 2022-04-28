@@ -1,10 +1,23 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
  * GeoGebra question type
  *
- * @package        qtype
- * @subpackage     geogebra
+ * @package        qtype_geogebra
  * @author         Christoph Stadlbauer <christoph.stadlbauer@geogebra.org>
  * @copyright  (c) International GeoGebra Institute 2014
  * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -30,13 +43,13 @@ class qtype_geogebra extends question_type {
      */
     public function extra_question_fields() {
         return array('qtype_geogebra_options', 'ggbturl', 'ggbparameters', 'ggbviews', 'ggbcodebaseversion', 'ggbxml',
-                'israndomized', 'randomizedvar', 'constraints', 'isexercise', 'width', 'height');
+                'israndomized', 'randomizedvar', 'constraints', 'isexercise', 'forcedimensions', 'width', 'height');
     }
 
     /**
      * Saves question-type specific options
      *
-     * This is called by {@link save_question()} to save the question-type specific data
+     * This is called by {@see save_question()} to save the question-type specific data
      *
      * Always saved question options and if present saves the question answers and hints
      *
@@ -96,7 +109,7 @@ class qtype_geogebra extends question_type {
         return true;
     }
 
-    //TODO not correct if autochecking enabled
+    // TODO not correct if autochecking enabled.
     /**
      * This method should return all the possible types of response that are
      * recognised for this question.
@@ -116,11 +129,11 @@ class qtype_geogebra extends question_type {
         // There are no possible answers which can be calculated if answers array is empty i.e. question is manually graded.
         if (empty($questiondata->options->answers)) {
             if ($questiondata->options->isexercise) {
-                return array($questiondata->id => array(null => new question_possible_response("Response graded automatically", null)));
+                return array($questiondata->id =>
+                    array(null => new question_possible_response("Response graded automatically", null)));
             }
             return array($questiondata->id => array(null => new question_possible_response("Response graded manually", null)));
         }
-
 
         $responses = array();
         /*
