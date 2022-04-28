@@ -42,26 +42,6 @@ define(['jquery', 'qtype_geogebra/deployggb'], function ($, GGBApplet) {
                 }), 250);
     };
 
-    const scalingContainers = {};
-    let resizeTimeout;
-    /**
-     * Resizes the ggb scaling containers to make the ggb applet scale properly to fit into its container.
-     */
-    const resizeScalingContainer = () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(
-            () => Object.values(scalingContainers).forEach((containerClass) => {
-                    // We need to use getElementsByClassName because colons are not allowed for jquery and Vanilla JS querySelector.
-                    const scalingContainer = document.getElementsByClassName(containerClass)[0];
-                    // We retrieve the formulation div container, because this gives us the correct width to adapt
-                    // the scaling container to.
-                    const formulationDivStyle = window.getComputedStyle(
-                        scalingContainer.querySelector('.qtext').parentElement.parentElement);
-                    scalingContainer.style.width = parseInt(formulationDivStyle.width)
-                        - parseInt(formulationDivStyle.paddingLeft) - parseInt(formulationDivStyle.paddingRight) + 'px';
-                }), 250);
-    };
-
     return {
         b64input: [],
         ggbBase64: [],

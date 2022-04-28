@@ -524,9 +524,6 @@ class qtype_geogebra_edit_form extends question_edit_form {
 
         $mform->addElement('html', '<div class="form-group row  fitem" id="applet_container1_fitem"><div class="col-md-3">'
             . get_string('geogebraapplet', 'qtype_geogebra').'</div><div id="applet_container1" class="felement"></div></div>');
-            '<div class="form-group row  fitem" id="applet_container1_fitem"><div class="col-md-3">'.
-                get_string('geogebraapplet', 'qtype_geogebra').
-            '</div><div id="applet_container1" class="felement"></div></div>');
 
         $lang = current_language();
 

@@ -248,25 +248,19 @@ class qtype_geogebra_question extends question_graded_automatically {
      * @return string a plain text summary of that response, that could be used in reports.
      */
     public function summarise_response(array $response) {
-
-//        print_object($response);
-//        die();
-
         if (empty($this->answers) && !$this->isexercise) {
             return "Response graded manually";
         } else {
-            $resp_answer_value = $response['answer']; // binary string left to right, each place stands for correctness of one answer
-            // no answer has been given.
-            if ($resp_answer_value === '' && !$this->isexercise) {
+            $resp = $response['answer'];
+            if ($resp === '' && !$this->isexercise) {
                 return get_string('noresponse', 'question');
-            } else { // there is an answer
+            } else {
                 if (!$this->isexercise) {
                     $j = 0;
                     $fraction = 0;
                     $summary = '';
                     foreach ($this->answers as $answer) {
-                        // binary to boolean conversion
-                        $correct = (bool)substr($resp_answer_value, $j, 1);
+                        $correct = (bool)substr($resp, $j, 1);
                         if ($summary !== '') {
                             $summary .= ', ';
                         }
@@ -274,7 +268,7 @@ class qtype_geogebra_question extends question_graded_automatically {
                         if ($correct) {
                             $fraction += $answer->fraction;
                             $summary .= 'true' . ', ' . get_string('grade', 'grades') . ': ' .
-                                    format_float($answer->fraction, 2, false, false);
+                                format_float($answer->fraction, 2, false, false);
                         } else {
                             $summary .= 'false' . ', ' . get_string('grade', 'grades') . ': 0';
                         }
@@ -292,7 +286,7 @@ class qtype_geogebra_question extends question_graded_automatically {
                     foreach ($result as $key => $res) {
                         if (is_array($res)) {
                             $summary .= $key . '=' . $res['result'] . ': ' .
-                                    format_float($res['fraction'], 2, false, false);;
+                                format_float($res['fraction'], 2, false, false);;
                         } else {
                             $summary .= '; ' . get_string('total', 'grades') . ': ' . $res;
                         }
