@@ -1,10 +1,23 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
  * Defines the editing form for the geogebra question type.
  *
- * @package        qtype
- * @subpackage     geogebra
+ * @package        qtype_geogebra
  * @author         Christoph Stadlbauer <christoph.stadlbauer@geogebra.org>
  * @copyright  (c) International GeoGebra Institute 2014
  * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -30,8 +43,6 @@ class qtype_geogebra_edit_form extends question_edit_form {
 
     /** @var string URL of Geogebra Applet to be loaded from a external server */
     public $ggbturl;
-
-//    public $deployscript = '<script type="text/javascript" src="https://www.geogebra.org/scripts/deployggb.js"></script>';
 
     /** @var string in format ggbBase64, contains parameters for all the Geogebra Objects*/
     public $ggbparameters;
@@ -136,13 +147,20 @@ class qtype_geogebra_edit_form extends question_edit_form {
         $mform->addElement('selectyesno', 'isexercise', get_string('isexercise', 'qtype_geogebra'));
         $mform->addHelpButton('isexercise', 'isexercise', 'qtype_geogebra');
 
+        $mform->addElement('advcheckbox', 'forcedimensions', get_string('forcedimensionsenable', 'qtype_geogebra'),
+            get_string('forcedimensions', 'qtype_geogebra'));
+
+        $mform->setDefault('forcedimensions', 0);
+
         $mform->addElement('text', 'width', get_string('width', 'qtype_geogebra'));
         $mform->setType('width', PARAM_INT);
         $mform->addHelpButton('width', 'width', 'qtype_geogebra');
+        $mform->hideIf('width', 'forcedimensions');
 
         $mform->addElement('text', 'height', get_string('height', 'qtype_geogebra'));
         $mform->setType('height', PARAM_INT);
         $mform->addHelpButton('height', 'height', 'qtype_geogebra');
+        $mform->hideIf('height', 'forcedimensions');
 
         $this->add_per_answer_fields($mform, get_string('variableno', 'qtype_geogebra', '{no}'),
                 question_bank::fraction_options(), 4, 1);
@@ -204,7 +222,7 @@ class qtype_geogebra_edit_form extends question_edit_form {
             $this->check_is_exercise_present($data, $errors);
         }
 
-        $this->check_width_and_height_present($data, $errors);
+        $this->check_force_dimensions($data, $errors);
 
         return $errors;
     }
@@ -237,20 +255,11 @@ class qtype_geogebra_edit_form extends question_edit_form {
         $args->elementname = $elementname;
         $args->env = 'ggbt';
         $args->lang = current_language();
-        // Is $args->type = 'geogebratube'; //not working?
         $fp = new file_picker($args);
         $options = $fp->options;
 
         // Print out file picker.
-        $str = $OUTPUT->render($fp);
-
-        //$module = array('name'     => 'form_ggbt',
-         //               'fullpath' => new moodle_url($CFG->wwwroot . '/question/type/geogebra/ggbt.js'),
-         //               'requires' => array('core_filepicker'));
-        //$PAGE->requires->js_init_call('M.form_ggbt.init', array($options), true, $module);
-
-
-        return $str;
+        return $OUTPUT->render($fp);
     }
 
     /**
@@ -271,10 +280,15 @@ class qtype_geogebra_edit_form extends question_edit_form {
      * @param $data
      * @param $errors
      */
-    private function check_width_and_height_present($data, &$errors) {
-        if (empty($data['width']) && !empty($data['height']) || !empty($data['width']) && empty($data['height'])) {
-            $errors['width'] = get_string('onlywidthorheight', 'qtype_geogebra');
-            $errors['height'] = get_string('onlywidthorheight', 'qtype_geogebra');
+    private function check_force_dimensions($data, &$errors) {
+        if (!empty($data['forcedimensions'])) {
+            // If forcedimensions is being activated, height and width both must not be empty or zero.
+            if (empty($data['width'])) {
+                $errors['width'] = get_string('widthnotzero', 'qtype_geogebra');
+            }
+            if (empty($data['height'])) {
+                $errors['height'] = get_string('heightnotzero', 'qtype_geogebra');
+            }
         }
     }
 
@@ -508,45 +522,20 @@ class qtype_geogebra_edit_form extends question_edit_form {
         $mform->addHelpButton('loadappletgroup', 'loadapplet', 'qtype_geogebra');
         $mform->disabledIf('loadappletgroup', 'usefile', 'checked');
 
-        //$mform->addElement('html', $this->deployscript);
-
-        $mform->addElement('html',
+        $mform->addElement('html', '<div class="form-group row  fitem" id="applet_container1_fitem"><div class="col-md-3">'
+            . get_string('geogebraapplet', 'qtype_geogebra').'</div><div id="applet_container1" class="felement"></div></div>');
             '<div class="form-group row  fitem" id="applet_container1_fitem"><div class="col-md-3">'.
                 get_string('geogebraapplet', 'qtype_geogebra').
             '</div><div id="applet_container1" class="felement"></div></div>');
 
         $lang = current_language();
 
-
         if (!empty($this->ggbparameters) && !empty($this->ggbviews) && !empty($this->ggbcodebaseversion)) {
-//            $options = array('parameters'          => $this->ggbparameters,
-//                'views'               => $this->ggbviews,
-//                'codebase'            => $this->ggbcodebaseversion,
-//                'html5NoWebSimple'    => true,
-//                //'div'                 => $ggbdivname,
-//                //'vars'                => $question->currentvals,
-//                //'b64input'            => $b64inputname,
-//                //'xmlinput'            => $xmlinputname,
-//                //'answerinput'         => $answerinputname,
-//                //'exerciseresultinput' => $exerciseinputname,
-//                //'responsevars'        => $responsevars,
-//                //'slot'                => $qa->get_slot(),
-//                'lang'                => current_language()
-//            );
-//<script type="text/javascript">
-//    var parameters = $this->ggbparameters;
-//    parameters.language = "$lang";
-//    parameters.useBrowserForJS = false;
-//    delete parameters.material_id;
-//    parameters.moodle = "editingQuestion";
-//    var views = $this->ggbviews;
-//    var applet1 = new GGBApplet(parameters, views, true);
-//</script>
 
 // BAD CODE
 $applet = <<<EOD
 <article id="applet_parameters"
-  data-parameters=$this->ggbparameters 
+  data-parameters=$this->ggbparameters
   data-views=$this->ggbviews
   data-codebase=$this->ggbcodebaseversion
   data-lang=$lang
@@ -570,35 +559,35 @@ EOD;
 
     private function add_applet_options($mform) {
 
-        $applet_advanced_settings = get_string('applet_advanced_settings', 'qtype_geogebra');
-        $enable_label_drags = get_string('enable_label_drags', 'qtype_geogebra');
-        $enable_right_click = get_string('enable_right_click', 'qtype_geogebra');
-        $enable_shift_drag_zoom = get_string('enable_shift_drag_zoom', 'qtype_geogebra');
-        $show_algebra_input = get_string('show_algebra_input', 'qtype_geogebra');
-        $show_menu_bar = get_string('show_menu_bar', 'qtype_geogebra');
-        $show_reset_icon = get_string('show_reset_icon', 'qtype_geogebra');
-        $show_tool_bar = get_string('show_tool_bar', 'qtype_geogebra');
+        $appletadvancedsettings = get_string('applet_advanced_settings', 'qtype_geogebra');
+        $enablelabeldrags = get_string('enable_label_drags', 'qtype_geogebra');
+        $enablerightclick = get_string('enable_right_click', 'qtype_geogebra');
+        $enableshiftdragzoom = get_string('enable_shift_drag_zoom', 'qtype_geogebra');
+        $showalgebrainput = get_string('show_algebra_input', 'qtype_geogebra');
+        $showmenubar = get_string('show_menu_bar', 'qtype_geogebra');
+        $showreseticon = get_string('show_reset_icon', 'qtype_geogebra');
+        $showtoolbar = get_string('show_tool_bar', 'qtype_geogebra');
 
         $options = <<<HTML
 <div id='applet_options' class="form-group row  fitem"><div class="col-md-3">
-<div class="fitemtitle"><label for="applet_options">$applet_advanced_settings</label></div>
+<div class="fitemtitle"><label for="applet_options">$appletadvancedsettings</label></div>
 </div>
 <div  class="fitem col-md-9 felement" >
     <fieldset class="felement fgroup">
         <input type="checkbox" id="enableRightClick" name="enableRightClick" value="1">
-        <label for="enableRightClick">$enable_right_click</label><br>
+        <label for="enableRightClick">$enablerightclick</label><br>
         <input type="checkbox" id="enableLabelDrags" name="enableLabelDrags" value="1">
-        <label for="enableLabelDrags">$enable_label_drags</label><br>
+        <label for="enableLabelDrags">$enablelabeldrags</label><br>
         <input type="checkbox" id="showResetIcon" name="showResetIcon" value="1" checked="checked">
-        <label for="showResetIcon">$show_reset_icon</label><br>
+        <label for="showResetIcon">$showreseticon</label><br>
         <input type="checkbox" id="enableShiftDragZoom" name="enableShiftDragZoom" value="1" checked="checked">
-        <label for="enableShiftDragZoom">$enable_shift_drag_zoom</label><br>
+        <label for="enableShiftDragZoom">$enableshiftdragzoom</label><br>
         <input type="checkbox" id="showMenuBar" name="showMenuBar" value="1">
-        <label for="showMenuBar">$show_menu_bar</label><br>
+        <label for="showMenuBar">$showmenubar</label><br>
         <input type="checkbox" id="showToolBar" name="showToolBar" value="1">
-        <label for="showToolBar">$show_tool_bar</label><br>
+        <label for="showToolBar">$showtoolbar</label><br>
         <input type="checkbox" id="showAlgebraInput" name="showAlgebraInput" value="1">
-        <label for="showAlgebraInput">$show_algebra_input</label><br>
+        <label for="showAlgebraInput">$showalgebrainput</label><br>
     </fieldset>
 </div>
 </div>
@@ -619,32 +608,20 @@ HTML;
                  * and displays the applet on return.
                  */
         $ggbturlinput = array();
-        $clientid = uniqid();
-        //$fp = $this->initggtfilpicker($clientid, 'ggbturl');
-        //$ggbtrepo = repository::get_type_by_typename('geogebratube');
-//        if ($ggbtrepo) {
-//
-//            $ggbturlinput[] =& $mform->createElement('html', $fp);
-//            $ggbturlinput[] =& $mform->createElement('button', 'filepicker-button-' . $clientid, get_string('choosealink',
-//                    'repository'));
-//        }
         $ggbturlinput[] =& $mform->createElement('text', 'ggbturl', '', array('size' => '20'));
         $mform->setType('ggbturl', PARAM_RAW_TRIMMED);
         $mform->addGroup($ggbturlinput, 'ggbturlinput', get_string('ggbturl', 'qtype_geogebra'), array(' '), false);
 
         $mform->addHelpButton('ggbturlinput', 'ggbturl', 'qtype_geogebra');
-//        if ($ggbtrepo) {
-//
-//            $mform->disabledIf('filepicker-button-' . $clientid, 'usefile', 'checked');
-//        }
-        $mform->addElement('checkbox', 'usefile', get_string('useafile', 'qtype_geogebra'), get_string('dragndrop', 'qtype_geogebra'));
+        $mform->addElement('checkbox', 'usefile', get_string('useafile', 'qtype_geogebra'),
+            get_string('dragndrop', 'qtype_geogebra'));
         if (!empty($this->ggbparameters) && empty($this->ggbturl)) {
             $mform->setDefault('usefile', true);
         }
     }
 
     private function check_is_exercise_present($data, $errors) {
-        if($data['isexercise']) {
+        if ($data['isexercise']) {
             $data;
         }
     }

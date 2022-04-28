@@ -1,21 +1,32 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
  * GeoGebra question renderer class.
  *
- * @package        qtype
- * @subpackage     geogebra
+ * @package        qtype_geogebra
  * @author         Christoph Stadlbauer <christoph.stadlbauer@geogebra.org>
  * @copyright  (c) International GeoGebra Institute 2014
  * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-defined('MOODLE_INTERNAL') || die ();
 
 /**
  * Generates the output for geogebra questions.
  */
-class qtype_geogebra_renderer extends qtype_renderer
-{
+class qtype_geogebra_renderer extends qtype_renderer {
 
     /**
      * Generate the display of the formulation part of the question. This is the
@@ -29,15 +40,12 @@ class qtype_geogebra_renderer extends qtype_renderer
      * @param question_display_options $options controls what should and should not be displayed.
      * @return string HTML fragment.
      */
-    public function formulation_and_controls(question_attempt $qa, question_display_options $options)
-    {
-        global $PAGE, $CFG;
-        //$PAGE->requires->js(new moodle_url('https://cdn.geogebra.org/apps/deployggb.js'));
+    public function formulation_and_controls(question_attempt $qa, question_display_options $options) {
 
         $scalingcontainerclass = $qa->get_qt_field_name('scalingcontainer');
         $result = html_writer::start_div($scalingcontainerclass);
 
-        /* @var $question qtype_geogebra_question */
+        /* @var $question qtype_geogebra_question the question object */
         $question = $qa->get_question();
 
         $b64current = $qa->get_last_qt_var('ggbbase64');
@@ -121,13 +129,14 @@ class qtype_geogebra_renderer extends qtype_renderer
         );
         $lang = current_language();
         $currentvals = json_encode($question->currentvals);
-        $responsevarsJSON = json_encode($responsevars);
+        $responsevarsjson = json_encode($responsevars);
         $slot = $qa->get_slot();
-        $appletParametersId = $qa->get_qt_field_name('applet_parameters');
+        $appletparametersid = $qa->get_qt_field_name('applet_parameters');
+        $forcedimensions = $question->forcedimensions ?: 0;
         $width = $question->width ?: 0;
         $height = $question->height ?: 0;
         $applet = <<<EOD
-<article id=$appletParametersId
+<article id=$appletparametersid
   data-parameters=$question->ggbparameters
   data-views=$question->ggbviews
   data-codebase=$question->ggbcodebaseversion
@@ -138,17 +147,17 @@ class qtype_geogebra_renderer extends qtype_renderer
   data-xmlinput=$xmlinputname
   data-answerinput=$answerinputname
   data-exerciseresultinput=$exerciseinputname
-  data-responsevars=$responsevarsJSON
+  data-responsevars=$responsevarsjson
   data-slot=$slot
   data-lang=$lang
+  data-forcedimensions=$forcedimensions
   data-width=$width
   data-height=$height
   data-scalingcontainerclass=$scalingcontainerclass
 </article>
 EOD;
         $result .= $applet;
-        $this->page->requires->js_call_amd('qtype_geogebra/ggbq', 'init', array($appletParametersId));//, array($options));
-        // $this->page->requires->js_call_amd('qtype_geogebra/ggbq', 'init', array($options));
+        $this->page->requires->js_call_amd('qtype_geogebra/ggbq', 'init', array($appletparametersid));
 
         if ($qa->get_state() == question_state::$invalid) {
             $result .= html_writer::nonempty_tag('div',
@@ -172,19 +181,18 @@ EOD;
      * @param question_attempt $qa the question attempt to display.
      * @return string HTML fragment.
      */
-    public function specific_feedback(question_attempt $qa)
-    {
-        /* @var $question qtype_geogebra_question */
+    public function specific_feedback(question_attempt $qa) {
+        /* @var $question qtype_geogebra_question the question object */
         $question = $qa->get_question();
         $feedback = '';
         if (!$qa->get_state()->is_gave_up()) {
             $itemid = 0;
             if ($question->isexercise) {
                 $exerciseresult = json_decode($qa->get_last_qt_var('exerciseresult'));
-                $singleCorrectIgnoreOthers = false;
+                $singlecorrectignoreothers = false;
                 foreach ($exerciseresult as $assignment) {
                     if (0.999 < $assignment->fraction) {
-                        $singleCorrectIgnoreOthers = true;
+                        $singlecorrectignoreothers = true;
                         if ($assignment->hint) {
                             if ($feedback) {
                                 $feedback .= "<br>";
@@ -195,7 +203,7 @@ EOD;
                     }
                 }
                 foreach ($exerciseresult as $assignment) {
-                    if (!$singleCorrectIgnoreOthers || $assignment->fraction < 0) {
+                    if (!$singlecorrectignoreothers || $assignment->fraction < 0) {
                         if ($assignment->hint) {
                             if ($feedback) {
                                 $feedback .= "<br>";

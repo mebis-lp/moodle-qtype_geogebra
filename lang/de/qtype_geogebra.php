@@ -1,10 +1,23 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
  * Strings for component 'qtype_geogebra'
  *
- * @package        qtype
- * @subpackage     geogebra
+ * @package        qtype_geogebra
  * @author         Christoph Stadlbauer <christoph.stadlbauer@geogebra.org>
  * @copyright  (c) International GeoGebra Institute 2014
  * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -17,6 +30,9 @@ $string['answermissing'] = 'Der Antwortstring fehlt in der Abgabe. Möglicherwei
 $string['answervar'] = 'Variablen für die automatische Bewertung';
 $string['answervar_help'] = 'Für die automatische Bewertung: Der Name jenes Wahrheitswertes in GeoGebra, der wahr ist, wenn der / die Lernende die Aufgabe (teilweise) korrekt gelöst hat. Es werden alle Bewertungen aufsummiert. Die Frage gilt als korrekt beantwortet wenn irgendeine Kombination 100% übersteigt, aber es sollte mindestens eine Kombination geben die genau 100% ergibt. Leer lassen für manuelle Bewertung!';
 $string['applet_advanced_settings'] = 'Erweiterte Einstellungen...';
+$string['forcedimensions'] = 'Applet-Größe festlegen';
+$string['forcedimensions_help'] = 'Das GeoGebra-Applet wird normalerweise in das Test-Layout skaliert. Durch Aktivieren dieser Option kann manuell eine fixe Breite und Höhe angegeben werden. Dies verhindert die automatische Skalierung.';
+$string['forcedimensionsenable'] = 'Breite und Höhe manuell angeben';
 $string['constraints'] = 'Bedingungen (Ungleichungen)';
 $string['constraints_help'] = 'Gibt es Bedingungen (Ungleichungen), welche die Variablen erfüllen müssen, z. B. a < b, welche nicht über die Einstellungen der Schieberegler eingegeben werden konnten? Diese müssen durch ein Komma getrennt werden. Unterstützte Ungleichungen sind <, <=, >, >=. Falls sie Gleichheit benötigen müssen sie in GeoGebra die gleiche Variable verwenden. Dynamische Bereiche, wie z. B. das Verwenden von Variablen für Min/Max von Schiebereglern wird von diesem Plugin nicht unterstützt.';
 $string['constraintswrongortoohard'] = '{$a->inequalities} sind ungültig oder erfordern zu viel Rechenleistung, we tried (brute force) {$a->tries} times in {$a->time} seconds. Maybe we\'ll use better math in the future...';
@@ -33,6 +49,7 @@ $string['ggbturl'] = 'URL oder ID des GeoGebra Worksheets';
 $string['ggbturl_help'] = 'Sie können entweder den Teilen Button in GeoGebra verwenden und den Link kopieren und einfügen oder die GeoGebra Repository verwenden. Das Applet wird vollständig in der Moodle Datenbank gespeichert. Das Applet wird nur von GeoGebra neu geladen wenn Sie den Button "Applet (neu) laden und anzeigen" klicken. Wenn Sie nur die ID oder Sharing Key verwenden sollte auch das richtige Applet geladen werden können.';
 $string['ggbxmlmissing'] = 'Der XML-String fehlt in der Abgabe. Möglicherweise ist JavaScript im Browser nicht aktiviert oder ein sonstiger unbekannter Fehler ist aufgetreten';
 $string['height'] = 'Höhe';
+$string['heightnotzero'] = 'Sie müssen einen Wert größer Null für die Höhe angeben';
 $string['height_help'] = 'Das GeoGebra-Applet wird normalerweise automatisch in das Layout des Tests skaliert. Falls Sie dies nicht wünschen, können Sie die Breite und Höhe des Applets manuell festlegen. Bei zu großen Werten wird der Benutzer Scroll-Balken sehen, um auf alle Elemente des Applets zugreifen zu können.';
 $string['invalidinequality'] = '{$a} ist ungültig';
 $string['isexercise'] = 'Integrierte Aufgabenprüfung von GeoGebra zur Fragenüberprüfung verwenden';
@@ -63,5 +80,6 @@ $string['variablenamewrong'] = 'Es konnte keine Variable mit diesem Namen im Geo
 $string['variableno'] = 'Variable {$a}';
 $string['variables'] = 'Variablen';
 $string['width'] = 'Breite';
+$string['widthnotzero'] = 'Sie müssen einen Wert größer Null für die Breite angeben';
 $string['width_help'] = 'Das GeoGebra-Applet wird normalerweise automatisch in das Layout des Tests skaliert. Falls Sie dies nicht wünschen, können Sie die Breite und Höhe des Applets manuell festlegen. Bei zu großen Werten wird der Benutzer Scroll-Balken sehen, um auf alle Elemente des Applets zugreifen zu können.';
 $string['willbereadfromfile'] = 'Wird aus GeoGebra gelesen... (siehe Hilfebutton)';
