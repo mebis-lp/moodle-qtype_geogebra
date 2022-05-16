@@ -149,7 +149,7 @@
                     } else {
                         var answer = $('#id_answer_' + i);
                         if (applet.getObjectType(strName) == "boolean") {
-                            if (answer !== null) {
+                            if (answer !== null && answer.length > 0) {
                                 if (!answer.val()) {
                                     answer.val(strName);
                                 }
@@ -166,9 +166,19 @@
         update_feedback: function(answernode) {
             var id = answernode.attr('id').split("_").pop();
             var varname = answernode.val();
+            if (!varname) {
+                // Should not happen, but make sure this function does not fail.
+                return;
+            }
             var feedback = $('input[name="feedback[' + id + ']"]');
             var feedbackfromfile = $('#id_feedbackfromfile_' + id);
-            var doc = $.parseXML(window.ggbApplet.getXML(varname));
+            const parser = new DOMParser();
+            const xml = window.ggbApplet.getXML(varname);
+            if (!xml) {
+                // Should not happen, but make sure this function does not fail.
+                return;
+            }
+            const doc = parser.parseFromString(xml, "text/xml");
             if (doc) {
                 var elem = doc.getElementsByTagName('caption');
                 var fbstring = '';
