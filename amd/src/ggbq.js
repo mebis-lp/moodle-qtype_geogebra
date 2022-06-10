@@ -37,12 +37,9 @@ define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GG
     return {
         b64input: [],
         ggbBase64: [],
-        xmlinput: [],
-        ggbxml: [],
         currentvals: [],
         answerinput: [],
         responsevars: [],
-        exerciseresultinput: [],
         qdiv: [],
         //parameters: {},
         ggbDataset: [],
@@ -73,7 +70,6 @@ define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GG
                     window.addEventListener('resize', resizeScalingContainer);
 
                     window.GGBQ.b64input[id].val(ggbApplet.getBase64());
-                    window.GGBQ.xmlinput[id].val(ggbApplet.getXML());
 
                     window.GGBQ.qdiv[id].style.visibility = 'visible';
                     if (window.GGBQ.answerinput[id].val() == '') {
@@ -94,8 +90,6 @@ define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GG
             this.b64input[slot] = $(document.getElementById(ggbDataset.b64input));
             this.ggbBase64[slot] = this.b64input[slot].val();
 
-            this.xmlinput[slot] = $(document.getElementById(ggbDataset.xmlinput));
-            this.ggbxml[slot] = this.xmlinput[slot].val();
             this.qdiv[slot] = $("#q" + (slot) + " .qtext")[0];
 
             var parameters = JSON.parse(ggbDataset.parameters);
@@ -142,7 +136,6 @@ define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GG
 
             this.currentvals[slot] = ggbDataset.vars;
             this.answerinput[slot] = $(document.getElementById(ggbDataset.answerinput));
-            this.exerciseresultinput[slot] = $(document.getElementById(ggbDataset.exerciseresultinput));
             this.responsevars[slot] = JSON.parse(ggbDataset.responsevars);
         },
         checkEnter: function(e) {
@@ -157,7 +150,6 @@ define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GG
                 var ggbApplet = window['ggbApplet' + i];
                 if (typeof ggbApplet !== "undefined") {
                     window.GGBQ.b64input[i].val(ggbApplet.getBase64());
-                    window.GGBQ.xmlinput[i].val(ggbApplet.getXML());
 
                     // Workaround, to set all randomized variables.
                     for (const [key, value] of Object.entries(window.GGBQ.ggbDatasetVars)) {
@@ -177,6 +169,5 @@ define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GG
                 }
             }
         },
-
     };
 });

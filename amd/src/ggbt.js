@@ -21,8 +21,6 @@
                 $('input[name="ggbcodebaseversion"]').val(window.applet1.getHTML5CodebaseVersion());
 
                 if (typeof (this.ggbcheckb) == "undefined") {
-                    var applet = document.ggbApplet;
-                    $('input[name="ggbxml"]').val(applet.getXML());
 
                     var randomizedvar = document.getElementById('id_randomizedvar');
                     if (!randomizedvar.value) {
