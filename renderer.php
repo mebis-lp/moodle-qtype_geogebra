@@ -61,6 +61,18 @@ class qtype_geogebra_renderer extends qtype_renderer {
 
         $result .= html_writer::empty_tag('input', $b64inputattributes);
 
+        $xmlinputname = $qa->get_qt_field_name('ggbxml');
+
+        $xmlinputattributes = array(
+            'type' => 'hidden',
+            'name' => $xmlinputname,
+            'value' => '', // Value is being extracted from base64 by JS module.
+            'id' => $xmlinputname,
+            'size' => 80,
+        );
+
+        $result .= html_writer::empty_tag('input', $xmlinputattributes);
+
         $answercurrent = $qa->get_last_qt_var('answer');
         $answerinputname = $qa->get_qt_field_name('answer');
 
@@ -118,6 +130,7 @@ class qtype_geogebra_renderer extends qtype_renderer {
   data-div=$ggbdivname
   data-vars=$currentvals
   data-b64input=$b64inputname
+  data-xmlinput=$xmlinputname
   data-answerinput=$answerinputname
   data-responsevars=$responsevarsjson
   data-slot=$slot

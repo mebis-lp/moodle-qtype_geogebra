@@ -329,10 +329,8 @@ class qtype_geogebra_edit_form extends question_edit_form {
             // Check if all vars in constraints are part of randomized vars.
             if (count($errors) === 0) {
                 foreach ($inequalitystrings as $inequalitystring) {
-                    // TODO We need to decode from base64 here to get to the xml we do not save anymore.
-                    // TODO Maybe we can also refactor the whole way of checking the validness for randomizedvars.
                     if (!qtype_geogebra_question_helper::is_valid_inequality_for_randomizedvars($inequalitystring,
-                            $data['randomizedvar'], $data['ggbxml'])
+                            $data['randomizedvar'])
                     ) {
                         if (!isset($errors['constraints'])) {
                             $errors['constraints'] = '';
@@ -347,8 +345,6 @@ class qtype_geogebra_edit_form extends question_edit_form {
             // Check if constraints are within the sliders min and max.
             if (count($errors) === 0) {
                 foreach ($inequalitystrings as $inequalitystring) {
-                    // TODO We need to decode from base64 here to get to the xml we do not save anymore.
-                    // TODO Maybe we can also refactor the whole way of checking the inequality of slider min max.
                     if (!qtype_geogebra_question_helper::is_valid_inequality_for_slider_minmax($inequalitystring,
                             $data['randomizedvar'], $data['ggbxml'])
                     ) {
@@ -364,7 +360,6 @@ class qtype_geogebra_edit_form extends question_edit_form {
             }
             // Check if constraints can be met i.e. are not contradictory or to hard to meet with random numbers.
             if (count($errors) === 0) {
-                // TODO Refactor xml to base64
                 $vars = qtype_geogebra_question_helper::get_variables_with_minmaxstep($data['randomizedvar'], $data['ggbxml']);
                 $inequalities = array();
                 foreach ($inequalitystrings as $inequalitystring) {
@@ -387,7 +382,6 @@ class qtype_geogebra_edit_form extends question_edit_form {
 
         if (isset($data['answer'])) {
             $i = 0;
-            // TODO rework to base64 instead of xml
             $xml = simplexml_load_string($data['ggbxml']);
             foreach ($data['answer'] as $label) {
                 if (!empty($label)) {
@@ -466,6 +460,11 @@ class qtype_geogebra_edit_form extends question_edit_form {
 
         $mform->addElement('hidden', 'ggbcodebaseversion');
         $mform->setType('ggbcodebaseversion', PARAM_RAW);
+
+        // We need the XML injected by the GGB API function to be able to access GGB objects and values from PHP side. However,
+        // we do not use the XML representation to store the GGB applet itself, but rely on base64.
+        $mform->addElement('hidden', 'ggbxml');
+        $mform->setType('ggbxml', PARAM_RAW);
     }
 
     /**
