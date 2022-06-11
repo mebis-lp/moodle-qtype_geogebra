@@ -9,7 +9,7 @@
  * @copyright  (c) International GeoGebra Institute 2018
  * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GGBApplet) {
+define(['jquery', 'https://www.geogebra.org/apps/deployggb.js', 'qtype_geogebra/ggbutils'], function($, GGBApplet, ggbutils) {
     /**
      * Created by Christoph on 25.08.19.
      */
@@ -136,7 +136,9 @@ define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GG
             // applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
             applet1.inject(ggbDataset.div, "preferHTML5");
 
-            $('#responseform').on('submit', this.getBase64andCheck);
+            document.getElementById('responseform').addEventListener('submit', this.getBase64andCheck);
+
+            ggbutils.disableSubmitButtons(document.getElementById(ggbDataset.div));
 
             $(document.getElementById(ggbDataset.div)).on('mouseleave', this.getBase64andCheck);
 
@@ -172,7 +174,6 @@ define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GG
                             responsestring += 0;
                         }
                     }
-
                     window.GGBQ.answerinput[i].val(responsestring);
                 }
             }

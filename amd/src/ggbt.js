@@ -7,7 +7,7 @@
  * @copyright  (c) International GeoGebra Institute 2018
  * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
- define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GGBApplet) {
+ define(['jquery', 'https://www.geogebra.org/apps/deployggb.js', 'qtype_geogebra/ggbutils'], function($, GGBApplet, ggbutils) {
     /**
      * Created by Christoph on 25.08.19.
      */
@@ -48,6 +48,8 @@
                     document.getElementById('applet_options').style.display = "flex";
                 }
             };
+
+            ggbutils.disableSubmitButtons(document.getElementById('applet_container1'));
 
             if ($('#applet_parameters')[0] !== undefined) {
                 this.ggbDataset = $('#applet_parameters')[0].dataset;
@@ -132,7 +134,6 @@
             // window.applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
 
             window.applet1.inject("applet_container1", "preferHTML5");
-
         },
 
         getrandvars: function() {
