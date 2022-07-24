@@ -17,13 +17,16 @@
             window.GGBT = this;
             window.ggbAppletOnLoad = function() {
                 $('input[name="ggbparameters"]').val(JSON.stringify(window.applet1.getParameters()));
+
                 $('input[name="ggbviews"]').val(JSON.stringify(window.applet1.getViews()));
                 $('input[name="ggbcodebaseversion"]').val(window.applet1.getHTML5CodebaseVersion());
+                let ggbParams = JSON.parse($('input[name="ggbparameters"]').val());
+                ggbParams = Object.assign(ggbParams, {'ggbBase64': document.ggbApplet.getBase64()});
+                $('input[name="ggbparameters"]').val(JSON.stringify(ggbParams));
 
                 if (typeof (this.ggbcheckb) == "undefined") {
                     var applet = document.ggbApplet;
-                    console.log($('input[name="ggbxml"]'));
-                    $('input[name="ggbxml"]').val(applet.getXML());
+                    $('input[name="ggbbase64"]').val(applet.getBase64());
 
                     var randomizedvar = document.getElementById('id_randomizedvar');
                     if (!randomizedvar.value) {
@@ -173,28 +176,15 @@
             }
             var feedback = $('input[name="feedback[' + id + ']"]');
             var feedbackfromfile = $('#id_feedbackfromfile_' + id);
-            const parser = new DOMParser();
-            const xml = window.ggbApplet.getXML(varname);
-            if (!xml) {
-                // Should not happen, but make sure this function does not fail.
-                return;
-            }
-            const doc = parser.parseFromString(xml, "text/xml");
-            if (doc) {
-                var elem = doc.getElementsByTagName('caption');
-                var fbstring = '';
-                if (elem.length == 1) {
-                    fbstring = elem[0].getAttribute('val');
-                    feedback.val(fbstring);
-                } else if (elem.length > 1) {
-                    feedback.val('');
-                    fbstring = '';
-                } else {
-                    feedback.val('');
-                    //this is rather an error condition but should be checked by the server
-                    fbstring = 'Caption not set or variable name wrong.';
-                }
-                feedbackfromfile.val(fbstring);
+
+            let feedbackstring = document.ggbApplet.getCaption(varname, true);
+            if (feedbackstring) {
+                feedback.val(feedbackstring);
+                feedbackfromfile.val(feedbackstring);
+            } else {
+                // TODO substitute magic string
+                feedback.val('');
+                feedbackfromfile.val('Caption not set or variable name wrong.');
             }
         },
 
