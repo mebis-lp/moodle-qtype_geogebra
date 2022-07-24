@@ -42,8 +42,8 @@ class qtype_geogebra extends question_type {
      * @return mixed array as above, or null to tell the base class to do nothing.
      */
     public function extra_question_fields() {
-        return array('qtype_geogebra_options', 'ggbturl', 'ggbparameters', 'ggbviews', 'ggbcodebaseversion', 'ggbxml',
-                'israndomized', 'randomizedvar', 'constraints', 'isexercise', 'forcedimensions', 'width', 'height');
+        return array('qtype_geogebra_options', 'ggbturl', 'ggbparameters', 'ggbviews', 'ggbcodebaseversion',
+                'israndomized', 'randomizedvar', 'constraints', 'forcedimensions', 'width', 'height');
     }
 
     /**

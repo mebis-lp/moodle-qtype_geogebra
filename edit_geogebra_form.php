@@ -138,9 +138,6 @@ class qtype_geogebra_edit_form extends question_edit_form {
 
         $this->add_randomizedvar_fields($mform);
 
-        $mform->addElement('selectyesno', 'isexercise', get_string('isexercise', 'qtype_geogebra'));
-        $mform->addHelpButton('isexercise', 'isexercise', 'qtype_geogebra');
-
         $mform->addElement('advcheckbox', 'forcedimensions', get_string('forcedimensionsenable', 'qtype_geogebra'),
             get_string('forcedimensions', 'qtype_geogebra'));
 
@@ -203,18 +200,13 @@ class qtype_geogebra_edit_form extends question_edit_form {
 
         $this->check_is_applet_present($data, $errors);
 
-        if (empty($data['isexercise'])) {
+        $this->check_randomized_vars($data, $errors);
 
-            $this->check_randomized_vars($data, $errors);
+        $this->check_constraints($data, $errors);
 
-            $this->check_constraints($data, $errors);
+        $this->check_answer($data, $errors);
 
-            $this->check_answer($data, $errors);
-
-            $this->check_fraction($data, $errors);
-        } else {
-            $this->check_is_exercise_present($data, $errors);
-        }
+        $this->check_fraction($data, $errors);
 
         $this->check_force_dimensions($data, $errors);
 
@@ -261,10 +253,12 @@ class qtype_geogebra_edit_form extends question_edit_form {
      * @param $errors
      */
     private function check_is_applet_present($data, &$errors) {
+        $ggbbase64 = json_decode($data['ggbparameters']);
         if (empty($data['ggbparameters'])
                 || empty($data['ggbviews'])
                 || empty($data['ggbcodebaseversion'])
-                || empty($data['ggbxml'])
+                || !property_exists($ggbbase64, 'ggbBase64')
+                || empty($ggbbase64)
         ) {
             $errors['loadappletgroup'] = get_string('noappletloaded', 'qtype_geogebra');
         }
@@ -336,7 +330,7 @@ class qtype_geogebra_edit_form extends question_edit_form {
             if (count($errors) === 0) {
                 foreach ($inequalitystrings as $inequalitystring) {
                     if (!qtype_geogebra_question_helper::is_valid_inequality_for_randomizedvars($inequalitystring,
-                            $data['randomizedvar'], $data['ggbxml'])
+                            $data['randomizedvar'])
                     ) {
                         if (!isset($errors['constraints'])) {
                             $errors['constraints'] = '';
@@ -391,19 +385,15 @@ class qtype_geogebra_edit_form extends question_edit_form {
             $xml = simplexml_load_string($data['ggbxml']);
             foreach ($data['answer'] as $label) {
                 if (!empty($label)) {
-                    if (!empty($data['isexercise'])) {
-                        $errors['isexercise'] = get_string('noanswersorrandomizationallowed', 'qtype_geogebra');
-                    } else {
-                        $varok = false;
+                    $varok = false;
 
-                        foreach ($xml->construction->element as $elem) {
-                            if ($label == $elem['label']) {
-                                $varok = true;
-                            }
+                    foreach ($xml->construction->element as $elem) {
+                        if ($label == $elem['label']) {
+                            $varok = true;
                         }
-                        if (!$varok) {
-                            $errors['answeroptions[' . $i . ']'] = get_string('variablenamewrong', 'qtype_geogebra');
-                        }
+                    }
+                    if (!$varok) {
+                        $errors['answeroptions[' . $i . ']'] = get_string('variablenamewrong', 'qtype_geogebra');
                     }
                 }
                 $i++;
@@ -471,11 +461,10 @@ class qtype_geogebra_edit_form extends question_edit_form {
         $mform->addElement('hidden', 'ggbcodebaseversion');
         $mform->setType('ggbcodebaseversion', PARAM_RAW);
 
+        // We need the XML injected by the GGB API function to be able to access GGB objects and values from PHP side. However,
+        // we do not use the XML representation to store the GGB applet itself, but rely on base64.
         $mform->addElement('hidden', 'ggbxml');
         $mform->setType('ggbxml', PARAM_RAW);
-
-        $mform->addElement('hidden', 'ggbexercise');
-        $mform->setType('ggbexercise', PARAM_RAW);
     }
 
     /**
@@ -596,12 +585,6 @@ HTML;
             get_string('dragndrop', 'qtype_geogebra'));
         if (!empty($this->ggbparameters) && empty($this->ggbturl)) {
             $mform->setDefault('usefile', true);
-        }
-    }
-
-    private function check_is_exercise_present($data, $errors) {
-        if ($data['isexercise']) {
-            $data;
         }
     }
 }

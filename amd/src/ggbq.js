@@ -42,7 +42,6 @@ define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GG
         currentvals: [],
         answerinput: [],
         responsevars: [],
-        exerciseresultinput: [],
         qdiv: [],
         //parameters: {},
         ggbDataset: [],
@@ -142,7 +141,6 @@ define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GG
 
             this.currentvals[slot] = ggbDataset.vars;
             this.answerinput[slot] = $(document.getElementById(ggbDataset.answerinput));
-            this.exerciseresultinput[slot] = $(document.getElementById(ggbDataset.exerciseresultinput));
             this.responsevars[slot] = JSON.parse(ggbDataset.responsevars);
         },
         checkEnter: function(e) {
@@ -177,6 +175,5 @@ define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GG
                 }
             }
         },
-
     };
 });

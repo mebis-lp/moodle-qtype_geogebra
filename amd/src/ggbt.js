@@ -22,6 +22,7 @@
 
                 if (typeof (this.ggbcheckb) == "undefined") {
                     var applet = document.ggbApplet;
+                    console.log($('input[name="ggbxml"]'));
                     $('input[name="ggbxml"]').val(applet.getXML());
 
                     var randomizedvar = document.getElementById('id_randomizedvar');

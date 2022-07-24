@@ -73,5 +73,27 @@ function xmldb_qtype_geogebra_upgrade($oldversion) {
         // Geogebra savepoint reached.
         upgrade_plugin_savepoint(true, 2022040800, 'qtype', 'geogebra');
     }
+
+    if ($oldversion < 2022061000) {
+
+        // Define field ggbturl to be dropped from qtype_geogebra_options.
+        $table = new xmldb_table('qtype_geogebra_options');
+        $field = new xmldb_field('ggbxml');
+
+        // Conditionally launch drop field ggbxml.
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->drop_field($table, $field);
+        }
+
+        $field = new xmldb_field('isexercise');
+        // Conditionally launch drop field isexercise.
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->drop_field($table, $field);
+        }
+
+        // Geogebra savepoint reached.
+        upgrade_plugin_savepoint(true, 2022061000, 'qtype', 'geogebra');
+    }
+
     return true;
 }
