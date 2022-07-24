@@ -253,12 +253,13 @@ class qtype_geogebra_edit_form extends question_edit_form {
      * @param $errors
      */
     private function check_is_applet_present($data, &$errors) {
-        $ggbbase64 = json_decode($data['ggbparameters']);
+        $ggbparameters = json_decode($data['ggbparameters']);
+
         if (empty($data['ggbparameters'])
                 || empty($data['ggbviews'])
                 || empty($data['ggbcodebaseversion'])
-                || !property_exists($ggbbase64, 'ggbBase64')
-                || empty($ggbbase64)
+                || !property_exists($ggbparameters, 'ggbBase64')
+                || empty($ggbparameters->ggbBase64)
         ) {
             $errors['loadappletgroup'] = get_string('noappletloaded', 'qtype_geogebra');
         }
@@ -379,7 +380,8 @@ class qtype_geogebra_edit_form extends question_edit_form {
      * @param $errors
      */
     private function check_answer($data, &$errors) {
-
+        // TODO fix this, still based on xml which we do not have anymore
+        return $errors;
         if (isset($data['answer'])) {
             $i = 0;
             $xml = simplexml_load_string($data['ggbxml']);
