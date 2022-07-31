@@ -79,6 +79,7 @@ class qtype_geogebra_test_helper extends question_test_helper {
      * @return \stdClass formdata
      */
     public function get_geogebra_question_form_data_point() {
+        global $CFG;
         $form = new stdClass();
         $form->name = "Finding a point in the plane";
         $form->questiontext = array();
@@ -101,6 +102,9 @@ class qtype_geogebra_test_helper extends question_test_helper {
         $form->noanswers = 1;
         $form->answer = array();
         $form->answer[0] = 'e';
+        if ($CFG->version >= 2022041900) {
+            $form->status = \core_question\local\bank\question_version_status::QUESTION_STATUS_READY;
+        }
 
         $form->fraction = array();
         $form->fraction[0] = '1.0';
@@ -131,6 +135,7 @@ class qtype_geogebra_test_helper extends question_test_helper {
      * @return \stdClass questiondata
      */
     public function get_geogebra_question_data_point() {
+        global $CFG;
         $q = new stdClass();
         $q->name = 'Finding a point in the plane';
         $q->questiontext = "Drag the point to ({a}/{b})";
@@ -141,9 +146,9 @@ class qtype_geogebra_test_helper extends question_test_helper {
         $q->penalty = 0.3333333;
         $q->qtype = 'geogebra';
         $q->length = '1';
-        $q->hidden = '0';
         $q->createdby = '2';
         $q->modifiedby = '2';
+        $q->idnumber = 0;
         $q->options = new stdClass();
         $q->options->answers = array();
         $q->options->answers[0] = new stdClass();
@@ -159,6 +164,9 @@ class qtype_geogebra_test_helper extends question_test_helper {
         $q->options->ggbcodebaseversion = '5.0';
         $q->options->israndomized = 1;
         $q->options->randomizedvar = 'a,b,';
+        if ($CFG->version >= 2022041900) {
+            $q->status = \core_question\local\bank\question_version_status::QUESTION_STATUS_READY;
+        }
 
         return $q;
     }
