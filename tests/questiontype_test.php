@@ -72,6 +72,7 @@ class questiontype_test extends advanced_testcase {
     protected function get_test_question_data() {
         $q = new stdClass;
         $q->id = 1;
+        $q->idnumber = 0;
         $q->options = new stdClass();
         $q->options->answers[13] = (object)array(
             'id'             => 13,
@@ -123,6 +124,8 @@ class questiontype_test extends advanced_testcase {
     }
 
     public function test_question_saving_point() {
+        global $CFG;
+
         $this->resetAfterTest(true);
         $this->setAdminUser();
 
@@ -143,7 +146,12 @@ class questiontype_test extends advanced_testcase {
         $fromform = $form->get_data();
 
         $returnedfromsave = $this->qtype->save_question($questiondata, $fromform);
-        $actualquestionsdata = question_load_questions(array($returnedfromsave->id));
+        // TODO: Field 'idnumber' has been moved from core to the plugin. Until the refactor, we just add it here in the test.
+        if ($CFG->version >= 2022041900) {
+            $actualquestionsdata = question_load_questions(array($returnedfromsave->id), 'qbe.idnumber');
+        } else {
+            $actualquestionsdata = question_load_questions(array($returnedfromsave->id));
+        }
         $actualquestiondata = end($actualquestionsdata);
 
         foreach ($questiondata as $property => $value) {
