@@ -523,7 +523,7 @@ class qtype_geogebra_edit_form extends question_edit_form {
 
         if (!empty($this->ggbparameters) && !empty($this->ggbviews) && !empty($this->ggbcodebaseversion)) {
             $applet = <<<EOD
-<article id="applet_parameters"
+<article id="applet_parameters" class="qtype_geogebra-article"
   data-parameters=$this->ggbparameters
   data-views=$this->ggbviews
   data-codebase=$this->ggbcodebaseversion
