@@ -1,3 +1,5 @@
+/*eslint linebreak-style:0 -- ['error', 'windows','unix']*/
+/* eslint-disable no-undef */
 /**
  * Javascript Controller to embed GGBApplet
  *
@@ -7,6 +9,8 @@
  * @copyright  (c) International GeoGebra Institute 2018
  * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+// alert("hello ggbt");
+
  define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GGBApplet) {
     /**
      * Created by Christoph on 25.08.19.
@@ -14,6 +18,8 @@
     return {
 
         init: function() {
+
+        //debugcode();
             window.GGBT = this;
             window.ggbAppletOnLoad = function() {
                 $('input[name="ggbparameters"]').val(JSON.stringify(window.applet1.getParameters()));
@@ -107,6 +113,7 @@
         },
 
         callback: function(params) {
+        //debugcode();
             var elementname = M.core_filepicker.instances[params['client_id']].options.elementname;
             $('#id_' + elementname).val(params.url);
             // inject applet to div layer
@@ -134,7 +141,6 @@
             window.applet1.inject("applet_container1", "preferHTML5");
 
         },
-
         getrandvars: function() {
             var applet = document.ggbApplet;
             if (typeof applet !== 'undefined') {
@@ -143,28 +149,44 @@
                 var stringforrandomizedvars = "";
                 var i = 0;
                 for (var j = 0; j < objNumber; j++) {
-                    var strName = applet.getObjectName(j);
+                   var strName = applet.getObjectName(j);
+                   if (strName == "grade"){
+                        var answer=$('#id_answer_' + i);
+                        if (answer !== null){answer.val(strName);this.update_feedback(answer);i++;}
+                    }
                     if (applet.getObjectType(strName) == "numeric" && applet.isIndependent(strName)) {
                         stringforrandomizedvars += strName + ",";
                     } else {
-                        var answer = $('#id_answer_' + i);
-                        if (applet.getObjectType(strName) == "boolean") {
+                        //debugcode();
+                        /*
+                        if (applet.getObjectType(strName) == "boolean"){
+                        //alert(strName+" boolean or number");
+                            var answer = $('#id_answer_' + i);
                             if (answer !== null && answer.length > 0) {
                                 if (!answer.val()) {
                                     answer.val(strName);
                                 }
                                 this.update_feedback(answer);
                                 i++;
+                                //alert(strName);
+                                //
                             }
                         }
+                        */
                     }
                     randomizedvar.value = stringforrandomizedvars;
                 }
+            //if (applet.exists("grade")) {
+            //    var answerscore = $('#id_answer_' + i);
+            //    answerscore.val("grade");
+            //    this.update_feedback(answerscore);
+            // }
             }
         },
 
         update_feedback: function(answernode) {
             var id = answernode.attr('id').split("_").pop();
+            //debugcode();
             var varname = answernode.val();
             if (!varname) {
                 // Should not happen, but make sure this function does not fail.
@@ -179,16 +201,21 @@
                 return;
             }
             const doc = parser.parseFromString(xml, "text/xml");
+            //alert(xml);
             if (doc) {
                 var elem = doc.getElementsByTagName('caption');
+                //alert("retrieve "+elem.toString());
                 var fbstring = '';
                 if (elem.length == 1) {
                     fbstring = elem[0].getAttribute('val');
                     feedback.val(fbstring);
+                    //alert("retrieve "+fbstring);
                 } else if (elem.length > 1) {
                     feedback.val('');
+                    //alert("retrieve fail length >1");
                     fbstring = '';
                 } else {
+                    //alert("retrieve fail 1");
                     feedback.val('');
                     //this is rather an error condition but should be checked by the server
                     fbstring = 'Caption not set or variable name wrong.';

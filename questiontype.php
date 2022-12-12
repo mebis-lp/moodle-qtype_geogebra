@@ -43,7 +43,7 @@ class qtype_geogebra extends question_type {
      */
     public function extra_question_fields() {
         return array('qtype_geogebra_options', 'ggbturl', 'ggbparameters', 'ggbviews', 'ggbcodebaseversion', 'ggbxml',
-                'israndomized', 'randomizedvar', 'constraints', 'isexercise', 'forcedimensions', 'width', 'height');
+                'israndomized', 'randomizedvar', 'constraints', 'isexercise','forcedimensions','width','height', 'seeditornot','seed');
     }
 
     /**

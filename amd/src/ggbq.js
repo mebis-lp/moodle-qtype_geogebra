@@ -1,7 +1,12 @@
+/* eslint-disable */
+/* eslint-disable no-debugger */
+/*jslint devel: true */
+/*eslint linebreak-style:0 -- ['error', 'windows','unix']*/
+
 /**
  * Javascript Controller to embed GGBApplet
  *
- * STUDENT VIEW
+ * StuDENT VIEW
  *
  * This class provides all the functionality for the new assign module.
  *
@@ -9,6 +14,23 @@
  * @copyright  (c) International GeoGebra Institute 2018
  * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+ //alert("hello ggbq");
+ //debugger; // eslint-disable-line
+        function stringfy(responsevars,ggbApplet){
+        //debugcode();
+          var responsestring = '';
+          responsevars.forEach(function (responsevar){
+           if (ggbApplet.isDefined(responsevar)){ 
+            var value = ggbApplet.getValue(responsevar);
+            if (ggbApplet.getObjectType(responsevar)=="boolean"){value = (value ==  0 ?"false":"true");}
+            responsestring += value+'%'; //Twingsister to deal with multidigit
+           }
+          });
+          return responsestring.replace(/\%$/,""); // possibly cut the last % works better with explode
+         }
+    // Twingsister
+
 define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GGBApplet) {
     /**
      * Created by Christoph on 25.08.19.
@@ -33,7 +55,6 @@ define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GG
                         - parseInt(formulationDivStyle.paddingLeft) - parseInt(formulationDivStyle.paddingRight) + 'px';
                 }), 250);
     };
-
     return {
         b64input: [],
         ggbBase64: [],
@@ -50,6 +71,7 @@ define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GG
 
         init: function (appletParametersID) {
             window.GGBQ = this;
+            //debugcode();
             var ggbDataset = document.getElementById(appletParametersID).dataset;
             var slot = ggbDataset.slot;
             // Add current scaling container to the object store for being able to access it later on.
@@ -77,15 +99,10 @@ define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GG
 
                     window.GGBQ.qdiv[id].style.visibility = 'visible';
                     if (window.GGBQ.answerinput[id].val() == '') {
-                        var responsestring = '';
-                        window.GGBQ.responsevars[id].forEach(function (responsevar) {
-                            if (ggbApplet.isDefined(responsevar)) {
-                                responsestring += ggbApplet.getValue(responsevar);
-                            } else {
-                                responsestring += 0;
-                            }
-                        });
-                        window.GGBQ.answerinput[id].val(responsestring);
+                        // Twingsister
+                        window.GGBQ.answerinput[id].val(stringfy(window.GGBQ.responsevars[id],ggbApplet));
+                        // Twingsister
+                    	//alert("response one");
                     }
                 }
             };
@@ -103,7 +120,15 @@ define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GG
                 parameters.ggbBase64 = this.ggbBase64[slot];
             }
 
-            // Check if width and height have been manually set. The default would be "no", so we use the scaling container feature.
+            // Check if seed have been manually set. The default would be "no"
+            if (!ggbDataset.seeditornot || ggbDataset.seeditornot === '0') {
+            	var dice=Math.floor((Math.random() * 1000) + 1);
+            	//alert(dice.toString());
+                parameters.randomSeed = dice ;
+            } else {
+                parameters.randomSeed = ggbDataset.seed;
+            } 
+            //alert("Calling with random "+parameters.randomSeed.toString());
             if (!ggbDataset.forcedimensions || ggbDataset.forcedimensions === '0') {
                 parameters.scaleContainerClass = scalingContainers[slot];
                 parameters.autoHeight = true;
@@ -121,7 +146,6 @@ define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GG
                     scalingContainer.style.overflowY = 'hidden';
                 }
             }
-
             // parameters.currentvals = JSON.parse(ggbDataset.vars);
             this.ggbDatasetVars = JSON.parse(ggbDataset.vars);
             parameters.language = ggbDataset.lang;
@@ -131,7 +155,7 @@ define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GG
             parameters.id = 'ggbApplet' + slot;
 
             var views = JSON.parse(ggbDataset.views);
-
+            //alert("applet creation");debugger;
             var applet1 = new GGBApplet(parameters, views, ggbDataset.html5NoWebSimple);
             // applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
             applet1.inject(ggbDataset.div, "preferHTML5");
@@ -150,9 +174,13 @@ define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GG
             var txtArea = /textarea/i.test((e.target || e.srcElement).tagName);
             return txtArea || (e.keyCode || e.which || e.charCode || 0) !== 13;
         },
+    // Twingsister
+    // takes an an array of strings that are GGB variable names either numeric text or boolean and
+    // returns a percent % separated string of the values. If no value is present the variable is skipped
 
 
         getBase64andCheck: function() {
+        //debugcode();
             for (var i = 0; i < window.GGBQ.answerinput.length; i++) {
                 var ggbApplet = window['ggbApplet' + i];
                 if (typeof ggbApplet !== "undefined") {
@@ -164,16 +192,19 @@ define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GG
                         ggbApplet.evalCommand(`${key}=${value}`);
                     }
 
-                    var responsestring = '';
-                    for (var j = 0; j < window.GGBQ.responsevars[i].length; j++) {
-                        if (ggbApplet.isDefined(window.GGBQ.responsevars[i][j])) {
-                            responsestring += ggbApplet.getValue(window.GGBQ.responsevars[i][j]);
-                        } else {
-                            responsestring += 0;
-                        }
-                    }
-
-                    window.GGBQ.answerinput[i].val(responsestring);
+                    //var responsestring = '';
+                    //for (var j = 0; j < window.GGBQ.responsevars[i].length; j++) {
+                        //if (ggbApplet.isDefined(window.GGBQ.responsevars[i][j])) {
+                        // Twingsister
+                        window.GGBQ.answerinput[i].val(stringfy(window.GGBQ.responsevars[i],ggbApplet));
+                        // Twingsister
+                        //    responsestring += ggbApplet.getValue(window.GGBQ.responsevars[i][j])+'%'; // Twingsister:to add multi digit
+                        //} else {
+                        //    responsestring += 0;
+                        //}
+                    //}
+                    //window.GGBQ.answerinput[i].val(responsestring);
+                    //alert("response");
                 }
             }
         },

@@ -133,6 +133,8 @@ class qtype_geogebra_renderer extends qtype_renderer {
         $slot = $qa->get_slot();
         $appletparametersid = $qa->get_qt_field_name('applet_parameters');
         $forcedimensions = $question->forcedimensions ?: 0;
+        $seeditornot = $question->seeditornot ?: 0;
+        $seed = $question->seed ?: 0;
         $width = $question->width ?: 0;
         $height = $question->height ?: 0;
         $applet = <<<EOD
@@ -151,12 +153,15 @@ class qtype_geogebra_renderer extends qtype_renderer {
   data-slot=$slot
   data-lang=$lang
   data-forcedimensions=$forcedimensions
+  data-seeditornot=$seeditornot
+  data-seed=$seed
   data-width=$width
   data-height=$height
   data-scalingcontainerclass=$scalingcontainerclass
 </article>
 EOD;
         $result .= $applet;
+        //echo "<script>function debugcode(){debugger;}</script>";
         $this->page->requires->js_call_amd('qtype_geogebra/ggbq', 'init', array($appletparametersid));
 
         if ($qa->get_state() == question_state::$invalid) {

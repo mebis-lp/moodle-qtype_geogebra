@@ -23,7 +23,7 @@
  * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die ();
-
+//xdebug_break(); 
 global $CFG;
 require_once($CFG->dirroot . '/question/type/shortanswer/edit_shortanswer_form.php');
 require_once($CFG->dirroot . '/question/type/geogebra/question.php');
@@ -140,6 +140,16 @@ class qtype_geogebra_edit_form extends question_edit_form {
 
         $mform->addElement('selectyesno', 'isexercise', get_string('isexercise', 'qtype_geogebra'));
         $mform->addHelpButton('isexercise', 'isexercise', 'qtype_geogebra');
+        // Add randomization seed
+        $mform->addElement('advcheckbox', 'seeditornot', get_string('seeditornotenable', 'qtype_geogebra'),
+            get_string('seeditornot', 'qtype_geogebra'));
+        $mform->setDefault('seeditornot', 0);
+        // If seeditornot true get a seed
+        $mform->addElement('text', 'seed', get_string('seed', 'qtype_geogebra'));
+        $mform->setType('seed', PARAM_INT);
+        $mform->addHelpButton('seed', 'seed', 'qtype_geogebra');
+        $mform->hideIf('seed', 'seeditornot');
+
 
         $mform->addElement('advcheckbox', 'forcedimensions', get_string('forcedimensionsenable', 'qtype_geogebra'),
             get_string('forcedimensions', 'qtype_geogebra'));
@@ -199,6 +209,7 @@ class qtype_geogebra_edit_form extends question_edit_form {
      *                     or an empty array if everything is OK (true allowed for backwards compatibility too).
      */
     public function validation($data, $files) {
+        //xdebug_break(); 
         $errors = parent::validation($data, $files);
 
         $this->check_is_applet_present($data, $errors);
@@ -217,6 +228,7 @@ class qtype_geogebra_edit_form extends question_edit_form {
         }
 
         $this->check_force_dimensions($data, $errors);
+        $this->check_seeditornot($data, $errors);
 
         return $errors;
     }
@@ -286,6 +298,14 @@ class qtype_geogebra_edit_form extends question_edit_form {
         }
     }
 
+    private function check_seeditornot($data, &$errors) {
+        if (!empty($data['seeditornot'])) {
+            // If seed is being activated, seed  must not be empty or zero.
+            if (empty($data['seed'])) {
+                $errors['seed'] = get_string('seednotzero', 'qtype_geogebra');
+            }
+        }
+    }
     /**
      * @param $data
      * @param $errors
@@ -533,6 +553,7 @@ class qtype_geogebra_edit_form extends question_edit_form {
 EOD;
             $mform->addElement('html', $applet);
         }
+        //echo "<script>function debugcode(){debugger;}</script>";
         $PAGE->requires->js_call_amd('qtype_geogebra/ggbt', 'init');
     }
 

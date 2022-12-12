@@ -30,6 +30,15 @@ $string['answermissing'] = 'The answer in the response is missing. Probably Java
 $string['answervar'] = 'Variables for automatic grading';
 $string['answervar_help'] = 'For automatic grading: A name of a boolean object in GeoGebra which is true if the student solved the question (partly). Sums up all grades for all boolean variables. The question is correct if any combination exceeds 100%, but there should be at least one combination which sums up to exactly 100%. Leave blank for manual grading.';
 $string['applet_advanced_settings'] = 'Advanced Settings...';
+
+$string['seeditornot'] = 'Add a custom seed';
+$string['seeditornot_help'] = 'By default the GeoGebra random generator gives a different sequence of random values for each exercise instance. If you provide a POSITIVE integer seed this is used and therefore the same random sequence is used to instantiate the question. Each student gets the same exercise. Zero IS NOT a valid seed';
+$string['seeditornotenable'] = 'Enable ad-hoc seeding';
+$string['seednotzero'] = 'You have to specify a value greater than zero for the seed';
+//add seed
+$string['seed'] = 'Seed';
+$string['seed_help'] = 'The GeoGebra applet is started with a known seet for the random generator.';
+$string['seedeenable'] = 'Specify a seed manually';
 $string['forcedimensions'] = 'Force applet dimensions';
 $string['forcedimensions_help'] = 'By default the GeoGebra applet is being scaled automatically into the quiz layout. Enabling this option will allow you to specify width and height of the plugin manually and disable automatic scaling.';
 $string['forcedimensionsenable'] = 'Specify width and height manually';
