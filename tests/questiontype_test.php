@@ -143,7 +143,8 @@ class questiontype_test extends advanced_testcase {
         $fromform = $form->get_data();
 
         $returnedfromsave = $this->qtype->save_question($questiondata, $fromform);
-        $actualquestionsdata = question_load_questions(array($returnedfromsave->id));
+        $actualquestionsdata = question_load_questions(array($returnedfromsave->id),
+            'qbe.idnumber');
         $actualquestiondata = end($actualquestionsdata);
 
         foreach ($questiondata as $property => $value) {

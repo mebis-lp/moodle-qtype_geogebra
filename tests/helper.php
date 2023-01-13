@@ -23,6 +23,7 @@
  * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use core_question\local\bank\question_version_status;
 use qtype_geogebra\ggbstringsfortesting;
 
 defined('MOODLE_INTERNAL') || die();
@@ -141,9 +142,9 @@ class qtype_geogebra_test_helper extends question_test_helper {
         $q->penalty = 0.3333333;
         $q->qtype = 'geogebra';
         $q->length = '1';
-        $q->hidden = '0';
         $q->createdby = '2';
         $q->modifiedby = '2';
+        $q->status = question_version_status::QUESTION_STATUS_READY;
         $q->options = new stdClass();
         $q->options->answers = array();
         $q->options->answers[0] = new stdClass();
@@ -153,7 +154,7 @@ class qtype_geogebra_test_helper extends question_test_helper {
         $q->options->answers[0]->feedbackformat = FORMAT_HTML;
 
         $q->options->ggbturl = 'https://tube.geogebra.org/student/mI8RJzVzI';
-        $q->options->ggbxml = ggbstringsfortesting::$pointxml;
+        //$q->options->ggbxml = ggbstringsfortesting::$pointxml;
         $q->options->ggbparameters = ggbstringsfortesting::$pointparameters;
         $q->options->ggbviews = ggbstringsfortesting::$views;
         $q->options->ggbcodebaseversion = '5.0';

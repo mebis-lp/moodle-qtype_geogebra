@@ -23,15 +23,15 @@ define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GG
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(
             () => Object.values(scalingContainers).forEach((containerClass) => {
-                    // We need to use getElementsByClassName because colons are not allowed for jquery and Vanilla JS querySelector.
-                    const scalingContainer = document.getElementsByClassName(containerClass)[0];
-                    // We retrieve the formulation div container, because this gives us the correct width to adapt
-                    // the scaling container to.
-                    const formulationDivStyle = window.getComputedStyle(
-                        scalingContainer.querySelector('.qtext').parentElement.parentElement);
-                    scalingContainer.style.width = parseInt(formulationDivStyle.width)
-                        - parseInt(formulationDivStyle.paddingLeft) - parseInt(formulationDivStyle.paddingRight) + 'px';
-                }), 250);
+                // We need to use getElementsByClassName because colons are not allowed for jquery and Vanilla JS querySelector.
+                const scalingContainer = document.getElementsByClassName(containerClass)[0];
+                // We retrieve the formulation div container, because this gives us the correct width to adapt
+                // the scaling container to.
+                const formulationDivStyle = window.getComputedStyle(
+                    scalingContainer.querySelector('.qtext').parentElement.parentElement);
+                scalingContainer.style.width = parseInt(formulationDivStyle.width)
+                    - parseInt(formulationDivStyle.paddingLeft) - parseInt(formulationDivStyle.paddingRight) + 'px';
+            }), 250);
     };
 
     return {
@@ -143,14 +143,14 @@ define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GG
             this.answerinput[slot] = $(document.getElementById(ggbDataset.answerinput));
             this.responsevars[slot] = JSON.parse(ggbDataset.responsevars);
         },
-        checkEnter: function(e) {
+        checkEnter: function (e) {
             e = e || event;
             var txtArea = /textarea/i.test((e.target || e.srcElement).tagName);
             return txtArea || (e.keyCode || e.which || e.charCode || 0) !== 13;
         },
 
 
-        getBase64andCheck: function() {
+        getBase64andCheck: function () {
             for (var i = 0; i < window.GGBQ.answerinput.length; i++) {
                 var ggbApplet = window['ggbApplet' + i];
                 if (typeof ggbApplet !== "undefined") {

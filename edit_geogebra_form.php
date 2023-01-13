@@ -22,6 +22,9 @@
  * @copyright  (c) International GeoGebra Institute 2014
  * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+use qtype_geogebra\output\ggbapplet;
+
 defined('MOODLE_INTERNAL') || die ();
 
 global $CFG;
@@ -253,15 +256,22 @@ class qtype_geogebra_edit_form extends question_edit_form {
      * @param $errors
      */
     private function check_is_applet_present($data, &$errors) {
-        $ggbbase64 = json_decode($data['ggbparameters']);
-        if (empty($data['ggbparameters'])
+
+        // TODO This does not work right now for some reason, this is null
+        $ggbparameters = json_decode($data['ggbparameters']);
+
+
+        // TODO rework this function to function again :-)
+        // Thing is: xml is being stored always, but ggbbase64 not, if material id is given
+        /*if (empty($ggbparameters)
                 || empty($data['ggbviews'])
                 || empty($data['ggbcodebaseversion'])
-                || !property_exists($ggbbase64, 'ggbBase64')
+                || !property_exists($ggbparameters, 'ggbBase64')
                 || empty($ggbbase64)
         ) {
-            $errors['loadappletgroup'] = get_string('noappletloaded', 'qtype_geogebra');
-        }
+            $errors['loadappletgroup'] = get_string('1noappletloaded', 'qtype_geogebra');
+        }*/
+        return [];
     }
 
     /**
@@ -495,7 +505,7 @@ class qtype_geogebra_edit_form extends question_edit_form {
      * @throws coding_exception
      */
     private function add_applet_elements($mform) {
-        global $PAGE;
+        global $PAGE, $OUTPUT;
         /* Button to (Re)load Applet from GeoGebraTube */
         $loadappletgroup = array();
         $loadappletgroup[] =& $mform->createElement('button', 'loadapplet', get_string('loadapplet', 'qtype_geogebra'));
@@ -511,7 +521,7 @@ class qtype_geogebra_edit_form extends question_edit_form {
         $lang = current_language();
 
         if (!empty($this->ggbparameters) && !empty($this->ggbviews) && !empty($this->ggbcodebaseversion)) {
-            $applet = <<<EOD
+/*            $applet = <<<EOD
 <article id="applet_parameters"
   data-parameters=$this->ggbparameters
   data-views=$this->ggbviews
@@ -520,7 +530,10 @@ class qtype_geogebra_edit_form extends question_edit_form {
   data-html5NoWebSimple="true">
 </article>
 EOD;
-            $mform->addElement('html', $applet);
+$mform->addElement('html', $applet);
+*/
+            $applet = new ggbapplet(uniqid(), $this->ggbparameters);
+            $mform->addElement('html', $OUTPUT->render($applet));
         }
         $PAGE->requires->js_call_amd('qtype_geogebra/ggbt', 'init');
     }

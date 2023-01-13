@@ -128,14 +128,10 @@ class qtype_geogebra extends question_type {
     public function get_possible_responses($questiondata) {
         // There are no possible answers which can be calculated if answers array is empty i.e. question is manually graded.
         if (empty($questiondata->options->answers)) {
-            if ($questiondata->options->isexercise) {
-                return array($questiondata->id =>
-                    array(null => new question_possible_response("Response graded automatically", null)));
-            }
-            return array($questiondata->id => array(null => new question_possible_response("Response graded manually", null)));
+            return [$questiondata->id => array(null => new question_possible_response("Response graded manually", null))];
         }
 
-        $responses = array();
+        $responses = [];
         /*
          * If one fraction is 1 for a particular answer then all other fractions may be irrelevant for correct response
          * for example answer[0] = e, fraction[0] = 1; answer[1] = e1, fraction[1] = 0.5;
