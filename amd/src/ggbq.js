@@ -15,8 +15,10 @@
  * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
- //alert("hello ggbq");
+
+// alert("hello ggbq");
  //debugger; // eslint-disable-line
+        //debugcode();
         function stringfy(responsevars,ggbApplet){
         //debugcode();
           var responsestring = '';
@@ -29,18 +31,26 @@
           });
           return responsestring.replace(/\%$/,""); // possibly cut the last % works better with explode
          }
+//        function loadinit(appletParametersID) {
+//        debugcode();
+//            var ggbDataset = document.getElementById(appletParametersID).dataset;
     // Twingsister
+//        function loadinit(appletParametersID) {
+//            var ggbDataset = document.getElementById(appletParametersID).dataset;
+    // Twingsister
+//var GGBAppletstr;
+//            if (ggbDataset.isurlggb) {
+//            	GGBAppletstr = ggbDataset.urlggb;
+//            } else { GGBAppletstr = 'https://www.geogebra.org/apps/deployggb.js';}
 
-define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GGBApplet) {
-    /**
-     * Created by Christoph on 25.08.19.
-     */
+   // }
+//define(['jquery','https://www.geogebra.org/apps/deployggb.js'], function ($, GGBApplet) {
+define(['jquery'], function ($) {
+     // Created by Christoph on 25.08.19.
 
     const scalingContainers = {};
     let resizeTimeout;
-    /**
-     * Resizes the ggb scaling containers to make the ggb applet scale properly to fit into its container.
-     */
+     // Resizes the ggb scaling containers to make the ggb applet scale properly to fit into its container.
     const resizeScalingContainer = () => {
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(
@@ -123,7 +133,7 @@ define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GG
             // Check if seed have been manually set. The default would be "no"
             if (!ggbDataset.seeditornot || ggbDataset.seeditornot === '0') {
             	var dice=Math.floor((Math.random() * 1000) + 1);
-            	//alert(dice.toString());
+            	alert("random copy with "+dice.toString());
                 parameters.randomSeed = dice ;
             } else {
                 parameters.randomSeed = ggbDataset.seed;
@@ -155,10 +165,25 @@ define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GG
             parameters.id = 'ggbApplet' + slot;
 
             var views = JSON.parse(ggbDataset.views);
+            // Check if GGBApplet have been manually set.
+        //debugcode();
+            	var GGBAppletname ;
+            if (ggbDataset.isurlggb) {
+            	GGBAppletname = ggbDataset.urlggb;
+            } else {GGBAppletname = 'https://www.geogebra.org/apps/deployggb.js';}
+              //require.config({paths: {gb: GGBAppletname.slice(0,-3)}});
+              //require(["gb"], function(gb) {
+              //import GGBApplet from GGBAppletname;
+            require([GGBAppletname],function (App){//);
+            	var applet1;
+                applet1 = new App(parameters, views, ggbDataset.html5NoWebSimple);
+            	applet1.inject(ggbDataset.div, "preferHTML5");
+              });
+            //	GGBApplet=
+            //       define([GGBAppletname], function (GGBobj) {return GGBobj;});
             //alert("applet creation");debugger;
-            var applet1 = new GGBApplet(parameters, views, ggbDataset.html5NoWebSimple);
-            // applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
-            applet1.inject(ggbDataset.div, "preferHTML5");
+            //var applet1 = new GGBApplet(parameters, views, ggbDataset.html5NoWebSimple);
+            //NO applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
 
             $('#responseform').on('submit', this.getBase64andCheck);
 
@@ -211,3 +236,5 @@ define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GG
 
     };
 });
+//init(appletParametersID);
+//}

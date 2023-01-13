@@ -10,11 +10,19 @@
  * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 // alert("hello ggbt");
-
- define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GGBApplet) {
+var GGBAppletstr;
+                    if (document.getElementById('id_isurlggb').checked) {
+                     GGBAppletstr = document.getElementById('id_urlggb').value;
+                     }else { GGBAppletstr = 'https://www.geogebra.org/apps/deployggb.js';}
+ define(['jquery', GGBAppletstr], function ($, GGBApplet) {
+// define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GGBApplet) {
+ //define(['jquery'], function ($) {
     /**
      * Created by Christoph on 25.08.19.
      */
+     //var script = document.createElement('script');
+     //script.src = 'https://www.geogebra.org/apps/deployggb.js';
+     //document.getElementsByTagName('head')[0].appendChild(script);
     return {
 
         init: function() {
@@ -59,20 +67,29 @@
                 this.ggbDataset = $('#applet_parameters')[0].dataset;
                 this.parameters = JSON.parse(this.ggbDataset.parameters);
                 this.views = this.ggbDataset.views;
+                 alert("hello custom ggb 3");
+        //debugcode();
+               // if (document.getElementById('id_isurlggb').checked) {
+                     //GGBApplet = document.getElementById('id_urlggb').value;
+               //     }
                 window.applet1 = new GGBApplet(this.parameters, this.views, true);
                 // window.applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.410.0/web3d");
                 this.lang = this.ggbDataset.lang;
             }
+        debugcode();
 
             $('#id_loadapplet').on('click', function(e) {
                 e.preventDefault();
-                var id = $('#id_ggbturl').val().split("/").pop();
-                if (id.indexOf("m") == 0) {
+                var httpurl = $('#id_ggbturl').val();
+                var id = httpurl.split("/").pop();
+                if(!httpurl.startsWith('http')){
+                 if (id.indexOf("m") == 0){
                     if (window.GGBT.isNumber(id.substr(1)) || (!window.GGBT.isNumber(id.substr(1)) && id.length > 8)) {
                         id = id.substr(1);
                     }
-                }
-                window.GGBT.injectapplet(id);
+                  }
+                  window.GGBT.injectapplet({"material_id": id});
+                 }else{window.GGBT.injectapplet({"filename": httpurl});}
             });
 
             $('#id_getvars').on('click', function(e) {
@@ -113,21 +130,24 @@
         },
 
         callback: function(params) {
-        //debugcode();
+        alert("other filename");
+        debugcode();
             var elementname = M.core_filepicker.instances[params['client_id']].options.elementname;
             $('#id_' + elementname).val(params.url);
             // inject applet to div layer
+            if(!params.file.startsWith('http')){
             var id = (params.file).split(".")[0];
             if (id.indexOf("m") == 0) {
                 if (this.isNumber(id.substr(1)) || (!this.isNumber(id.substr(1)) && id.length > 8)) {
                     id = id.substr(1);
                 }
             }
-            this.injectapplet(id);
+            this.injectapplet({"material_id": id});
+                 }else{window.GGBT.injectapplet({"filename": params.file});}
         },
 
-        injectapplet: function(id) {
-            this.parameters = {"material_id": id};
+        injectapplet: function(fileURL) {
+            this.parameters = fileURL ;
             this.parameters.language = this.lang;
             this.parameters.moodle = "editingQuestionOrSubmission";
             // Since we only support HTML5 this should work for js-code in the applet to get executed (ggboninit).
@@ -135,6 +155,11 @@
 
             document.getElementById('applet_container1').style.display = "block";
 
+                 alert("hello custom ggb  4");
+        debugcode();
+         //           if (document.getElementById('id_isurlggb').checked) {
+                     //GGBApplet = document.getElementById('id_urlggb').value;
+          //          }
             window.applet1 = new GGBApplet(this.parameters, true);
             // window.applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
 
@@ -262,6 +287,11 @@
             window.GGBT.parameters[evt.target.id] = (evt.target.checked);
             $('input[name="ggbparameters"]').val(JSON.stringify(window.GGBT.parameters));
             if (evt.target.id == "showToolBar" || evt.target.id == "showMenuBar" || evt.target.id == "showAlgebraInput") {
+                 alert("hello custom ggb 5");
+        //debugcode();
+         //           if (document.getElementById('id_isurlggb').checked) {
+                     //GGBApplet = document.getElementById('id_urlggb').value;
+          //          }
                 window.applet1 = new GGBApplet(window.GGBT.parameters, true);
                 // window.applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
                 window.applet1.inject("applet_container1", "preferHTML5");
@@ -346,6 +376,11 @@
                     window.GGBT.parameters.showMenuBar = window.GGBT.show_menu_bar.checked;
                     window.GGBT.parameters.showToolBar = window.GGBT.show_tool_bar.checked;
                     window.GGBT.parameters.moodle = "editingQuestionOrSubmission";
+                    alert("hello custom ggb 2");
+        //debugcode();
+         //           if (document.getElementById('id_isurlggb').checked) {
+                     //GGBApplet = document.getElementById('id_urlggb').value;
+          //          }
                     window.applet1 = new GGBApplet(window.GGBT.parameters, true);
                     // window.applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
                     window.applet1.inject("applet_container1");

@@ -140,6 +140,15 @@ class qtype_geogebra_edit_form extends question_edit_form {
 
         $mform->addElement('selectyesno', 'isexercise', get_string('isexercise', 'qtype_geogebra'));
         $mform->addHelpButton('isexercise', 'isexercise', 'qtype_geogebra');
+        // Add urlggb 
+        $mform->addElement('advcheckbox', 'isurlggb', get_string('isurlggbenable', 'qtype_geogebra'),
+            get_string('isurlggb', 'qtype_geogebra'));
+        $mform->setDefault('isurlggb', 0);
+        // If isurlggb true get a URL
+        $mform->addElement('text', 'urlggb', get_string('urlggb', 'qtype_geogebra'));
+        $mform->setType('urlggb', PARAM_URL);
+        $mform->addHelpButton('urlggb', 'urlggb', 'qtype_geogebra');
+        $mform->hideIf('urlggb', 'isurlggb');
         // Add randomization seed
         $mform->addElement('advcheckbox', 'seeditornot', get_string('seeditornotenable', 'qtype_geogebra'),
             get_string('seeditornot', 'qtype_geogebra'));
@@ -553,7 +562,7 @@ class qtype_geogebra_edit_form extends question_edit_form {
 EOD;
             $mform->addElement('html', $applet);
         }
-        //echo "<script>function debugcode(){debugger;}</script>";
+        echo "<script>function debugcode(){debugger;}</script>";
         $PAGE->requires->js_call_amd('qtype_geogebra/ggbt', 'init');
     }
 
@@ -618,6 +627,14 @@ HTML;
         if (!empty($this->ggbparameters) && empty($this->ggbturl)) {
             $mform->setDefault('usefile', true);
         }
+        // Add urlggbact  
+        $mform->addElement('advcheckbox', 'isurlggbact', get_string('isurlggbactenable', 'qtype_geogebra'),
+            get_string('isurlggbact', 'qtype_geogebra'));
+        $mform->setDefault('isurlggbact', 0);
+        $mform->addElement('text', 'urlggbact', get_string('urlggbact', 'qtype_geogebra'));
+        $mform->setType('urlggbact', PARAM_URL);
+        $mform->addHelpButton('urlggbact', 'urlggbact', 'qtype_geogebra');
+        $mform->hideIf('urlggbact', 'isurlggbact');
     }
 
     private function check_is_exercise_present($data, $errors) {

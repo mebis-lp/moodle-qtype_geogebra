@@ -49,6 +49,10 @@ class qtype_geogebra_question extends question_graded_automatically {
     public $height;
     public $seeditornot;
     public $seed;
+    public $isurlggb;
+    public $urlggb;
+    public $isurlggbact;
+    public $urlggbact;
 
     public $currentvals = array();
 

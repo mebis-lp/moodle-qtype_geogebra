@@ -137,6 +137,10 @@ class qtype_geogebra_renderer extends qtype_renderer {
         $seed = $question->seed ?: 0;
         $width = $question->width ?: 0;
         $height = $question->height ?: 0;
+        $isurlggb = $question->isurlggb ?: 0;
+        $urlggb = $question->urlggb ?: 0;
+        $isurlggbact = $question->isurlggbact ?: 0;
+        $urlggbact = $question->urlggbact ?: 0;
         $applet = <<<EOD
 <article id=$appletparametersid
   data-parameters=$question->ggbparameters
@@ -157,11 +161,15 @@ class qtype_geogebra_renderer extends qtype_renderer {
   data-seed=$seed
   data-width=$width
   data-height=$height
+  data-isurlggb=$isurlggb
+  data-urlggb=$urlggb
+  data-isurlggbact=$isurlggbact
+  data-urlggbact=$urlggbact
   data-scalingcontainerclass=$scalingcontainerclass
 </article>
 EOD;
         $result .= $applet;
-        //echo "<script>function debugcode(){debugger;}</script>";
+        echo "<script>function debugcode(){debugger;}</script>";
         $this->page->requires->js_call_amd('qtype_geogebra/ggbq', 'init', array($appletparametersid));
 
         if ($qa->get_state() == question_state::$invalid) {
