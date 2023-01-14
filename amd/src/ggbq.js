@@ -116,7 +116,7 @@ define(['jquery'], function ($) {
                     }
                 }
             };
-
+            
             // jquery doesn't handle the colon : but later we expect a jquery optject, so ...
             this.b64input[slot] = $(document.getElementById(ggbDataset.b64input));
             this.ggbBase64[slot] = this.b64input[slot].val();
@@ -131,9 +131,12 @@ define(['jquery'], function ($) {
             }
 
             // Check if seed have been manually set. The default would be "no"
+            alert("entering the seed");
+            	debugcode();
             if (!ggbDataset.seeditornot || ggbDataset.seeditornot === '0') {
             	var dice=Math.floor((Math.random() * 1000) + 1);
             	alert("random copy with "+dice.toString());
+            	debugcode();
                 parameters.randomSeed = dice ;
             } else {
                 parameters.randomSeed = ggbDataset.seed;
@@ -168,9 +171,11 @@ define(['jquery'], function ($) {
             // Check if GGBApplet have been manually set.
         //debugcode();
             	var GGBAppletname ;
-            if (ggbDataset.isurlggb) {
+            if (!ggbDataset.isurlggb||ggbDataset.isurlggb === "0") {
+             GGBAppletname = 'https://www.geogebra.org/apps/deployggb.js';
+            } else {
             	GGBAppletname = ggbDataset.urlggb;
-            } else {GGBAppletname = 'https://www.geogebra.org/apps/deployggb.js';}
+            }
               //require.config({paths: {gb: GGBAppletname.slice(0,-3)}});
               //require(["gb"], function(gb) {
               //import GGBApplet from GGBAppletname;
