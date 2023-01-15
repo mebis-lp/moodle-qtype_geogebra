@@ -22,3 +22,6 @@ repository installed)
 - Load the Applet. Variables which could be randomized or can be used for checking correctness, will be extracted automatically
 - Choose the fraction which goes with the boolean variable
 - Save the question and use it for your quiz
+- You can add a seed so that all random values are the same for all the class.
+- You can reference a ggb with a plain https URL (see for instance details to reference ggb(s) in [this repository](https://github.com/TWINGSISTER/moodle-qtype_geogebra) reading this [README](https://twingsister.github.io/Moodle-Tests-Repository/)) 
+- You can use an alternate source for the  deploy.js file and  a self hosted Geogebra codebase  
