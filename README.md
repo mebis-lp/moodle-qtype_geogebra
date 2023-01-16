@@ -24,4 +24,4 @@ repository installed)
 - Save the question and use it for your quiz
 - You can add a seed so that all random values are the same for all the class.
 - You can reference a ggb with a plain https URL (see for instance details to reference ggb(s) in [this repository](https://github.com/TWINGSISTER/moodle-qtype_geogebra) reading this [README](https://twingsister.github.io/Moodle-Tests-Repository/)) 
-- You can use an alternate source for the  deployggb.js file and  a self hosted Geogebra codebase  as
+- You can use an alternate source for the  deployggb.js file and  a self hosted Geogebra codebase  as in [this repository](https://twingsister.github.io/GeogebraMultilanguageTranslator/Geogebra/geogebra-math-apps-bundle-5-0-latest/GeoGebra/deployggb.js)
