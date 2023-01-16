@@ -82,7 +82,9 @@ var codebase;
                      //GGBApplet = document.getElementById('id_urlggb').value;
                //     }
                 window.applet1 = new GGBApplet(this.parameters, this.views, true);
-                if(!codebase===""){window.applet1.setHTML5Codebase(codebase);}
+                if(!(codebase==="")){
+                 window.applet1.setHTML5Codebase(codebase);
+                 }
                 this.lang = this.ggbDataset.lang;
             }
         debugcode();
@@ -170,7 +172,7 @@ var codebase;
                      //GGBApplet = document.getElementById('id_urlggb').value;
           //          }
             window.applet1 = new GGBApplet(this.parameters, true);
-                if(!codebase===""){window.applet1.setHTML5Codebase(codebase);}
+                if(!(codebase==="")){window.applet1.setHTML5Codebase(codebase);}
             // window.applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
 
             window.applet1.inject("applet_container1", "preferHTML5");
@@ -303,7 +305,7 @@ var codebase;
                      //GGBApplet = document.getElementById('id_urlggb').value;
           //          }
                 window.applet1 = new GGBApplet(window.GGBT.parameters, true);
-                if(!codebase===""){window.applet1.setHTML5Codebase(codebase);}
+                if(!(codebase==="")){window.applet1.setHTML5Codebase(codebase);}
                 // window.applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
                 window.applet1.inject("applet_container1", "preferHTML5");
             } else {
@@ -393,7 +395,7 @@ var codebase;
                      //GGBApplet = document.getElementById('id_urlggb').value;
           //          }
                     window.applet1 = new GGBApplet(window.GGBT.parameters, true);
-                if(!codebase===""){window.applet1.setHTML5Codebase(codebase);}
+                if(!(codebase==="")){window.applet1.setHTML5Codebase(codebase);}
                     // window.applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
                     window.applet1.inject("applet_container1");
                 };

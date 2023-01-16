@@ -190,7 +190,7 @@ define(['jquery'], function ($) {
             require([GGBAppletname],function (App){//);
             	var applet1;
                 applet1 = new App(parameters, views, ggbDataset.html5NoWebSimple);
-                if (!codebase===""){applet1.setHTML5Codebase(codebase)};
+                if ((!codebase==="")){applet1.setHTML5Codebase(codebase)};
             	applet1.inject(ggbDataset.div, "preferHTML5");
               });
             //	GGBApplet=
