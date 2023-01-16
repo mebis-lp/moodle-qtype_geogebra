@@ -11,9 +11,18 @@
  */
 // alert("hello ggbt");
 var GGBAppletstr;
+var codebase;
                     if (document.getElementById('id_isurlggb').checked) {
-                     GGBAppletstr = document.getElementById('id_urlggb').value;
-                     }else { GGBAppletstr = 'https://www.geogebra.org/apps/deployggb.js';}
+                     GGBAppletcode = document.getElementById('id_urlggb').value;
+                      var parts=GGBAppletcode.split(",");
+                  var rooturl=parts[0];
+                  var appl=parts[1];
+                  var base=parts[2];
+                  GGBAppletstr = rooturl+appl ;
+                  codebase = rooturl+base;
+                     }else {
+                     GGBAppletstr = 'https://www.geogebra.org/apps/deployggb.js';
+                     codebase="";}
  define(['jquery', GGBAppletstr], function ($, GGBApplet) {
 // define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GGBApplet) {
  //define(['jquery'], function ($) {
@@ -73,7 +82,7 @@ var GGBAppletstr;
                      //GGBApplet = document.getElementById('id_urlggb').value;
                //     }
                 window.applet1 = new GGBApplet(this.parameters, this.views, true);
-                // window.applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.410.0/web3d");
+                if(!codebase===""){window.applet1.setHTML5Codebase(codebase);}
                 this.lang = this.ggbDataset.lang;
             }
         debugcode();
@@ -161,6 +170,7 @@ var GGBAppletstr;
                      //GGBApplet = document.getElementById('id_urlggb').value;
           //          }
             window.applet1 = new GGBApplet(this.parameters, true);
+                if(!codebase===""){window.applet1.setHTML5Codebase(codebase);}
             // window.applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
 
             window.applet1.inject("applet_container1", "preferHTML5");
@@ -293,6 +303,7 @@ var GGBAppletstr;
                      //GGBApplet = document.getElementById('id_urlggb').value;
           //          }
                 window.applet1 = new GGBApplet(window.GGBT.parameters, true);
+                if(!codebase===""){window.applet1.setHTML5Codebase(codebase);}
                 // window.applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
                 window.applet1.inject("applet_container1", "preferHTML5");
             } else {
@@ -382,6 +393,7 @@ var GGBAppletstr;
                      //GGBApplet = document.getElementById('id_urlggb').value;
           //          }
                     window.applet1 = new GGBApplet(window.GGBT.parameters, true);
+                if(!codebase===""){window.applet1.setHTML5Codebase(codebase);}
                     // window.applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
                     window.applet1.inject("applet_container1");
                 };

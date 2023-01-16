@@ -171,10 +171,18 @@ define(['jquery'], function ($) {
             // Check if GGBApplet have been manually set.
         //debugcode();
             	var GGBAppletname ;
+            	var codebase ;
+
             if (!ggbDataset.isurlggb||ggbDataset.isurlggb === "0") {
              GGBAppletname = 'https://www.geogebra.org/apps/deployggb.js';
+             codebase="";
             } else {
-            	GGBAppletname = ggbDataset.urlggb;
+                var parts=ggbDataset.urlggb.split(",");
+            	var root=parts[0];
+            	var appl=parts[1];
+            	var base=parts[2];
+            	GGBAppletname = root+appl ;
+            	codebase = root+base;
             }
               //require.config({paths: {gb: GGBAppletname.slice(0,-3)}});
               //require(["gb"], function(gb) {
@@ -182,6 +190,7 @@ define(['jquery'], function ($) {
             require([GGBAppletname],function (App){//);
             	var applet1;
                 applet1 = new App(parameters, views, ggbDataset.html5NoWebSimple);
+                if (!codebase===""){applet1.setHTML5Codebase(codebase)};
             	applet1.inject(ggbDataset.div, "preferHTML5");
               });
             //	GGBApplet=
