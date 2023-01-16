@@ -45,7 +45,9 @@ class qtype_geogebra extends question_type {
         return array('qtype_geogebra_options', 'ggbturl', 'ggbparameters', 'ggbviews', 'ggbcodebaseversion', 'ggbxml',
                 'israndomized', 'randomizedvar', 'constraints', 'isexercise','forcedimensions','width',
                 'height', 'seeditornot','seed',
-                'isurlggb','urlggb','isurlggbact','urlggbact');
+                'isurlggb','urlggb'
+            //,'isurlggbact','urlggbact'
+            );
     }
 
     /**

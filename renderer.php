@@ -139,8 +139,8 @@ class qtype_geogebra_renderer extends qtype_renderer {
         $height = $question->height ?: 0;
         $isurlggb = $question->isurlggb ?: 0;
         $urlggb = $question->urlggb ?: 0;
-        $isurlggbact = $question->isurlggbact ?: 0;
-        $urlggbact = $question->urlggbact ?: 0;
+        //$isurlggbact = $question->isurlggbact ?: 0;
+        //$urlggbact = $question->urlggbact ?: 0;
         $applet = <<<EOD
 <article id=$appletparametersid
   data-parameters=$question->ggbparameters
@@ -163,8 +163,8 @@ class qtype_geogebra_renderer extends qtype_renderer {
   data-height=$height
   data-isurlggb=$isurlggb
   data-urlggb=$urlggb
-  data-isurlggbact=$isurlggbact
-  data-urlggbact=$urlggbact
+  //data-isurlggbact=$isurlggbact
+  //data-urlggbact=$urlggbact
   data-scalingcontainerclass=$scalingcontainerclass
 </article>
 EOD;

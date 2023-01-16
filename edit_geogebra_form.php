@@ -628,13 +628,13 @@ HTML;
             $mform->setDefault('usefile', true);
         }
         // Add urlggbact  
-        $mform->addElement('advcheckbox', 'isurlggbact', get_string('isurlggbactenable', 'qtype_geogebra'),
-            get_string('isurlggbact', 'qtype_geogebra'));
-        $mform->setDefault('isurlggbact', 0);
-        $mform->addElement('text', 'urlggbact', get_string('urlggbact', 'qtype_geogebra'));
-        $mform->setType('urlggbact', PARAM_URL);
-        $mform->addHelpButton('urlggbact', 'urlggbact', 'qtype_geogebra');
-        $mform->hideIf('urlggbact', 'isurlggbact');
+        //$mform->addElement('advcheckbox', 'isurlggbact', get_string('isurlggbactenable', 'qtype_geogebra'),
+        //    get_string('isurlggbact', 'qtype_geogebra'));
+        //$mform->setDefault('isurlggbact', 0);
+        //$mform->addElement('text', 'urlggbact', get_string('urlggbact', 'qtype_geogebra'));
+        //$mform->setType('urlggbact', PARAM_URL);
+        //$mform->addHelpButton('urlggbact', 'urlggbact', 'qtype_geogebra');
+        //$mform->hideIf('urlggbact', 'isurlggbact');
     }
 
     private function check_is_exercise_present($data, $errors) {
