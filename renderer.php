@@ -163,8 +163,6 @@ class qtype_geogebra_renderer extends qtype_renderer {
   data-height=$height
   data-isurlggb=$isurlggb
   data-urlggb=$urlggb
-  //data-isurlggbact=$isurlggbact
-  //data-urlggbact=$urlggbact
   data-scalingcontainerclass=$scalingcontainerclass
 </article>
 EOD;

@@ -76,7 +76,7 @@ var codebase;
                 this.ggbDataset = $('#applet_parameters')[0].dataset;
                 this.parameters = JSON.parse(this.ggbDataset.parameters);
                 this.views = this.ggbDataset.views;
-                 alert("hello custom ggb 3");
+                 //alert("hello custom ggb 3");
         //debugcode();
                // if (document.getElementById('id_isurlggb').checked) {
                      //GGBApplet = document.getElementById('id_urlggb').value;
@@ -87,7 +87,7 @@ var codebase;
                  }
                 this.lang = this.ggbDataset.lang;
             }
-        debugcode();
+        //debugcode();
 
             $('#id_loadapplet').on('click', function(e) {
                 e.preventDefault();
@@ -141,8 +141,8 @@ var codebase;
         },
 
         callback: function(params) {
-        alert("other filename");
-        debugcode();
+        //alert("other filename");
+        //debugcode();
             var elementname = M.core_filepicker.instances[params['client_id']].options.elementname;
             $('#id_' + elementname).val(params.url);
             // inject applet to div layer
@@ -166,8 +166,8 @@ var codebase;
 
             document.getElementById('applet_container1').style.display = "block";
 
-                 alert("hello custom ggb  4");
-        debugcode();
+                 //alert("hello custom ggb  4");
+        //debugcode();
          //           if (document.getElementById('id_isurlggb').checked) {
                      //GGBApplet = document.getElementById('id_urlggb').value;
           //          }
@@ -299,7 +299,7 @@ var codebase;
             window.GGBT.parameters[evt.target.id] = (evt.target.checked);
             $('input[name="ggbparameters"]').val(JSON.stringify(window.GGBT.parameters));
             if (evt.target.id == "showToolBar" || evt.target.id == "showMenuBar" || evt.target.id == "showAlgebraInput") {
-                 alert("hello custom ggb 5");
+                // alert("hello custom ggb 5");
         //debugcode();
          //           if (document.getElementById('id_isurlggb').checked) {
                      //GGBApplet = document.getElementById('id_urlggb').value;
@@ -389,7 +389,7 @@ var codebase;
                     window.GGBT.parameters.showMenuBar = window.GGBT.show_menu_bar.checked;
                     window.GGBT.parameters.showToolBar = window.GGBT.show_tool_bar.checked;
                     window.GGBT.parameters.moodle = "editingQuestionOrSubmission";
-                    alert("hello custom ggb 2");
+                   // alert("hello custom ggb 2");
         //debugcode();
          //           if (document.getElementById('id_isurlggb').checked) {
                      //GGBApplet = document.getElementById('id_urlggb').value;

@@ -131,12 +131,12 @@ define(['jquery'], function ($) {
             }
 
             // Check if seed have been manually set. The default would be "no"
-            alert("entering the seed");
-            	debugcode();
+            //alert("entering the seed");
+            	//debugcode();
             if (!ggbDataset.seeditornot || ggbDataset.seeditornot === '0') {
             	var dice=Math.floor((Math.random() * 1000) + 1);
-            	alert("random copy with "+dice.toString());
-            	debugcode();
+            	//alert("random copy with "+dice.toString());
+            	//debugcode();
                 parameters.randomSeed = dice ;
             } else {
                 parameters.randomSeed = ggbDataset.seed;
