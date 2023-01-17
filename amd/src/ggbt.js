@@ -12,6 +12,7 @@
 // alert("hello ggbt");
 var GGBAppletstr;
 var codebase;
+               if (document.getElementById('id_isurlggb')!== null) {
                     if (document.getElementById('id_isurlggb').checked) {
                      GGBAppletcode = document.getElementById('id_urlggb').value;
                       var parts=GGBAppletcode.split(",");
@@ -23,6 +24,7 @@ var codebase;
                      }else {
                      GGBAppletstr = 'https://www.geogebra.org/apps/deployggb.js';
                      codebase="";}
+                }
  define(['jquery', GGBAppletstr], function ($, GGBApplet) {
 // define(['jquery', 'https://www.geogebra.org/apps/deployggb.js'], function ($, GGBApplet) {
  //define(['jquery'], function ($) {
