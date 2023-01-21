@@ -167,7 +167,7 @@ class qtype_geogebra_renderer extends qtype_renderer {
 </article>
 EOD;
         $result .= $applet;
-        echo "<script>function debugcode(){debugger;}</script>";
+        //echo "<script>function debugcode(){debugger;}</script>";
         $this->page->requires->js_call_amd('qtype_geogebra/ggbq', 'init', array($appletparametersid));
 
         if ($qa->get_state() == question_state::$invalid) {

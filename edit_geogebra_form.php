@@ -587,9 +587,9 @@ EOD;
         <label for="enableRightClick">$enablerightclick</label><br>
         <input type="checkbox" id="enableLabelDrags" name="enableLabelDrags" value="1">
         <label for="enableLabelDrags">$enablelabeldrags</label><br>
-        <input type="checkbox" id="showResetIcon" name="showResetIcon" value="1" checked="checked">
+        <input type="checkbox" id="showResetIcon" name="showResetIcon" value="1" >
         <label for="showResetIcon">$showreseticon</label><br>
-        <input type="checkbox" id="enableShiftDragZoom" name="enableShiftDragZoom" value="1" checked="checked">
+        <input type="checkbox" id="enableShiftDragZoom" name="enableShiftDragZoom" value="1" >
         <label for="enableShiftDragZoom">$enableshiftdragzoom</label><br>
         <input type="checkbox" id="showMenuBar" name="showMenuBar" value="1">
         <label for="showMenuBar">$showmenubar</label><br>

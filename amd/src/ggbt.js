@@ -38,7 +38,7 @@ var codebase;
 
         init: function() {
 
-        //debugcode();
+        //debugcode();//
             window.GGBT = this;
             window.ggbAppletOnLoad = function() {
                 $('input[name="ggbparameters"]').val(JSON.stringify(window.applet1.getParameters()));
@@ -102,7 +102,9 @@ var codebase;
                     }
                   }
                   window.GGBT.injectapplet({"material_id": id});
-                 }else{window.GGBT.injectapplet({"filename": httpurl});}
+                 }else{
+                 document.getElementById('applet_options').style.display = "flex";
+                 window.GGBT.injectapplet({"filename": httpurl});}
             });
 
             $('#id_getvars').on('click', function(e) {
@@ -137,7 +139,7 @@ var codebase;
             if (this.usefile.checked) {
                 document.getElementById('applet_options').style.display = "block";
             } else {
-                document.getElementById('applet_options').style.display = "none";
+                document.getElementById('applet_options').style.display = "flex"; // ex none
             }
             this.initoptions();
         },
@@ -278,7 +280,7 @@ var codebase;
             this.show_menu_bar = document.getElementById('showMenuBar');
             this.show_tool_bar = document.getElementById('showToolBar');
 
-            if (typeof parameters !== 'undefined') {
+            if (typeof this.parameters !== 'undefined') {
                 this.enable_right_click.checked = this.parameters.enableRightClick;
                 this.enable_label_drags.checked = this.parameters.enableLabelDrags;
                 this.show_reset_icon.checked = this.parameters.showResetIcon;
@@ -286,6 +288,9 @@ var codebase;
                 this.show_algebra_input.checked = this.parameters.showAlgebraInput;
                 this.show_menu_bar.checked = this.parameters.showMenuBar;
                 this.show_tool_bar.checked = this.parameters.showToolBar;
+                //debugcode();
+                //document.getElementById('showToolBar').checked=this.show_tool_bar.checked;
+
             }
 
             this.enable_right_click.addEventListener('change', this.handlesettingschanged, false);
@@ -318,7 +323,7 @@ var codebase;
         handleusefile: function() {
             if (!window.GGBT.usefile.checked) {
                 document.getElementById('applet_container1').style.display = "none";
-                document.getElementById('applet_options').style.display = "none";
+                document.getElementById('applet_options').style.display = "flex"; //ex none
             } else {
                 document.getElementById('id_ggbturl').value = "";
                 // document.getElementById('applet_container1').style.display = "block";
@@ -328,7 +333,7 @@ var codebase;
         handleggbdisable: function() {
             if (!window.GGBT.ggbcheckb.checked) {
                 document.getElementById('applet_container1').style.display = "none";
-                document.getElementById('applet_options').style.display = "none";
+                document.getElementById('applet_options').style.display = "flex"; //ex none
                 if (window.GGBT.usefile.checked) {
                     window.GGBT.usefile.click();
                 }

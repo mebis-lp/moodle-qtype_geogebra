@@ -169,7 +169,7 @@ define(['jquery'], function ($) {
 
             var views = JSON.parse(ggbDataset.views);
             // Check if GGBApplet have been manually set.
-        debugcode();
+        //debugcode(); //
             	var GGBAppletname ;
             	var codebase ;
 
