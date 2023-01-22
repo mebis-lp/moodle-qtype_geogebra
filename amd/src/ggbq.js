@@ -75,7 +75,7 @@ define(['jquery'], function ($) {
         responsevars: [],
         exerciseresultinput: [],
         qdiv: [],
-        //parameters: {},
+        parameters: {}, //before not global
         ggbDataset: [],
         //applet1,
 
@@ -106,7 +106,7 @@ define(['jquery'], function ($) {
 
                     window.GGBQ.b64input[id].val(ggbApplet.getBase64());
                     window.GGBQ.xmlinput[id].val(ggbApplet.getXML());
-
+ 
                     window.GGBQ.qdiv[id].style.visibility = 'visible';
                     if (window.GGBQ.answerinput[id].val() == '') {
                         // Twingsister
@@ -125,7 +125,9 @@ define(['jquery'], function ($) {
             this.ggbxml[slot] = this.xmlinput[slot].val();
             this.qdiv[slot] = $("#q" + (slot) + " .qtext")[0];
 
-            var parameters = JSON.parse(ggbDataset.parameters);
+            
+            //var parameters = JSON.parse(ggbDataset.parameters);
+            parameters = JSON.parse(ggbDataset.parameters);
             if (this.ggbBase64[slot] != '') {
                 parameters.ggbBase64 = this.ggbBase64[slot];
             }
