@@ -41,6 +41,7 @@ var codebase;
         //debugcode();//
             window.GGBT = this;
             window.ggbAppletOnLoad = function() {
+            debugcode();
                 $('input[name="ggbparameters"]').val(JSON.stringify(window.applet1.getParameters()));
                 $('input[name="ggbviews"]').val(JSON.stringify(window.applet1.getViews()));
                 $('input[name="ggbcodebaseversion"]').val(window.applet1.getHTML5CodebaseVersion());
@@ -79,11 +80,12 @@ var codebase;
                 this.parameters = JSON.parse(this.ggbDataset.parameters);
                 this.views = this.ggbDataset.views;
                  //alert("hello custom ggb 3");
-        //debugcode();
+        debugcode();
                // if (document.getElementById('id_isurlggb').checked) {
                      //GGBApplet = document.getElementById('id_urlggb').value;
                //     }
-                window.applet1 = new GGBApplet(this.parameters, this.views, true);
+                //window.applet1 = new GGBApplet(this.parameters, this.views, true);
+                window.applet1 = new GGBApplet(this.parameters, true);
                 if(!(codebase==="")){
                  window.applet1.setHTML5Codebase(codebase);
                  }
@@ -91,6 +93,7 @@ var codebase;
             }
         //debugcode();
 
+            //$('#id_stoapplet').on('click', this.handleStoreGGB);
             $('#id_loadapplet').on('click', function(e) {
                 e.preventDefault();
                 var httpurl = $('#id_ggbturl').val();
@@ -162,12 +165,12 @@ var codebase;
         },
 
         injectapplet: function(fileURL) {
-            this.parameters = fileURL ;
+            this.parameters ={ ...this.parameters,  ...fileURL};
             this.parameters.language = this.lang;
             this.parameters.moodle = "editingQuestionOrSubmission";
             // Since we only support HTML5 this should work for js-code in the applet to get executed (ggboninit).
             this.parameters.useBrowserForJS = false;
-
+            //window.ggbAppletOnLoad = function (ggbAppletId) {}
             document.getElementById('applet_container1').style.display = "block";
 
                  //alert("hello custom ggb  4");
@@ -274,6 +277,7 @@ var codebase;
         initoptions: function() {
             this.enable_right_click = document.getElementById('enableRightClick');
             this.enable_label_drags = document.getElementById('enableLabelDrags');
+            this.enable_undo_redo = document.getElementById('enableUndoRedo');
             this.show_reset_icon = document.getElementById('showResetIcon');
             this.enable_shift_drag_zoom = document.getElementById('enableShiftDragZoom');
             this.show_algebra_input = document.getElementById('showAlgebraInput');
@@ -283,6 +287,7 @@ var codebase;
             if (typeof this.parameters !== 'undefined') {
                 this.enable_right_click.checked = this.parameters.enableRightClick;
                 this.enable_label_drags.checked = this.parameters.enableLabelDrags;
+                this.enable_undo_redo.checked = this.parameters.enableUndoRedo;
                 this.show_reset_icon.checked = this.parameters.showResetIcon;
                 this.enable_shift_drag_zoom.checked = this.parameters.enableShiftDragZoom;
                 this.show_algebra_input.checked = this.parameters.showAlgebraInput;
@@ -295,6 +300,7 @@ var codebase;
 
             this.enable_right_click.addEventListener('change', this.handlesettingschanged, false);
             this.enable_label_drags.addEventListener('change', this.handlesettingschanged, false);
+            this.enable_undo_redo.addEventListener('change', this.handlesettingschanged, false);
             this.show_reset_icon.addEventListener('change', this.handlesettingschanged, false);
             this.enable_shift_drag_zoom.addEventListener('change', this.handlesettingschanged, false);
             this.show_algebra_input.addEventListener('change', this.handlesettingschanged, false);
@@ -303,9 +309,13 @@ var codebase;
         },
 
         handlesettingschanged: function(evt) {
+debugcode();
             window.GGBT.parameters[evt.target.id] = (evt.target.checked);
             $('input[name="ggbparameters"]').val(JSON.stringify(window.GGBT.parameters));
-            if (evt.target.id == "showToolBar" || evt.target.id == "showMenuBar" || evt.target.id == "showAlgebraInput") {
+            if (evt.target.id == "showToolBar" ||
+                evt.target.id == "showMenuBar" ||
+                evt.target.id == "enableUndoRedo" ||
+                evt.target.id == "showAlgebraInput") {
                 // alert("hello custom ggb 5");
         //debugcode();
          //           if (document.getElementById('id_isurlggb').checked) {
@@ -366,7 +376,56 @@ var codebase;
                 document.getElementById('applet_container1').style.removeProperty("visibility");
             }
         },
+        //handleStoreGGB: function() {
+            /*{
+            if (typeof (window.GGBT.ggbcheckb) == "undefined" || window.GGBT.ggbcheckb.checked) {
+                e.preventDefault();
+                e.stopPropagation();
+                var file = e.dataTransfer.files[0];
+                window.GGBT.ggbf.classList.remove('qtype-geogebra-hover');
+                document.getElementById('applet_container1').style.removeProperty("visibility");
+                document.getElementById('applet_container1').style.display = "block";
+                document.getElementById('applet_options').style.display = "flex";
+                document.getElementById('applet_container1').style.height = "100%";
+                //document.getElementById('applet_container1').style.width = "100%";
 
+                document.getElementById('id_ggbturl').value = "";
+                //this.usefile = document.getElementById("id_usefile");
+                if (!window.GGBT.usefile.checked) {
+                    window.GGBT.usefile.click();
+                }
+                var reader = new FileReader();
+                reader.onload = function(event) {
+                    var base64 = event.target.result.replace("data:application/vnd.geogebra.file;base64,", "");
+                */
+          //      debugcode();
+          //          var base64 = window.ggbApplet.getBase64() ;
+          //          window.GGBT.parameters = {"ggbBase64": base64};
+                    /*
+                    window.GGBT.parameters.enableRightClick = window.GGBT.enable_right_click.checked;
+                    window.GGBT.parameters.enableLabelDrags = window.GGBT.enable_label_drags.checked;
+                    window.GGBT.parameters.showResetIcon = window.GGBT.show_reset_icon.checked;
+                    window.GGBT.parameters.enableShiftDragZoom = window.GGBT.enable_shift_drag_zoom.checked;
+                    window.GGBT.parameters.showAlgebraInput = window.GGBT.show_algebra_input.checked;
+                    window.GGBT.parameters.showMenuBar = window.GGBT.show_menu_bar.checked;
+                    window.GGBT.parameters.showToolBar = window.GGBT.show_tool_bar.checked;
+                    window.GGBT.parameters.moodle = "editingQuestionOrSubmission";
+                    */
+                   // alert("hello custom ggb 2");
+        //debugcode();
+         //           if (document.getElementById('id_isurlggb').checked) {
+                     //GGBApplet = document.getElementById('id_urlggb').value;
+          //          }
+          /*
+                    window.applet1 = new GGBApplet(window.GGBT.parameters, true);
+                if(!(codebase==="")){window.applet1.setHTML5Codebase(codebase);}
+                    // window.applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
+                    window.applet1.inject("applet_container1");
+                };
+
+                reader.readAsDataURL(file);
+            }*/
+        ///},
         handleDrop: function(e) {
             if (typeof (window.GGBT.ggbcheckb) == "undefined" || window.GGBT.ggbcheckb.checked) {
                 e.preventDefault();
@@ -391,6 +450,7 @@ var codebase;
                     window.GGBT.parameters.enableRightClick = window.GGBT.enable_right_click.checked;
                     window.GGBT.parameters.enableLabelDrags = window.GGBT.enable_label_drags.checked;
                     window.GGBT.parameters.showResetIcon = window.GGBT.show_reset_icon.checked;
+                    window.GGBT.parameters.enableUndoRedo = window.GGBT.enable_undo_redo.checked;
                     window.GGBT.parameters.enableShiftDragZoom = window.GGBT.enable_shift_drag_zoom.checked;
                     window.GGBT.parameters.showAlgebraInput = window.GGBT.show_algebra_input.checked;
                     window.GGBT.parameters.showMenuBar = window.GGBT.show_menu_bar.checked;

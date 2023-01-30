@@ -243,8 +243,9 @@ class qtype_geogebra_question extends question_graded_automatically {
          $summary .= $answer->answer . '=';
          $responseclass .= $answer->answer . '=' . $values[$j];
          // contribution to the result
-         $valnum = $values[$j];
-          $valnum =  ($valnum == "true"?1:($valnum == "false"?0:number_format($values[$j])));
+         
+         $valnum = (array_key_exists($j,$values)?$values[$j]:1);
+         $valnum =  ($valnum == "true"?1:($valnum == "false"?0:number_format($valnum)));
          $fraction += ($answer->fraction)*$valnum;
          $summary .= format_float($valnum, 2, false, false) . ',' .
                      get_string('grade', 'grades') . ': ' .

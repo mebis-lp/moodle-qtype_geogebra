@@ -539,8 +539,10 @@ class qtype_geogebra_edit_form extends question_edit_form {
         /* Button to (Re)load Applet from GeoGebraTube */
         $loadappletgroup = array();
         $loadappletgroup[] =& $mform->createElement('button', 'loadapplet', get_string('loadapplet', 'qtype_geogebra'));
-        // Hack: the button doesn't support a HelpButton.
         $loadappletgroup[] =& $mform->createElement('html', '<span>&nbsp;</span>');
+        //$loadappletgroup[] =& $mform->createElement('button', 'stoapplet', get_string('stoapplet', 'qtype_geogebra'));
+        //$loadappletgroup[] =& $mform->createElement('html', '<span>&nbsp;</span>');
+        // Hack: the button doesn't support a HelpButton.
         $mform->addGroup($loadappletgroup, 'loadappletgroup', get_string('loadapplet', 'qtype_geogebra'), array(' '), false);
         $mform->addHelpButton('loadappletgroup', 'loadapplet', 'qtype_geogebra');
         $mform->disabledIf('loadappletgroup', 'usefile', 'checked');
@@ -557,7 +559,7 @@ class qtype_geogebra_edit_form extends question_edit_form {
   data-views=$this->ggbviews
   data-codebase=$this->ggbcodebaseversion
   data-lang=$lang
-  data-html5NoWebSimple="true">
+  data-html5nowebsimple="true">
 </article>
 EOD;
             $mform->addElement('html', $applet);
@@ -575,6 +577,7 @@ EOD;
         $showalgebrainput = get_string('show_algebra_input', 'qtype_geogebra');
         $showmenubar = get_string('show_menu_bar', 'qtype_geogebra');
         $showreseticon = get_string('show_reset_icon', 'qtype_geogebra');
+        $enableundoredo = get_string('enable_undo_redo', 'qtype_geogebra');
         $showtoolbar = get_string('show_tool_bar', 'qtype_geogebra');
 
         $options = <<<HTML
@@ -587,6 +590,8 @@ EOD;
         <label for="enableRightClick">$enablerightclick</label><br>
         <input type="checkbox" id="enableLabelDrags" name="enableLabelDrags" value="1">
         <label for="enableLabelDrags">$enablelabeldrags</label><br>
+        <input type="checkbox" id="enableUndoRedo" name="enableUndoRedo" value="1" >
+        <label for="enableUndoRedo">$enableundoredo</label><br>
         <input type="checkbox" id="showResetIcon" name="showResetIcon" value="1" >
         <label for="showResetIcon">$showreseticon</label><br>
         <input type="checkbox" id="enableShiftDragZoom" name="enableShiftDragZoom" value="1" >

@@ -75,7 +75,7 @@ define(['jquery'], function ($) {
         responsevars: [],
         exerciseresultinput: [],
         qdiv: [],
-        parameters: {}, //before not global
+        //parameters: {}, //before not global
         ggbDataset: [],
         //applet1,
 
@@ -86,6 +86,7 @@ define(['jquery'], function ($) {
             var slot = ggbDataset.slot;
             // Add current scaling container to the object store for being able to access it later on.
             scalingContainers[slot] = ggbDataset.scalingcontainerclass;
+            //alert("no load");
 
             window.ggbAppletOnLoad = function (ggbAppletId) {
                 if (ggbAppletId != -1) {
@@ -107,12 +108,16 @@ define(['jquery'], function ($) {
                     window.GGBQ.b64input[id].val(ggbApplet.getBase64());
                     window.GGBQ.xmlinput[id].val(ggbApplet.getXML());
  
-                    window.GGBQ.qdiv[id].style.visibility = 'visible';
+                    //window.GGBQ.qdiv[id].style.visibility = 'visible';
+                    window.GGBQ.qdiv[id]= {style: {visibility : 'visible'}};
                     if (window.GGBQ.answerinput[id].val() == '') {
                         // Twingsister
                         window.GGBQ.answerinput[id].val(stringfy(window.GGBQ.responsevars[id],ggbApplet));
                         // Twingsister
                     	//alert("response one");
+                //alert("gogod");
+             	//ggbApplet.setWidth(100);
+             	//ggbApplet.setPerspective("GD");
                     }
                 }
             };
@@ -126,8 +131,8 @@ define(['jquery'], function ($) {
             this.qdiv[slot] = $("#q" + (slot) + " .qtext")[0];
 
             
-            //var parameters = JSON.parse(ggbDataset.parameters);
-            parameters = JSON.parse(ggbDataset.parameters);
+            var parameters = JSON.parse(ggbDataset.parameters);
+            //parameters = JSON.parse(ggbDataset.parameters);
             if (this.ggbBase64[slot] != '') {
                 parameters.ggbBase64 = this.ggbBase64[slot];
             }
@@ -171,7 +176,7 @@ define(['jquery'], function ($) {
 
             var views = JSON.parse(ggbDataset.views);
             // Check if GGBApplet have been manually set.
-        //debugcode(); //
+        debugcode(); //
             	var GGBAppletname ;
             	var codebase ;
 
@@ -190,8 +195,21 @@ define(['jquery'], function ($) {
               //require(["gb"], function(gb) {
               //import GGBApplet from GGBAppletname;
             require([GGBAppletname],function (App){//);
-            	var applet1;
-                applet1 = new App(parameters, views, ggbDataset.html5NoWebSimple);
+            	var applet1 ;
+                //applet1 = new App(parameters, views, ggbDataset.html5NoWebSimple);
+                if(!parameters.showToolBar){
+                 parameters.showToolBar=true; 
+                 parameters.customToolBar="40,0,1,41,42,50,38,6";
+                }
+                // parameters.enableUndoRedo=false; //user controlled
+                //parameters.showResetIcon=false;// user defined
+                parameters.preventFocus=true;// get focus upon start
+                parameters.allowStyleBar=false;// style bar controls too much 
+                parameters.transparentGraphics=true;// graphics and graphics 2 are transparent
+                parameters.playButton=false; //true not working?
+                parameters.autoHeight=false; // allow height computed automatically
+                parameters.allowUpscale=true; // let GGB upscale Applet
+                applet1 = new App(parameters,ggbDataset.html5nowebsimple);
                 if (!(codebase==="")){applet1.setHTML5Codebase(codebase)};
             	applet1.inject(ggbDataset.div, "preferHTML5");
               });
@@ -221,7 +239,7 @@ define(['jquery'], function ($) {
 
 
         getBase64andCheck: function() {
-        //debugcode();
+        debugcode();
             for (var i = 0; i < window.GGBQ.answerinput.length; i++) {
                 var ggbApplet = window['ggbApplet' + i];
                 if (typeof ggbApplet !== "undefined") {

@@ -116,7 +116,7 @@ class qtype_geogebra_renderer extends qtype_renderer {
         $options = array('parameters' => $question->ggbparameters,
             'views' => $question->ggbviews,
             'codebase' => $question->ggbcodebaseversion,
-            'html5NoWebSimple' => true,
+            'html5nowebsimple' => true,
             'div' => $ggbdivname,
             'vars' => $question->currentvals,
             'b64input' => $b64inputname,
@@ -146,7 +146,7 @@ class qtype_geogebra_renderer extends qtype_renderer {
   data-parameters=$question->ggbparameters
   data-views=$question->ggbviews
   data-codebase=$question->ggbcodebaseversion
-  data-html5NoWebSimple=true
+  data-html5nowebsimple=true
   data-div=$ggbdivname
   data-vars=$currentvals
   data-b64input=$b64inputname
@@ -167,7 +167,7 @@ class qtype_geogebra_renderer extends qtype_renderer {
 </article>
 EOD;
         $result .= $applet;
-        //echo "<script>function debugcode(){debugger;}</script>";
+        echo "<script>function debugcode(){debugger;}</script>";
         $this->page->requires->js_call_amd('qtype_geogebra/ggbq', 'init', array($appletparametersid));
 
         if ($qa->get_state() == question_state::$invalid) {
