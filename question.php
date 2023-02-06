@@ -362,7 +362,7 @@ class qtype_geogebra_question extends question_graded_automatically {
             return array($this->id => new question_classified_response(null, "Response graded manually", 0));
         } else {
             $resp = $response['answer'];
-            if ($resp === '') {
+            if ($resp === NULL || $resp === '') {
                 return array($this->id => question_classified_response::no_response());
             } else {
                 $results= $this->summarize($this->answers,$resp); // Twingsister

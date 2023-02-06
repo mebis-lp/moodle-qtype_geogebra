@@ -92,7 +92,7 @@ function xmldb_qtype_geogebra_upgrade($oldversion) {
         // Geogebra savepoint reached.
         upgrade_plugin_savepoint(true, 2022050401, 'qtype', 'geogebra');
     }
-    if ($oldversion < 2023300104) {
+    if ($oldversion < 2023060204) {
 // TODO add urlggb urlggbact
         // Define field of GGB and  GGBACT 
         $table = new xmldb_table('qtype_geogebra_options');
@@ -119,7 +119,7 @@ function xmldb_qtype_geogebra_upgrade($oldversion) {
         //    $dbman->add_field($table, $field);
         //}
         // Geogebra savepoint reached.
-        upgrade_plugin_savepoint(true, 2023300104, 'qtype', 'geogebra');
+        upgrade_plugin_savepoint(true, 2023060204, 'qtype', 'geogebra');
     }
     return true;
 }
