@@ -245,11 +245,14 @@ class qtype_geogebra_question extends question_graded_automatically {
          // contribution to the result
          
          $valnum = (array_key_exists($j,$values)?$values[$j]:1);
-         $valnum =  ($valnum == "true"?1:($valnum == "false"?0:number_format($valnum)));
+         $valnum =  ($valnum == "true"?1:($valnum == "false"?0:floatval($valnum)));
          $fraction += ($answer->fraction)*$valnum;
-         $summary .= format_float($valnum, 2, false, false) . ',' .
+         $summary .= sprintf("%.2f",$valnum) . ',' .
                      get_string('grade', 'grades') . ': ' .
-                     format_float($answer->fraction, 2, false, false);
+                     sprintf("%.2f",$answer->fraction);
+         //$summary .= format_float($valnum, 2, false, false) . ',' .
+         //            get_string('grade', 'grades') . ': ' .
+         //            format_float($answer->fraction, 2, false, false);
          $j++;
      }
      if ($fraction > 1) {

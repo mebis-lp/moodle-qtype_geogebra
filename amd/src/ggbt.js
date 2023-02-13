@@ -77,6 +77,12 @@ var codebase;
 
             if ($('#applet_parameters')[0] !== undefined) {
                 this.ggbDataset = $('#applet_parameters')[0].dataset;
+                try {
+                     this.parameters = JSON.parse(this.ggbDataset.parameters);
+                     }
+                catch(err) {
+                   alert("Error parsing JSON "+err.message);
+                }
                 this.parameters = JSON.parse(this.ggbDataset.parameters);
                 this.views = this.ggbDataset.views;
                  //alert("hello custom ggb 3");
@@ -95,6 +101,7 @@ var codebase;
 
             //$('#id_stoapplet').on('click', this.handleStoreGGB);
             $('#id_loadapplet').on('click', function(e) {
+            debugcode();
                 e.preventDefault();
                 var httpurl = $('#id_ggbturl').val();
                 var id = httpurl.split("/").pop();
@@ -426,6 +433,7 @@ debugcode();
                 reader.readAsDataURL(file);
             }*/
         ///},
+
         handleDrop: function(e) {
             if (typeof (window.GGBT.ggbcheckb) == "undefined" || window.GGBT.ggbcheckb.checked) {
                 e.preventDefault();
