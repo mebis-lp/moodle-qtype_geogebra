@@ -194,6 +194,7 @@ define(['jquery'], function ($) {
               //require.config({paths: {gb: GGBAppletname.slice(0,-3)}});
               //require(["gb"], function(gb) {
               //import GGBApplet from GGBAppletname;
+
             require([GGBAppletname],function (App){//);
             	var applet1 ;
                 //applet1 = new App(parameters, views, ggbDataset.html5NoWebSimple);
@@ -205,7 +206,7 @@ define(['jquery'], function ($) {
                 //parameters.showResetIcon=false;// user defined
                 parameters.preventFocus=true;// get focus upon start
                 parameters.allowStyleBar=false;// style bar controls too much 
-                parameters.transparentGraphics=true;// graphics and graphics 2 are transparent
+                parameters.transparentGraphics=false;// graphics and graphics 2 are transparent
                 parameters.playButton=false; //true not working?
                 parameters.autoHeight=false; // allow height computed automatically
                 parameters.allowUpscale=true; // let GGB upscale Applet
