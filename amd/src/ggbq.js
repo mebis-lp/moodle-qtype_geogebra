@@ -209,6 +209,7 @@ define(['jquery'], function ($) {
                 parameters.playButton=false; //true not working?
                 parameters.autoHeight=false; // allow height computed automatically
                 parameters.allowUpscale=true; // let GGB upscale Applet
+                parameters.showFullscreenButton=true; // let GGB upscale Applet
                 applet1 = new App(parameters,ggbDataset.html5nowebsimple);
                 if (!(codebase==="")){applet1.setHTML5Codebase(codebase)};
             	applet1.inject(ggbDataset.div, "preferHTML5");
