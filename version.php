@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information for GeoGebra question type.
+ * Version information for GeoGebra question type.o
  *
  * @package        qtype_geogebra
  * @author         Christoph Stadlbauer <christoph.stadlbauer@geogebra.org>
@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'qtype_geogebra';
-$plugin->version = 2024021700;
+$plugin->version = 2024030100;
 $plugin->release = '1.13.3';
 
 $plugin->requires = 2018051703;
