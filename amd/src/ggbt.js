@@ -172,6 +172,7 @@ var codebase;
         },
 
         injectapplet: function(fileURL) {
+            delete this.parameters.ggbBase64;
             this.parameters ={ ...this.parameters,  ...fileURL};
             this.parameters.language = this.lang;
             this.parameters.moodle = "editingQuestionOrSubmission";
