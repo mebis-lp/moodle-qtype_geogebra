@@ -171,9 +171,12 @@ var codebase;
                  }else{window.GGBT.injectapplet({"filename": params.file});}
         },
 
+
         injectapplet: function(fileURL) {
-            delete this.parameters.ggbBase64;
-            this.parameters ={ ...this.parameters,  ...fileURL};
+            if(this.hasOwnProperty('parameters')){
+             if(this.hasOwnProperty('ggbBase64')){delete this.parameters.ggbBase64;}
+            } else { this.parameters=null;}
+            this.parameters = {...this.parameters,  ...fileURL};
             this.parameters.language = this.lang;
             this.parameters.moodle = "editingQuestionOrSubmission";
             // Since we only support HTML5 this should work for js-code in the applet to get executed (ggboninit).
