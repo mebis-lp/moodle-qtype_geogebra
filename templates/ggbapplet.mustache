@@ -24,9 +24,15 @@
     {
     }
 }}
-<article id="{{appletid}}"
+<article id="{{appletId}}"
   {{#dataattributes}} data-{{key}}="{{value}}" {{/dataattributes}}>
 </article>
+<div id="ggbapplettarget-{{appletId}}"></div>
+{{#js}}
+    require(['qtype_geogebra/{{controller}}'], function(controller) {
+        controller.init("{{appletId}}");
+    });
+{{/js}}
 
 
 

@@ -27,9 +27,12 @@ class ggbapplet implements renderable, templatable {
 
     private string $ggbparameters;
 
-    public function __construct(string $appletid, string $ggbparameters) {
+    private bool $editmode;
+
+    public function __construct(string $appletid, string $ggbparameters, bool $editmode = false) {
         $this->appletid = $appletid;
         $this->ggbparameters = $ggbparameters;
+        $this->editmode = $editmode;
 
         // TODO Hier die ganzen Optionen aus der Datenbank extrahieren
         //  und nur gezielt die per Template injecten, die auch gebraucht werden
@@ -41,12 +44,12 @@ class ggbapplet implements renderable, templatable {
 
     public function export_for_template(renderer_base $output) {
         $data = new stdClass();
-        // TODO needs to be changed to uniqueid later
-        $data->appletid = "applet_parameters";
+        $data->appletId = $this->appletid;
         $dataattributes = [];
         $dataentry = ['key' => 'parameters', 'value' => $this->ggbparameters];
         $dataattributes[] = $dataentry;
         $data->dataattributes = $dataattributes;
+        $data->controller = $this->editmode ? 'ggbteachercontroller' : 'ggbstudentcontroller';
 
         return $data;
 
