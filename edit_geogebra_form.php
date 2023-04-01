@@ -23,7 +23,7 @@
  * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die ();
-
+//xdebug_break(); 
 global $CFG;
 require_once($CFG->dirroot . '/question/type/shortanswer/edit_shortanswer_form.php');
 require_once($CFG->dirroot . '/question/type/geogebra/question.php');
@@ -140,6 +140,25 @@ class qtype_geogebra_edit_form extends question_edit_form {
 
         $mform->addElement('selectyesno', 'isexercise', get_string('isexercise', 'qtype_geogebra'));
         $mform->addHelpButton('isexercise', 'isexercise', 'qtype_geogebra');
+        // Add urlggb 
+        $mform->addElement('advcheckbox', 'isurlggb', get_string('isurlggbenable', 'qtype_geogebra'),
+            get_string('isurlggb', 'qtype_geogebra'));
+        $mform->setDefault('isurlggb', 0);
+        // If isurlggb true get a URL
+        $mform->addElement('text', 'urlggb', get_string('urlggb', 'qtype_geogebra'));
+        $mform->setType('urlggb', PARAM_URL);
+        $mform->addHelpButton('urlggb', 'urlggb', 'qtype_geogebra');
+        $mform->hideIf('urlggb', 'isurlggb');
+        // Add randomization seed
+        $mform->addElement('advcheckbox', 'seeditornot', get_string('seeditornotenable', 'qtype_geogebra'),
+            get_string('seeditornot', 'qtype_geogebra'));
+        $mform->setDefault('seeditornot', 0);
+        // If seeditornot true get a seed
+        $mform->addElement('text', 'seed', get_string('seed', 'qtype_geogebra'));
+        $mform->setType('seed', PARAM_INT);
+        $mform->addHelpButton('seed', 'seed', 'qtype_geogebra');
+        $mform->hideIf('seed', 'seeditornot');
+
 
         $mform->addElement('advcheckbox', 'forcedimensions', get_string('forcedimensionsenable', 'qtype_geogebra'),
             get_string('forcedimensions', 'qtype_geogebra'));
@@ -199,6 +218,7 @@ class qtype_geogebra_edit_form extends question_edit_form {
      *                     or an empty array if everything is OK (true allowed for backwards compatibility too).
      */
     public function validation($data, $files) {
+        //xdebug_break(); 
         $errors = parent::validation($data, $files);
 
         $this->check_is_applet_present($data, $errors);
@@ -217,6 +237,7 @@ class qtype_geogebra_edit_form extends question_edit_form {
         }
 
         $this->check_force_dimensions($data, $errors);
+        $this->check_seeditornot($data, $errors);
 
         return $errors;
     }
@@ -286,6 +307,14 @@ class qtype_geogebra_edit_form extends question_edit_form {
         }
     }
 
+    private function check_seeditornot($data, &$errors) {
+        if (!empty($data['seeditornot'])) {
+            // If seed is being activated, seed  must not be empty or zero.
+            if (empty($data['seed'])) {
+                $errors['seed'] = get_string('seednotzero', 'qtype_geogebra');
+            }
+        }
+    }
     /**
      * @param $data
      * @param $errors
@@ -510,8 +539,10 @@ class qtype_geogebra_edit_form extends question_edit_form {
         /* Button to (Re)load Applet from GeoGebraTube */
         $loadappletgroup = array();
         $loadappletgroup[] =& $mform->createElement('button', 'loadapplet', get_string('loadapplet', 'qtype_geogebra'));
-        // Hack: the button doesn't support a HelpButton.
         $loadappletgroup[] =& $mform->createElement('html', '<span>&nbsp;</span>');
+        //$loadappletgroup[] =& $mform->createElement('button', 'stoapplet', get_string('stoapplet', 'qtype_geogebra'));
+        //$loadappletgroup[] =& $mform->createElement('html', '<span>&nbsp;</span>');
+        // Hack: the button doesn't support a HelpButton.
         $mform->addGroup($loadappletgroup, 'loadappletgroup', get_string('loadapplet', 'qtype_geogebra'), array(' '), false);
         $mform->addHelpButton('loadappletgroup', 'loadapplet', 'qtype_geogebra');
         $mform->disabledIf('loadappletgroup', 'usefile', 'checked');
@@ -528,11 +559,12 @@ class qtype_geogebra_edit_form extends question_edit_form {
   data-views=$this->ggbviews
   data-codebase=$this->ggbcodebaseversion
   data-lang=$lang
-  data-html5NoWebSimple="true">
+  data-html5nowebsimple="true">
 </article>
 EOD;
             $mform->addElement('html', $applet);
         }
+        echo "<script>function debugcode(){debugger;}</script>";
         $PAGE->requires->js_call_amd('qtype_geogebra/ggbt', 'init');
     }
 
@@ -545,6 +577,7 @@ EOD;
         $showalgebrainput = get_string('show_algebra_input', 'qtype_geogebra');
         $showmenubar = get_string('show_menu_bar', 'qtype_geogebra');
         $showreseticon = get_string('show_reset_icon', 'qtype_geogebra');
+        $enableundoredo = get_string('enable_undo_redo', 'qtype_geogebra');
         $showtoolbar = get_string('show_tool_bar', 'qtype_geogebra');
 
         $options = <<<HTML
@@ -557,9 +590,11 @@ EOD;
         <label for="enableRightClick">$enablerightclick</label><br>
         <input type="checkbox" id="enableLabelDrags" name="enableLabelDrags" value="1">
         <label for="enableLabelDrags">$enablelabeldrags</label><br>
-        <input type="checkbox" id="showResetIcon" name="showResetIcon" value="1" checked="checked">
+        <input type="checkbox" id="enableUndoRedo" name="enableUndoRedo" value="1" >
+        <label for="enableUndoRedo">$enableundoredo</label><br>
+        <input type="checkbox" id="showResetIcon" name="showResetIcon" value="1" >
         <label for="showResetIcon">$showreseticon</label><br>
-        <input type="checkbox" id="enableShiftDragZoom" name="enableShiftDragZoom" value="1" checked="checked">
+        <input type="checkbox" id="enableShiftDragZoom" name="enableShiftDragZoom" value="1" >
         <label for="enableShiftDragZoom">$enableshiftdragzoom</label><br>
         <input type="checkbox" id="showMenuBar" name="showMenuBar" value="1">
         <label for="showMenuBar">$showmenubar</label><br>
@@ -597,6 +632,14 @@ HTML;
         if (!empty($this->ggbparameters) && empty($this->ggbturl)) {
             $mform->setDefault('usefile', true);
         }
+        // Add urlggbact  
+        //$mform->addElement('advcheckbox', 'isurlggbact', get_string('isurlggbactenable', 'qtype_geogebra'),
+        //    get_string('isurlggbact', 'qtype_geogebra'));
+        //$mform->setDefault('isurlggbact', 0);
+        //$mform->addElement('text', 'urlggbact', get_string('urlggbact', 'qtype_geogebra'));
+        //$mform->setType('urlggbact', PARAM_URL);
+        //$mform->addHelpButton('urlggbact', 'urlggbact', 'qtype_geogebra');
+        //$mform->hideIf('urlggbact', 'isurlggbact');
     }
 
     private function check_is_exercise_present($data, $errors) {

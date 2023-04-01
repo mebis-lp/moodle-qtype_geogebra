@@ -116,7 +116,7 @@ class qtype_geogebra_renderer extends qtype_renderer {
         $options = array('parameters' => $question->ggbparameters,
             'views' => $question->ggbviews,
             'codebase' => $question->ggbcodebaseversion,
-            'html5NoWebSimple' => true,
+            'html5nowebsimple' => true,
             'div' => $ggbdivname,
             'vars' => $question->currentvals,
             'b64input' => $b64inputname,
@@ -133,14 +133,20 @@ class qtype_geogebra_renderer extends qtype_renderer {
         $slot = $qa->get_slot();
         $appletparametersid = $qa->get_qt_field_name('applet_parameters');
         $forcedimensions = $question->forcedimensions ?: 0;
+        $seeditornot = $question->seeditornot ?: 0;
+        $seed = $question->seed ?: 0;
         $width = $question->width ?: 0;
         $height = $question->height ?: 0;
+        $isurlggb = $question->isurlggb ?: 0;
+        $urlggb = $question->urlggb ?: 0;
+        //$isurlggbact = $question->isurlggbact ?: 0;
+        //$urlggbact = $question->urlggbact ?: 0;
         $applet = <<<EOD
 <article id=$appletparametersid
   data-parameters=$question->ggbparameters
   data-views=$question->ggbviews
   data-codebase=$question->ggbcodebaseversion
-  data-html5NoWebSimple=true
+  data-html5nowebsimple=true
   data-div=$ggbdivname
   data-vars=$currentvals
   data-b64input=$b64inputname
@@ -151,12 +157,17 @@ class qtype_geogebra_renderer extends qtype_renderer {
   data-slot=$slot
   data-lang=$lang
   data-forcedimensions=$forcedimensions
+  data-seeditornot=$seeditornot
+  data-seed=$seed
   data-width=$width
   data-height=$height
+  data-isurlggb=$isurlggb
+  data-urlggb=$urlggb
   data-scalingcontainerclass=$scalingcontainerclass
 </article>
 EOD;
         $result .= $applet;
+        echo "<script>function debugcode(){debugger;}</script>";
         $this->page->requires->js_call_amd('qtype_geogebra/ggbq', 'init', array($appletparametersid));
 
         if ($qa->get_state() == question_state::$invalid) {

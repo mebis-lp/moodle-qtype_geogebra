@@ -73,5 +73,53 @@ function xmldb_qtype_geogebra_upgrade($oldversion) {
         // Geogebra savepoint reached.
         upgrade_plugin_savepoint(true, 2022040800, 'qtype', 'geogebra');
     }
+    if ($oldversion < 2022050401) {
+
+        // Define field seeda and seed it or no to be added to qtype_geogebra_options.
+        $table = new xmldb_table('qtype_geogebra_options');
+        $field = new xmldb_field('seeditornot', XMLDB_TYPE_INTEGER, '1', null, null, null, null, 'height');
+        // Conditionally launch add field forcedimensions.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        $field = new xmldb_field('seed', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'seeditornot');
+        // Conditionally launch add field seed.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Geogebra savepoint reached.
+        upgrade_plugin_savepoint(true, 2022050401, 'qtype', 'geogebra');
+    }
+    if ($oldversion < 2024030200) {
+// TODO add urlggb urlggbact
+        // Define field of GGB and  GGBACT 
+        $table = new xmldb_table('qtype_geogebra_options');
+        $field = new xmldb_field('isurlggb', XMLDB_TYPE_INTEGER, '1', null, null, null, null, 'seed');
+        // Conditionally launch add field .
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        $field = new xmldb_field('urlggb', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, 'isurlggb');
+        // Conditionally launch add field .
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        //$field = new xmldb_field('isurlggbact', XMLDB_TYPE_INTEGER, '1', null, null, null, null, 'urlggb');
+        // Conditionally launch add field .
+        //if (!$dbman->field_exists($table, $field)) {
+         //$field = new xmldb_field('isurlggbact', XMLDB_TYPE_INTEGER, '1', null, null, null, null, 'urlggb');
+        // Conditionally launch add field .
+        //   $dbman->add_field($table, $field);
+        //}
+        //    $field = new xmldb_field('urlggbact', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, 'isurlggbact');
+        // Conditionally launch add field .
+        //if (!$dbman->field_exists($table, $field)) {
+        //    $dbman->add_field($table, $field);
+        //}
+        // Geogebra savepoint reached.
+        upgrade_plugin_savepoint(true, 2024030200, 'qtype', 'geogebra');
+    }
     return true;
 }

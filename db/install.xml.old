@@ -24,6 +24,8 @@
         <FIELD NAME="seed" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="33" SEQUENCE="false" COMMENT="Seed for the GeoGebra applet to be forced"/>
         <FIELD NAME="isurlggb" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="urlggb" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="The link to ggb."/>
+        <FIELD NAME="isurlggbact" TYPE="int" LENGTH="1" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="urlggbact" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="The link to ggb."/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

@@ -47,6 +47,12 @@ class qtype_geogebra_question extends question_graded_automatically {
     public $forcedimensions;
     public $width;
     public $height;
+    public $seeditornot;
+    public $seed;
+    public $isurlggb;
+    public $urlggb;
+    //public $isurlggbact;
+    //public $urlggbact;
 
     public $currentvals = array();
 
@@ -221,6 +227,39 @@ class qtype_geogebra_question extends question_graded_automatically {
         return $ret;
     }
 
+    private function summarize(array $answers,string $resp){
+     $j = 0;
+     $fraction = 0;
+     $summary = '';
+     $responseclass = '';
+     $values = explode("%",$resp); // Twingsister in values x:0.7
+     foreach ($answers as $answer) {
+         //$correct = (bool)substr($resp, $j, 1);
+         //  add a comma if necessary
+         if ($summary !== '') {
+             $summary .= ', ';
+         }
+         // the name of the variable
+         $summary .= $answer->answer . '=';
+         $responseclass .= $answer->answer . '=' . $values[$j];
+         // contribution to the result
+         $valnum = (array_key_exists($j,$values)?explode(":",$values[$j])[1]:1);
+         $valnum =  ($valnum == "true"?1:($valnum == "false"?0:floatval($valnum)));
+         $fraction += ($answer->fraction)*$valnum;
+         $summary .= sprintf("%.2f",$valnum) . ',' .
+                     get_string('grade', 'grades') . ': ' .
+                     sprintf("%.2f",$answer->fraction);
+         //$summary .= format_float($valnum, 2, false, false) . ',' .
+         //            get_string('grade', 'grades') . ': ' .
+         //            format_float($answer->fraction, 2, false, false);
+         $j++;
+     }
+     if ($fraction > 1) {
+         $fraction = 1;
+     }
+       $summary .= '; ' . get_string('total', 'grades') . ': ' . $fraction;
+       return array('summary'=>$summary, 'fraction'=>$fraction,'responseclass'=>$responseclass);
+    } 
     /**
      * Produce a plain text summary of a response.
      *
@@ -235,11 +274,15 @@ class qtype_geogebra_question extends question_graded_automatically {
             $resp = $response['answer'];
             if ($resp === '' && !$this->isexercise) {
                 return get_string('noresponse', 'question');
-            } else {
+             } else {
                 if (!$this->isexercise) {
+                    if($resp===null){return '';}
+                    return $this->summarize($this->answers,$resp)['summary']; // Twingsister
+                    /*
                     $j = 0;
                     $fraction = 0;
                     $summary = '';
+                    $values = explode("%",$resp); // Twingsister
                     foreach ($this->answers as $answer) {
                         $correct = (bool)substr($resp, $j, 1);
                         if ($summary !== '') {
@@ -261,6 +304,7 @@ class qtype_geogebra_question extends question_graded_automatically {
 
                     $summary .= '; ' . get_string('total', 'grades') . ': ' . $fraction;
                     return $summary;
+                    */
                 } else {
                     $result = json_decode($response['exerciseresult'], true);
                     $summary = '';
@@ -320,9 +364,11 @@ class qtype_geogebra_question extends question_graded_automatically {
             return array($this->id => new question_classified_response(null, "Response graded manually", 0));
         } else {
             $resp = $response['answer'];
-            if ($resp === '') {
+            if ($resp === NULL || $resp === '') {
                 return array($this->id => question_classified_response::no_response());
             } else {
+                $results= $this->summarize($this->answers,$resp); // Twingsister
+                /*
                 $j = 0;
                 $fraction = 0;
                 $responseclass = '';
@@ -343,7 +389,8 @@ class qtype_geogebra_question extends question_graded_automatically {
                 if ($fraction > 1) {
                     $fraction = 1;
                 }
-                return array($this->id => new question_classified_response(bindec($resp), $responseclass, $fraction));
+                */
+                return array($this->id => new question_classified_response($resp,$results['responseclass'],$results['fraction'])); //bindec($resp)
             }
         }
     }
@@ -363,6 +410,9 @@ class qtype_geogebra_question extends question_graded_automatically {
             return array($fraction, question_state::$needsgrading);
         } else {
             if (!$this->isexercise) {
+                $resp = $response['answer'];
+                $fraction=$this->summarize($this->answers,$resp)['fraction'];
+                /*
                 $i = 0;
                 foreach ($this->answers as $answer) {
                     if ((bool)substr($response['answer'], $i, 1)) {
@@ -373,6 +423,7 @@ class qtype_geogebra_question extends question_graded_automatically {
                 if ($fraction > 1) {
                     $fraction = 1;
                 }
+                */
             } else {
                 $exerciseresult = json_decode($response['exerciseresult']);
                 $fraction = $this->calculate_exercise_fraction($exerciseresult);
