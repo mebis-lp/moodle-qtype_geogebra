@@ -232,7 +232,7 @@ class qtype_geogebra_question extends question_graded_automatically {
      $fraction = 0;
      $summary = '';
      $responseclass = '';
-     $values = explode("%",$resp); // Twingsister
+     $values = explode("%",$resp); // Twingsister in values x:0.7
      foreach ($answers as $answer) {
          //$correct = (bool)substr($resp, $j, 1);
          //  add a comma if necessary
@@ -243,8 +243,7 @@ class qtype_geogebra_question extends question_graded_automatically {
          $summary .= $answer->answer . '=';
          $responseclass .= $answer->answer . '=' . $values[$j];
          // contribution to the result
-         
-         $valnum = (array_key_exists($j,$values)?$values[$j]:1);
+         $valnum = (array_key_exists($j,$values)?explode(":",$values[$j])[1]:1);
          $valnum =  ($valnum == "true"?1:($valnum == "false"?0:floatval($valnum)));
          $fraction += ($answer->fraction)*$valnum;
          $summary .= sprintf("%.2f",$valnum) . ',' .

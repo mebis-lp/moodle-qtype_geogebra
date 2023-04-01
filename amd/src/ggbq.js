@@ -26,7 +26,7 @@
            if (ggbApplet.isDefined(responsevar)){ 
             var value = ggbApplet.getValue(responsevar);
             if (ggbApplet.getObjectType(responsevar)=="boolean"){value = (value ==  0 ?"false":"true");}
-            responsestring += value+'%'; //Twingsister to deal with multidigit
+            responsestring += responsevar+":"+value+'%'; //Twingsister to deal with multidigit
            }
           });
           return responsestring.replace(/\%$/,""); // possibly cut the last % works better with explode
