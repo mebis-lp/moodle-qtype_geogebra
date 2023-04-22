@@ -22,7 +22,7 @@
  * @copyright  (c) International GeoGebra Institute 2014
  * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
+require_once($CFG->dirroot . '/question/type/geogebra/question.php');
 /**
  * Generates the output for geogebra questions.
  */
@@ -227,8 +227,11 @@ EOD;
             } else {
                 $response = $qa->get_last_qt_var('answer');
                 $i = 0;
+                $resparray=unpack_resp($response);
                 foreach ($question->answers as $answer) {
-                    if ((bool)substr($response, $i, 1)) {
+                    // Twingsister legacy support: for boolean answers show feedback 
+                    if (array_key_exists($answer->answer,$resparray)&& $resparray[$answer->answer] =="true"){
+                       // (bool)substr($response, `$i, 1)) {
                         $feedback .= $question->format_text($answer->feedback, $answer->feedbackformat,
                             $qa, 'question', 'answerfeedback', $answer->id);
                     }

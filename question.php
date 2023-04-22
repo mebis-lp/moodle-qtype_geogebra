@@ -26,7 +26,21 @@ defined('MOODLE_INTERNAL') || die ();
 global $CFG;
 require_once($CFG->dirroot . '/question/type/calculated/question.php');
 require_once($CFG->dirroot . '/question/type/calculated/questiontype.php');
-
+// $resp is "x:0.7%y:y:1%a:true" returns an array ['x'=>'0.7','y'=>'1','a'=>'true']
+function unpack_resp(string $resp){
+    $res = array();
+    $values = explode("%",$resp); // Twingsister in values x:0.7
+    foreach ($values as $value) {
+        $varval = explode(":",$value);
+        $res[$varval[0]]=$varval[1];
+    }
+    return $res;
+}
+// Twingsister the idea below abandoned simply no stats about these quizzes
+//Twingsister for compatibiity with previous version where all answers are boolean response that are not boolean 
+// are considered as binary with true if >0.999 false otherwise. If the name of the variable ends with _n then 
+// outcomes  must be numeric and are considered as spanning n classes from [0,1/n) to [(n-1)/n,1]
+        
 /**
  * Class qtype_geogebra_question
  */
@@ -169,7 +183,7 @@ class qtype_geogebra_question extends question_graded_automatically {
         $ret = $ret && array_key_exists('ggbxml', $response) && ($response['ggbxml']);
         if (!empty($this->answers)) {
             $ret = $ret && array_key_exists('answer', $response) && ($response['answer'] || $response['answer'] === '0');
-            $ret = $ret && (preg_replace("/[^0,1]/", "", $response['answer']) == $response['answer']);
+            // Twingsister do not check well formed previously was easy i.e. 010001  $ret = $ret && (preg_replace("/[^0,1]/", "", $response['answer']) == $response['answer']);
         }
         if ($this->isexercise) {
             $ret = $ret && array_key_exists('exerciseresult', $response) && ($response['exerciseresult']);
@@ -232,7 +246,8 @@ class qtype_geogebra_question extends question_graded_automatically {
      $fraction = 0;
      $summary = '';
      $responseclass = '';
-     $values = explode("%",$resp); // Twingsister in values x:0.7
+     $resparray=unpack_resp($resp);
+     //$values = explode("%",$resp); // Twingsister in values x:0.7
      foreach ($answers as $answer) {
          //$correct = (bool)substr($resp, $j, 1);
          //  add a comma if necessary
@@ -241,9 +256,12 @@ class qtype_geogebra_question extends question_graded_automatically {
          }
          // the name of the variable
          $summary .= $answer->answer . '=';
-         $responseclass .= $answer->answer . '=' . $values[$j];
          // contribution to the result
-         $valnum = (array_key_exists($j,$values)?explode(":",$values[$j])[1]:1);
+         //$valnum = (array_key_exists($j,$values)?explode(":",$values[$j])[1]:"1");
+         // if the answer is not there give the maximum i.e. 1. One for "true" zero for "false"
+         $valnum = (array_key_exists($answer->answer,$resparray)?$resparray[$answer->answer]:"1");
+         //$responseclass .= $answer->answer . '=' . $values[$j];
+         $responseclass .= $answer->answer . '=' . $valnum;
          $valnum =  ($valnum == "true"?1:($valnum == "false"?0:floatval($valnum)));
          $fraction += ($answer->fraction)*$valnum;
          $summary .= sprintf("%.2f",$valnum) . ',' .
@@ -340,9 +358,10 @@ class qtype_geogebra_question extends question_graded_automatically {
         ) {
             return get_string('answermissing', 'qtype_geogebra');
         }
-        if (!(preg_replace("/[^0,1]/", "", $response['answer']) == $response['answer'])) {
-            return get_string('answerinvalid', 'qtype_geogebra');
-        }
+        // Twingsister impossible to check
+        //if (!(preg_replace("/[^0,1]/", "", $response['answer']) == $response['answer'])) {
+        //    return get_string('answerinvalid', 'qtype_geogebra');
+        //}
         if ($this->isexercise && !(array_key_exists('exerciseresult', $response))) {
             return get_string('exerciseresultmissing', 'qtype_geogebra');
         }
@@ -359,7 +378,9 @@ class qtype_geogebra_question extends question_graded_automatically {
      * @return array subpartid => {@see question_classified_response} objects.
      *                           returns an empty array if no analysis is possible.
      */
+    /*
     public function classify_response(array $response) {
+        xdebug_break();
         if (empty($this->answers)) {
             return array($this->id => new question_classified_response(null, "Response graded manually", 0));
         } else {
@@ -368,33 +389,31 @@ class qtype_geogebra_question extends question_graded_automatically {
                 return array($this->id => question_classified_response::no_response());
             } else {
                 $results= $this->summarize($this->answers,$resp); // Twingsister
-                /*
-                $j = 0;
-                $fraction = 0;
-                $responseclass = '';
-                foreach ($this->answers as $answer) {
-                    $correct = (bool)substr($resp, $j, 1);
-                    if ($responseclass !== '') {
-                        $responseclass .= ', ';
-                    }
-                    $responseclass .= $answer->answer . '=';
-                    if ($correct) {
-                        $fraction += $answer->fraction;
-                        $responseclass .= 'true';
-                    } else {
-                        $responseclass .= 'false';
-                    }
-                    $j++;
-                }
-                if ($fraction > 1) {
-                    $fraction = 1;
-                }
-                */
+//                $j = 0;
+//                $fraction = 0;
+//                $responseclass = '';
+//                foreach ($this->answers as $answer) {
+//                    $correct = (bool)substr($resp, $j, 1);
+//                    if ($responseclass !== '') {
+//                        $responseclass .= ', ';
+//                    }
+//                    $responseclass .= $answer->answer . '=';
+//                    if ($correct) {
+//                        $fraction += $answer->fraction;
+//                        $responseclass .= 'true';
+//                    } else {
+//                        $responseclass .= 'false';
+//                    }
+//                    $j++;
+//                }
+//                if ($fraction > 1) {
+//                    $fraction = 1;
+//                }
                 return array($this->id => new question_classified_response($resp,$results['responseclass'],$results['fraction'])); //bindec($resp)
             }
         }
     }
-
+*/
     /**
      * Grade a response to the question, returning a fraction between
      * get_min_fraction() and get_max_fraction(), and the corresponding {@see question_state}

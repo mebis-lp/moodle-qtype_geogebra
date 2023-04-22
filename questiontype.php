@@ -26,6 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 global $CFG;
 require_once($CFG->dirroot . '/question/type/shortanswer/questiontype.php');
+//require_once($CFG->dirroot . '/question/type/geogebra/question.php');
 
 /**
  * GeoGebra question type
@@ -110,7 +111,8 @@ class qtype_geogebra extends question_type {
      * for things like the quiz statistics report.
      */
     public function can_analyse_responses() {
-        return true;
+     //   return true;
+     return false;
     }
 
     // TODO not correct if autochecking enabled.
@@ -129,17 +131,6 @@ class qtype_geogebra extends question_type {
      * @return array keys are the decimal representation of the (binary) responsestring,
      *                                              values are arrays of possible responses to that subquestion.
      */
-    public function get_possible_responses($questiondata) {
-        // There are no possible answers which can be calculated if answers array is empty i.e. question is manually graded.
-        if (empty($questiondata->options->answers)) {
-            if ($questiondata->options->isexercise) {
-                return array($questiondata->id =>
-                    array(null => new question_possible_response("Response graded automatically", null)));
-            }
-            return array($questiondata->id => array(null => new question_possible_response("Response graded manually", null)));
-        }
-
-        $responses = array();
         /*
          * If one fraction is 1 for a particular answer then all other fractions may be irrelevant for correct response
          * for example answer[0] = e, fraction[0] = 1; answer[1] = e1, fraction[1] = 0.5;
@@ -155,6 +146,19 @@ class qtype_geogebra extends question_type {
          * since Case 2 could be reformulated to answer[0] = e, fraction[0] = 0.5; answer[1] = e1,
          * fraction[1] = 0.5 also resulting in the same grades.
          */
+    /*
+    public function get_possible_responses($questiondata) {
+        //Twingsister this is left unchanged numerical answers are considered binary with true when equal to 1.
+        // There are no possible answers which can be calculated if answers array is empty i.e. question is manually graded.
+        if (empty($questiondata->options->answers)) {
+            if ($questiondata->options->isexercise) {
+                return array($questiondata->id =>
+                    array(null => new question_possible_response("Response graded automatically", null)));
+            }
+            return array($questiondata->id => array(null => new question_possible_response("Response graded manually", null)));
+        }
+
+        $responses = array();
         $answers = $questiondata->options->answers;
         $count = pow(2, count($answers)) - 1;
         for ($i = $count; $i >= 0; $i--) {
@@ -186,6 +190,7 @@ class qtype_geogebra extends question_type {
 
         return array($questiondata->id => $responses);
     }
+    */
 
     /**
      * Initialise the common question_definition fields.

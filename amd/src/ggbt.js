@@ -1,3 +1,4 @@
+
 /*eslint linebreak-style:0 -- ['error', 'windows','unix']*/
 /* eslint-disable no-undef */
 /**
@@ -35,6 +36,7 @@ var codebase;
      //script.src = 'https://www.geogebra.org/apps/deployggb.js';
      //document.getElementsByTagName('head')[0].appendChild(script);
     return {
+
 
         init: function() {
 

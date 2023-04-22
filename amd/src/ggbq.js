@@ -1,3 +1,5 @@
+
+
 /* eslint-disable */
 /* eslint-disable no-debugger */
 /*jslint devel: true */
@@ -238,6 +240,7 @@ define(['jquery'], function ($) {
     // Twingsister
     // takes an an array of strings that are GGB variable names either numeric text or boolean and
     // returns a percent % separated string of the values. If no value is present the variable is skipped
+
 
 
         getBase64andCheck: function() {
