@@ -135,11 +135,13 @@ class qtype_geogebra_renderer extends qtype_renderer {
         $forcedimensions = $question->forcedimensions ?: 0;
         $width = $question->width ?: 0;
         $height = $question->height ?: 0;
+        $configuredcodebase = get_config('qtype_geogebra', 'codebase');
+        $codebase = !empty($configuredcodebase) ? $configuredcodebase : '""';
         $applet = <<<EOD
 <article id=$appletparametersid
   data-parameters=$question->ggbparameters
   data-views=$question->ggbviews
-  data-codebase=$question->ggbcodebaseversion
+  data-codebase=$codebase
   data-html5NoWebSimple=true
   data-div=$ggbdivname
   data-vars=$currentvals
