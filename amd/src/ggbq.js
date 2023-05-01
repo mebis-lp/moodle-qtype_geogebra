@@ -202,7 +202,7 @@ define(['jquery'], function ($) {
                 //applet1 = new App(parameters, views, ggbDataset.html5NoWebSimple);
                 if(!parameters.showToolBar){
                  parameters.showToolBar=true; 
-                 parameters.customToolBar="40,0,1,41,42,50,38,6";
+                 parameters.customToolBar="40,0,1,41,42,50,38";//,6";
                 }
                 // parameters.enableUndoRedo=false; //user controlled
                 //parameters.showResetIcon=false;// user defined
