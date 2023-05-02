@@ -42,6 +42,8 @@ class qtype_geogebra_renderer extends qtype_renderer {
      */
     public function formulation_and_controls(question_attempt $qa, question_display_options $options) {
 
+        $uniqueid = uniqid();
+
         $scalingcontainerclass = $qa->get_qt_field_name('scalingcontainer');
         $result = html_writer::start_div($scalingcontainerclass);
 
@@ -55,7 +57,7 @@ class qtype_geogebra_renderer extends qtype_renderer {
             'type' => 'hidden',
             'name' => $b64inputname,
             'value' => $b64current,
-            'id' => $b64inputname,
+            'id' => 'base64-' . $uniqueid,
             'size' => 80,
         );
 
@@ -67,7 +69,7 @@ class qtype_geogebra_renderer extends qtype_renderer {
             'type' => 'hidden',
             'name' => $xmlinputname,
             'value' => '', // Value is being extracted from base64 by JS module.
-            'id' => $xmlinputname,
+            'id' => 'xml-' . $uniqueid,
             'size' => 80,
         );
 
@@ -80,7 +82,7 @@ class qtype_geogebra_renderer extends qtype_renderer {
             'type' => 'hidden',
             'name' => $answerinputname,
             'value' => $answercurrent,
-            'id' => $answerinputname,
+            'id' => 'answer-' . $uniqueid,
             'size' => 80,
         );
 
@@ -94,7 +96,7 @@ class qtype_geogebra_renderer extends qtype_renderer {
         $ggbdivname = $qa->get_qt_field_name('ggbdiv');
         $result .= html_writer::div('', '', array('id' => $ggbdivname));
 
-        $responsevars = array();
+        $responsevars = [];
         if (!empty($question->answers)) {
             foreach ($question->answers as $answer) {
                 $responsevars[] = $answer->answer;
@@ -146,7 +148,9 @@ EOD;*/
         ];
         global $OUTPUT;
 
-        $applet = new \qtype_geogebra\output\ggbapplet(uniqid(), $question->ggbparameters);
+        $questionparameters['responseVariables'] = $responsevarsjson;
+
+        $applet = new \qtype_geogebra\output\ggbapplet($uniqueid, $question->ggbparameters, $questionparameters);
         $result .= $OUTPUT->render($applet);
         //$this->page->requires->js_call_amd('qtype_geogebra/ggbq', 'init', array($appletparametersid));
 

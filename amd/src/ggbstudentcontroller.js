@@ -14,6 +14,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 import * as ggbRendererUtils from 'local_ggbrenderer/ggbrendererutils';
+import Log from 'core/log';
 
 /**
  * GGB controller for student view.
@@ -24,40 +25,92 @@ import * as ggbRendererUtils from 'local_ggbrenderer/ggbrendererutils';
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-let appletId;
-let targetDivId;
+const appletsInfoMap = new Map();
 
 export const init = (injectedAppletId) => {
-    appletId = injectedAppletId;
-    targetDivId = 'ggbapplettarget-' + injectedAppletId;
+    const paramDataSet = document.getElementById(injectedAppletId).dataset;
+    const responseVariablesMap = new Map();
+    console.log(paramDataSet.responsevariables)
+    JSON.parse(paramDataSet.responsevariables).forEach(responseVariable => responseVariablesMap.set(responseVariable, 0));
+    const appletInfo = {
+        'appletId': injectedAppletId,
+        'targetDivId': 'ggbapplettarget-' + injectedAppletId,
+        'ggbParams': paramDataSet.parameters,
+        'responseVariablesMap': responseVariablesMap
+    };
+    appletsInfoMap.set(appletInfo.appletId, appletInfo);
+
     console.log('studentcontroller laeuft');
-    console.log('appletid ist: ' + appletId);
+    console.log('appletid ist: ' + injectedAppletId);
 
 
-    const ggbParams = document.getElementById(appletId).dataset.parameters;
-    ggbRendererUtils.renderGgbAppletToTarget('#' + targetDivId, appletId, ggbParams);
-    window.addEventListener('ggbAppletLoaded', event => {
-        if (event.detail.appletId === appletId) {
-            // If we handle multiple ggb applets on one page, we have to filter the ones we want to access.
-            ggbAppletLoaded(event.detail.ggbApplet);
-        }
-        console.log(event.detail.appletId);
-        console.log(event.detail.ggbApplet);
-    }, {once: true});
+    ggbRendererUtils.renderGgbAppletToTarget('#' + appletInfo.targetDivId,
+        appletInfo.appletId, appletInfo.ggbParams);
+    // In case this module is not being loaded for the first time, remove old listeners before adding to avoid
+    // registering it multiple times.
+    window.removeEventListener('ggbAppletLoaded', ggbAppletLoadedHandler);
+    window.addEventListener('ggbAppletLoaded', ggbAppletLoadedHandler);
+    // Care: The whole page only has one form element for all questions.
+    const form = document.getElementById(appletInfo.targetDivId).closest('form');
+    form.removeEventListener('submit', writeResponseToDom);
+    form.addEventListener('submit', writeResponseToDom);
 };
 
-const ggbAppletLoaded = (ggbAppletObject) => {
-    console.log('ggbApplet geladen mit ID ' + appletId);
-    const form = document.getElementById(targetDivId).closest('form');
-    form.addEventListener('submit', event => {
-        event.preventDefault();
-        console.log('hab dich' + appletId)
-        extractStudentResponse();
-        form.submit();
+const ggbAppletLoadedHandler = (event) => {
+    const appletId = event.detail.appletId;
+    const appletInfo = appletsInfoMap.get(appletId);
+    // Care: The whole page only has one form element for all questions.
+    const form = document.getElementById(appletInfo.targetDivId).closest('form');
+
+    const responsevariables = [...appletInfo.responseVariablesMap.keys()];
+    console.log(responsevariables);
+    responsevariables.forEach(responseVariable => addResponseChangedHandler(appletId, responseVariable));
+};
+
+const handleResponseVariableChange = (appletId, changedObjectName) => {
+    console.log(appletId);
+    console.log(changedObjectName);
+    const appletInfo = appletsInfoMap.get(appletId);
+    const ggbAppletApi = ggbRendererUtils.getAppletApi(appletId);
+    console.log('neuer wert:')
+    console.log(ggbAppletApi.getValue(changedObjectName))
+    appletInfo.responseVariablesMap.set(changedObjectName, ggbAppletApi.getValue(changedObjectName));
+
+};
+
+const addResponseChangedHandler = (appletId, responseVariable) => {
+    console.log(ggbRendererUtils.getAppletApi(appletId))
+    ggbRendererUtils.getAppletApi(appletId).registerObjectUpdateListener(responseVariable,
+        (changedObjectName) => handleResponseVariableChange(appletId, changedObjectName));
+};
+
+const writeResponseToDom = (event) => {
+
+    //event.preventDefault();
+    console.log(event)
+    console.log('form abgeschickt')
+
+    appletsInfoMap.forEach(appletInfo => {
+        const appletApi = ggbRendererUtils.getAppletApi(appletInfo.appletId);
+        // We convert the boolean results of the response variables (0 or 1) to a string, for example 00110100, which
+        // then will be passed to the backend to be evaluated.
+        const booleanStringToStore = appletInfo.responseVariablesMap.reduce((acc, response) => acc + response.toString());
+        getResponseInputElement(appletInfo.appletId, 'answer').value =
+            booleanStringToStore ? booleanStringToStore : '';
+        getResponseInputElement(appletInfo.appletId, 'base64').value =
+            appletApi.getBase64();
+        getResponseInputElement(appletInfo.appletId, 'xml').value =
+            appletApi.getXML();
     });
+    return true;
 };
 
-const extractStudentResponse = () => {
-    const ggbApplet = ggbRendererUtils.getApplet(appletId);
-    // TODO somehow get variable names from question type to iterate over
-}
+const getResponseInputElement = (appletId, type) => {
+    const allowedTypes = ['base64', 'xml', 'answer'];
+    if (!allowedTypes.includes(type)) {
+        Log.error('This input type ' + type + ' is not allowed');
+        return null;
+    }
+    const appletInfo = appletsInfoMap.get(appletId);
+    return document.getElementById(appletInfo.targetDivId).parentNode.querySelector('#' + type + '-' + appletId);
+};

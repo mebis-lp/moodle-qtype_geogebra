@@ -29,9 +29,11 @@ class ggbapplet implements renderable, templatable {
 
     private bool $editmode;
 
-    public function __construct(string $appletid, string $ggbparameters, bool $editmode = false) {
+    public function __construct(string $appletid, string $ggbparameters, array $questionparameters = [],
+            bool $editmode = false) {
         $this->appletid = $appletid;
         $this->ggbparameters = $ggbparameters;
+        $this->questionparameters = $questionparameters;
         $this->editmode = $editmode;
 
         // TODO Hier die ganzen Optionen aus der Datenbank extrahieren
@@ -48,6 +50,13 @@ class ggbapplet implements renderable, templatable {
         $dataattributes = [];
         $dataentry = ['key' => 'parameters', 'value' => $this->ggbparameters];
         $dataattributes[] = $dataentry;
+
+        foreach ($this->questionparameters as $questionparameterkey => $questionparametervalue) {
+            print_r($questionparameterkey);
+            print_r($questionparametervalue);
+
+            $dataattributes[] = ['key' => $questionparameterkey, 'value' => $questionparametervalue];
+        }
         $data->dataattributes = $dataattributes;
         $data->controller = $this->editmode ? 'ggbteachercontroller' : 'ggbstudentcontroller';
 
