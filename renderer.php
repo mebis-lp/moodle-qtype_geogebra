@@ -44,54 +44,11 @@ class qtype_geogebra_renderer extends qtype_renderer {
 
         $uniqueid = uniqid();
 
-        $scalingcontainerclass = $qa->get_qt_field_name('scalingcontainer');
-        $result = html_writer::start_div($scalingcontainerclass);
-
-        /* @var $question qtype_geogebra_question the question object */
         $question = $qa->get_question();
-
-        $b64current = $qa->get_last_qt_var('ggbbase64');
-        $b64inputname = $qa->get_qt_field_name('ggbbase64');
-
-        $b64inputattributes = array(
-            'type' => 'hidden',
-            'name' => $b64inputname,
-            'value' => $b64current,
-            'id' => 'base64-' . $uniqueid,
-            'size' => 80,
-        );
-
-        $result .= html_writer::empty_tag('input', $b64inputattributes);
-
-        $xmlinputname = $qa->get_qt_field_name('ggbxml');
-
-        $xmlinputattributes = array(
-            'type' => 'hidden',
-            'name' => $xmlinputname,
-            'value' => '', // Value is being extracted from base64 by JS module.
-            'id' => 'xml-' . $uniqueid,
-            'size' => 80,
-        );
-
-        $result .= html_writer::empty_tag('input', $xmlinputattributes);
-
-        $answercurrent = $qa->get_last_qt_var('answer');
-        $answerinputname = $qa->get_qt_field_name('answer');
-
-        $answerinputattributes = array(
-            'type' => 'hidden',
-            'name' => $answerinputname,
-            'value' => $answercurrent,
-            'id' => 'answer-' . $uniqueid,
-            'size' => 80,
-        );
-
-        $result .= html_writer::empty_tag('input', $answerinputattributes);
-
 
         $questiontext = $question->format_questiontext($qa);
 
-        $result .= html_writer::tag('div', $questiontext, ['class' => 'qtext']);
+        $result = html_writer::tag('div', $questiontext, ['class' => 'qtext']);
 
         $ggbdivname = $qa->get_qt_field_name('ggbdiv');
         $result .= html_writer::div('', '', array('id' => $ggbdivname));
@@ -148,15 +105,18 @@ EOD;*/
         ];
         global $OUTPUT;
 
+        $answercurrent = $qa->get_last_qt_var('answer');
+        $base64current = $qa->get_last_qt_var('ggbbase64');
+
         $questionparameters['responseVariables'] = $responsevarsjson;
 
-        $applet = new \qtype_geogebra\output\ggbapplet($uniqueid, $question->ggbparameters, $questionparameters);
+        $applet = new \qtype_geogebra\output\ggbapplet($uniqueid, $qa, $question->ggbparameters, $questionparameters);
         $result .= $OUTPUT->render($applet);
         //$this->page->requires->js_call_amd('qtype_geogebra/ggbq', 'init', array($appletparametersid));
 
         if ($qa->get_state() == question_state::$invalid) {
             $result .= html_writer::nonempty_tag('div',
-                $question->get_validation_error(['answer' => $answercurrent, 'ggbbase64' => $b64current]),
+                $question->get_validation_error(['answer' => $answercurrent, 'ggbbase64' => $base64current]),
                     ['class' => 'validationerror']);
         }
 

@@ -16,6 +16,7 @@
 
 namespace qtype_geogebra\output;
 
+use question_attempt;
 use renderable;
 use renderer_base;
 use stdClass;
@@ -24,14 +25,16 @@ use templatable;
 class ggbapplet implements renderable, templatable {
 
     private string $appletid;
+    private question_attempt $questionattempt;
 
     private string $ggbparameters;
 
     private bool $editmode;
 
-    public function __construct(string $appletid, string $ggbparameters, array $questionparameters = [],
+    public function __construct(string $appletid, question_attempt $questionattempt, string $ggbparameters, array $questionparameters = [],
             bool $editmode = false) {
         $this->appletid = $appletid;
+        $this->questionattempt = $questionattempt;
         $this->ggbparameters = $ggbparameters;
         $this->questionparameters = $questionparameters;
         $this->editmode = $editmode;
@@ -48,6 +51,15 @@ class ggbapplet implements renderable, templatable {
         $data = new stdClass();
         $data->appletId = $this->appletid;
         $dataattributes = [];
+
+        // If we have a saved last answer, we inject this into the ggbparams.
+        $currentbase64 = $this->questionattempt->get_last_qt_var('ggbbase64');
+        if ($currentbase64) {
+            $decodedggbparams = json_decode($this->ggbparameters);
+            $decodedggbparams->ggbBase64 = $currentbase64;
+            $this->ggbparameters = json_encode($decodedggbparams);
+        }
+
         $dataentry = ['key' => 'parameters', 'value' => $this->ggbparameters];
         $dataattributes[] = $dataentry;
 
@@ -59,6 +71,10 @@ class ggbapplet implements renderable, templatable {
         }
         $data->dataattributes = $dataattributes;
         $data->controller = $this->editmode ? 'ggbteachercontroller' : 'ggbstudentcontroller';
+
+        $data->answerinputname = $this->questionattempt->get_qt_field_name('answer');
+        $data->xmlinputname = $this->questionattempt->get_qt_field_name('ggbxml');
+        $data->base64inputname = $this->questionattempt->get_qt_field_name('ggbbase64');
 
         return $data;
 
