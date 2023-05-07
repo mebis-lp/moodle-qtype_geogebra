@@ -27,6 +27,24 @@ require_once($CFG->dirroot . '/question/type/geogebra/question.php');
  * Generates the output for geogebra questions.
  */
 class qtype_geogebra_renderer extends qtype_renderer {
+    function remapSeed(int $seed) {
+        global $USER;
+        if($seed<100) return $seed;
+        elseif(100<=$seed && $seed<=110){
+            // use 100 101 102 to have three different exercises 
+            // unique across the class
+           //debug_break(); 
+            return abs(intval($USER->id))+($seed-100);
+            // other option for implementation 
+            //$COURSE in particular $COURSE->id a string
+            // $USER->idnumber a string for a natural that is set by the user
+        // SOME seed beyond 100 are remapped 
+        // a seed smaller that 100 [1-99] will a generatea a constantly applied seed
+        // 100 will remap to $USER 
+        // other codes i[rpvide room for remaps that align
+        // tests for groups courseso roles 
+        } else {return $seed;}
+    }
 
     /**
      * Generate the display of the formulation part of the question. This is the
@@ -134,7 +152,9 @@ class qtype_geogebra_renderer extends qtype_renderer {
         $appletparametersid = $qa->get_qt_field_name('applet_parameters');
         $forcedimensions = $question->forcedimensions ?: 0;
         $seeditornot = $question->seeditornot ?: 0;
-        $seed = $question->seed ?: 0;
+        $seed = $question->seed ?: 0;// here generate a particular seed out of $questions->seed
+        $seed=$this->
+        remapSeed($seed);
         $width = $question->width ?: 0;
         $height = $question->height ?: 0;
         $isurlggb = $question->isurlggb ?: 0;
