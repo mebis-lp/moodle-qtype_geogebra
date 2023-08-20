@@ -25,16 +25,18 @@ use templatable;
 class ggbapplet implements renderable, templatable {
 
     private string $appletid;
-    private question_attempt $questionattempt;
+    private ?question_attempt $questionattempt = null;
 
     private string $ggbparameters;
 
     private bool $editmode;
 
-    public function __construct(string $appletid, question_attempt $questionattempt, string $ggbparameters, array $questionparameters = [],
-            bool $editmode = false) {
+    public function __construct(string $appletid, string $ggbparameters, array $questionparameters = [],
+            question_attempt|null $questionattempt = null, bool $editmode = false) {
         $this->appletid = $appletid;
-        $this->questionattempt = $questionattempt;
+        if ($questionattempt) {
+            $this->questionattempt = $questionattempt;
+        }
         $this->ggbparameters = $ggbparameters;
         $this->questionparameters = $questionparameters;
         $this->editmode = $editmode;
@@ -53,12 +55,18 @@ class ggbapplet implements renderable, templatable {
         $dataattributes = [];
 
         // If we have a saved last answer, we inject this into the ggbparams.
-        $currentbase64 = $this->questionattempt->get_last_qt_var('ggbbase64');
-        if ($currentbase64) {
-            $decodedggbparams = json_decode($this->ggbparameters);
-            $decodedggbparams->ggbBase64 = $currentbase64;
-            $this->ggbparameters = json_encode($decodedggbparams);
+        if (!$this->editmode) {
+            $currentbase64 = $this->questionattempt->get_last_qt_var('ggbbase64');
+            if ($currentbase64) {
+                $decodedggbparams = json_decode($this->ggbparameters);
+                $decodedggbparams->ggbBase64 = $currentbase64;
+                $this->ggbparameters = json_encode($decodedggbparams);
+            }
+            $data->answerinputname = $this->questionattempt->get_qt_field_name('answer');
+            $data->xmlinputname = $this->questionattempt->get_qt_field_name('ggbxml');
+            $data->base64inputname = $this->questionattempt->get_qt_field_name('ggbbase64');
         }
+        $data->controller = $this->editmode ? 'ggbteachercontroller' : 'ggbstudentcontroller';
 
         $dataentry = ['key' => 'parameters', 'value' => $this->ggbparameters];
         $dataattributes[] = $dataentry;
@@ -70,11 +78,6 @@ class ggbapplet implements renderable, templatable {
             $dataattributes[] = ['key' => $questionparameterkey, 'value' => $questionparametervalue];
         }
         $data->dataattributes = $dataattributes;
-        $data->controller = $this->editmode ? 'ggbteachercontroller' : 'ggbstudentcontroller';
-
-        $data->answerinputname = $this->questionattempt->get_qt_field_name('answer');
-        $data->xmlinputname = $this->questionattempt->get_qt_field_name('ggbxml');
-        $data->base64inputname = $this->questionattempt->get_qt_field_name('ggbbase64');
 
         return $data;
 

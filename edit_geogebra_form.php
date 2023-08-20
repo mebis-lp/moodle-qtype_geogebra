@@ -532,6 +532,7 @@ class qtype_geogebra_edit_form extends question_edit_form {
 EOD;
 $mform->addElement('html', $applet);
 */
+
             $applet = new ggbapplet(uniqid(), $this->ggbparameters);
             $mform->addElement('html', $OUTPUT->render($applet));
         }

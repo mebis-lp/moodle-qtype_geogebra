@@ -14,7 +14,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 import * as ggbRendererUtils from 'local_ggbrenderer/ggbrendererutils';
-import {studentappletcontroller} from 'qtype_geogebra/studentappletcontroller';
+import studentappletcontroller from 'qtype_geogebra/studentappletcontroller';
 import Log from 'core/log';
 
 /**
@@ -28,5 +28,6 @@ import Log from 'core/log';
 
 export const init = (injectedAppletId) => {
     new studentappletcontroller(injectedAppletId);
+
 };
 

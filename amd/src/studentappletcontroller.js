@@ -25,7 +25,7 @@ import Log from 'core/log';
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-export class studentappletcontroller {
+export default class {
     #appletId;
     #targetDivId;
     #ggbParams;

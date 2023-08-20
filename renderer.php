@@ -110,7 +110,7 @@ EOD;*/
 
         $questionparameters['responseVariables'] = $responsevarsjson;
 
-        $applet = new \qtype_geogebra\output\ggbapplet($uniqueid, $qa, $question->ggbparameters, $questionparameters);
+        $applet = new \qtype_geogebra\output\ggbapplet($uniqueid, $question->ggbparameters, $questionparameters, $qa);
         $result .= $OUTPUT->render($applet);
         //$this->page->requires->js_call_amd('qtype_geogebra/ggbq', 'init', array($appletparametersid));
 
