@@ -587,7 +587,7 @@ class qtype_geogebra_question_helper {
      * @return int|float Random number in the set {x| $min &lt;= x &lt;= $max, x = $min + n * $increment, n &isin; N}
      */
     public static function random_incremented_value($min, $max, $increment) {
-        return $min + mt_rand(0, ($max - $min) / $increment) * $increment;
+        return $min + mt_rand(0, intval(($max - $min) / $increment)) * $increment;
     }
 
     /**
