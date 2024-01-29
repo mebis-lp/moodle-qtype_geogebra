@@ -21,6 +21,28 @@
 // alert("hello ggbq");
  //debugger; // eslint-disable-line
         //debugcode();
+        function unpackStringified(s){
+		 var couples=s.split("%");
+		 var results={};
+		 couples.forEach(function (couple, index) {
+		  var twos=couple.split(":");results[twos[0]]=twos[1];
+  		  });
+  		  return results;
+  		}
+        function packStringified(a){
+		 var results="";
+		 for(var key in a) {
+  			var value = a[key];
+            results += key+":"+value+'%'; //Twingsister to deal with multidigit
+		 }
+          return results.replace(/\%$/,""); // possibly cut the last % works better with explode
+  		}
+  		function isInGGB(v,ggbApplet){return ggbApplet.isDefined(v);}
+  		function fromGGB(v,ggbApplet){
+  			var res=ggbApplet.getValue(v);
+            if (ggbApplet.getObjectType(v)=="boolean"){res = (res ==  0 ?false:true);}
+   		 	return res; 
+  		 }
         function stringfy(responsevars,ggbApplet){
         //debugcode();
           var responsestring = '';
@@ -65,7 +87,7 @@ define(['jquery'], function ($) {
                         scalingContainer.querySelector('.qtext').parentElement.parentElement);
                     scalingContainer.style.width = parseInt(formulationDivStyle.width)
                         - parseInt(formulationDivStyle.paddingLeft) - parseInt(formulationDivStyle.paddingRight) + 'px';
-                }), 250);
+                }), 5000); //Twingsister mod was 250
     };
     return {
         b64input: [],
@@ -79,12 +101,47 @@ define(['jquery'], function ($) {
         qdiv: [],
         //parameters: {}, //before not global
         ggbDataset: [],
+        //confirmedpage: false, //Twingsister the user says sees a correct page
+        scratchit: false, //Twingsister turns init into a reload from file delete all what you have done 
+        scratchMark: false, 
+        filename:"",
         //applet1,
-
-        init: function (appletParametersID) {
+        checkLoading: function (appletParametersID){return;
+                	 if(!this.confirmedpage){
+                		if(confirm("if something loaded (could be an empty cartesian plane) say ok")){
+                			window.GGBQ.scratch(appletParametersID);
+                			location.reload();return true;
+                			if(confirm("if it looks as a correct question say ok")){this.confirmedpage=true;}
+                			 else {if(confirm("if it is an empty cartesian plane, please say ok to reload")){location.reload();return;}} 
+                	 	}
+                	 }
+                	},
+        // Twingsister load from filename
+        scratchinit: function (appletParametersID) {
             window.GGBQ = this;
-            //debugcode();
+        	window.GGBQ.scratchit=true;
+        	window.GGBQ.init(appletParametersID); 
+        },
+        scratch: function () {
+			let url = window.location.href;    
+			if (url.indexOf('?') > -1){
+   				url += '&scratch=1'
+			} else {
+			   url += '?scratch=1'
+			}
+			//window.location.href = url;
+			//window.location.reload();
+			window.location.replace(url);
+			// window.location.hash = 'varA=some_value;varB=some_value';
+        	//window.GGBQ.init(appletParametersID); 
+        },
+        init: function (appletParametersID) {
+        	////this.scratchit=true;
+        	//this.confirmedpage=false;//Twingsister
+            window.GGBQ = this;
+            debugcode();
             var ggbDataset = document.getElementById(appletParametersID).dataset;
+			window.GGBQ.filename=ggbDataset.ggbturl;// the filename 
             var slot = ggbDataset.slot;
             // Add current scaling container to the object store for being able to access it later on.
             scalingContainers[slot] = ggbDataset.scalingcontainerclass;
@@ -106,7 +163,7 @@ define(['jquery'], function ($) {
                     // We only need one for the whole page.
                     window.removeEventListener('resize', resizeScalingContainer);
                     window.addEventListener('resize', resizeScalingContainer);
-
+                    //window.GGBQ.checkLoading(appletParametersID);
                     window.GGBQ.b64input[id].val(ggbApplet.getBase64());
                     window.GGBQ.xmlinput[id].val(ggbApplet.getXML());
  
@@ -121,7 +178,11 @@ define(['jquery'], function ($) {
              	//ggbApplet.setWidth(100);
              	//ggbApplet.setPerspective("GD");
                     }
-                }
+				if(window.GGBQ.scratchMark){
+					ggbApplet.evalCommand('Text("QUIZ RELOADED")');
+					window.GGBQ.scratchMark=false;
+                 }
+                } else {alert("Applet not found, please reload this page");location.reload();}
             };
             
             // jquery doesn't handle the colon : but later we expect a jquery optject, so ...
@@ -138,7 +199,14 @@ define(['jquery'], function ($) {
             if (this.ggbBase64[slot] != '') {
                 parameters.ggbBase64 = this.ggbBase64[slot];
             }
-
+			if(window.GGBQ.scratchit){
+				var httpurl = window.GGBQ.filename;
+                if(httpurl.startsWith('http')){
+					delete parameters.ggbBase64;
+					parameters.filename=httpurl
+					window.GGBQ.scratchMark=true;
+                 }else{alert("Reloading from Geogebra Tube not implemented")}
+			}
             // Check if seed have been manually set. The default would be "no"
             //alert("entering the seed");
             	//debugcode();
@@ -194,7 +262,7 @@ define(['jquery'], function ($) {
             	codebase = root+base;
             }
               //require.config({paths: {gb: GGBAppletname.slice(0,-3)}});
-              //require(["gb"], function(gb) {
+              //require(["gb"], function(gb) 
               //import GGBApplet from GGBAppletname;
 
             require([GGBAppletname],function (App){//);
@@ -214,23 +282,32 @@ define(['jquery'], function ($) {
                 parameters.allowUpscale=true; // let GGB upscale Applet
                 parameters.showFullscreenButton=true; // let GGB upscale Applet
                 applet1 = new App(parameters,ggbDataset.html5nowebsimple);
+            	debugcode();
+				//window.onload = function() 
+				//window.addEventListener("load", function() 
                 if (!(codebase==="")){applet1.setHTML5Codebase(codebase)};
+                //alert("foo");
             	applet1.inject(ggbDataset.div, "preferHTML5");
-              });
+			});
+            // Check if seed have been manually set. The default would be "no"
+			    //})
+			    //}
             //	GGBApplet=
             //       define([GGBAppletname], function (GGBobj) {return GGBobj;});
             //alert("applet creation");debugger;
             //var applet1 = new GGBApplet(parameters, views, ggbDataset.html5NoWebSimple);
             //NO applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
 
-            $('#responseform').on('submit', this.getBase64andCheck);
+            $('#responseform').on('submit', this.preGetBase64andCheck);
 
+            // Do wep really need this $(document.getElementById(ggbDataset.div)).on('mouseleave', this.getBase64andCheck);
             $(document.getElementById(ggbDataset.div)).on('mouseleave', this.getBase64andCheck);
 
             this.currentvals[slot] = ggbDataset.vars;
             this.answerinput[slot] = $(document.getElementById(ggbDataset.answerinput));
             this.exerciseresultinput[slot] = $(document.getElementById(ggbDataset.exerciseresultinput));
             this.responsevars[slot] = JSON.parse(ggbDataset.responsevars);
+			//window.GGBQ.checkLoading(appletParametersID);
         },
         checkEnter: function(e) {
             e = e || event;
@@ -238,16 +315,22 @@ define(['jquery'], function ($) {
             return txtArea || (e.keyCode || e.which || e.charCode || 0) !== 13;
         },
     // Twingsister
-    // takes an an array of strings that are GGB variable names either numeric text or boolean and
+    // takes an an array o strings that are GGB variable names either numeric text or boolean and
     // returns a percent % separated string of the values. If no value is present the variable is skipped
 
 
 
+        //confirmedpage=false,``
+        preGetBase64andCheck: function() {this.getBase64andCheck();},
+        
         getBase64andCheck: function() {
         debugcode();
+        if(!confirm("Do you want to save your work?")){return;}
             for (var i = 0; i < window.GGBQ.answerinput.length; i++) {
                 var ggbApplet = window['ggbApplet' + i];
-                if (typeof ggbApplet !== "undefined") {
+                if (typeof ggbApplet !== "undefined" && ggbApplet.hasOwnProperty("getBase64")) {
+                	//window.GGBQ.checkLoading(ggbApplet);
+                	//if(!this.confirmedpage&&!confirm("Is the applet loaded correctly?")){location.reload();return;}else{this.confirmedpage=true;}
                     window.GGBQ.b64input[i].val(ggbApplet.getBase64());
                     window.GGBQ.xmlinput[i].val(ggbApplet.getXML());
 
@@ -257,19 +340,39 @@ define(['jquery'], function ($) {
                     }
 
                     //var responsestring = '';
-                    //for (var j = 0; j < window.GGBQ.responsevars[i].length; j++) {
-                        //if (ggbApplet.isDefined(window.GGBQ.responsevars[i][j])) {
+                    //for (var j = 0; j < window.GGBQ.responsevars[i].length; j++) [
+                        //if (ggbApplet.isDefined(window.GGBQ.responsevars[i][j])) [
                         // Twingsister
-                        window.GGBQ.answerinput[i].val(stringfy(window.GGBQ.responsevars[i],ggbApplet));
+                        var resp=stringfy(window.GGBQ.responsevars[i],ggbApplet);
+		 				//special conditions treatement
+		 				// there are both  juste and grade juste is true grade is less than one then take it to one
+		 				var outputs = unpackStringified(resp);
+		 				var justeison=((("juste" in outputs) && outputs["juste"]==="true")||(isInGGB('juste',ggbApplet)&&fromGGB('juste',ggbApplet)));
+		 				if(justeison){
+        					if( ("grade" in outputs)&&(Number(outputs["grade"])<1)){
+        					 outputs["grade"]="1.0";
+        					 alert("maximum mark assigned");
+        					}
+        				}
+        				// check loading failed to work code below commented out
+        				// Some alert added to help the user to ask for a reload
+        				// if the global variable RT_R_DBLCHK is declared check if the ggb finish loading if not give full mark
+        				//if(window.hasOwnProperty('RT_R_DBLCHK')&&
+        				//	(!window.hasOwnProperty('RT_R_Loaded')||!RT_R_Loaded)){
+        				//	outputs["grade"]="1.0";
+        				//	alert("maximum mark assigned");
+        				//}
+        				resp=packStringified(outputs);
+                        window.GGBQ.answerinput[i].val(resp);
                         // Twingsister
                         //    responsestring += ggbApplet.getValue(window.GGBQ.responsevars[i][j])+'%'; // Twingsister:to add multi digit
-                        //} else {
+                        //] else [
                         //    responsestring += 0;
-                        //}
-                    //}
+                        //]
+                    //]
                     //window.GGBQ.answerinput[i].val(responsestring);
                     //alert("response");
-                }
+                }else{if(typeof ggbApplet !== "undefined"){alert("quiz not loaded");location.reload()}}
             }
         },
 

@@ -26,13 +26,17 @@ require_once($CFG->dirroot . '/question/type/geogebra/question.php');
 /**
  * Generates the output for geogebra questions.
  */
+ 
+
+ 
 class qtype_geogebra_renderer extends qtype_renderer {
     function remapSeed(int $seed) {
         global $USER;
         if($seed<100) return $seed;
         elseif(100<=$seed && $seed<=110){
-            // use 100 101 102 to have three different exercises 
+            // use  101 102 to 109 have three different exercises 
             // unique across the class
+            // note that 100 and 110 could give problems not always true in PHP x<=x
            //debug_break(); 
             return abs(intval($USER->id))+($seed-100);
             // other option for implementation 
@@ -59,7 +63,6 @@ class qtype_geogebra_renderer extends qtype_renderer {
      * @return string HTML fragment.
      */
     public function formulation_and_controls(question_attempt $qa, question_display_options $options) {
-
         $scalingcontainerclass = $qa->get_qt_field_name('scalingcontainer');
         $result = html_writer::start_div($scalingcontainerclass);
 
@@ -153,14 +156,14 @@ class qtype_geogebra_renderer extends qtype_renderer {
         $forcedimensions = $question->forcedimensions ?: 0;
         $seeditornot = $question->seeditornot ?: 0;
         $seed = $question->seed ?: 0;// here generate a particular seed out of $questions->seed
-        $seed=$this->
-        remapSeed($seed);
+        $seed=$this->remapSeed($seed);
         $width = $question->width ?: 0;
         $height = $question->height ?: 0;
         $isurlggb = $question->isurlggb ?: 0;
         $urlggb = $question->urlggb ?: 0;
         //$isurlggbact = $question->isurlggbact ?: 0;
         //$urlggbact = $question->urlggbact ?: 0;
+        $ggbturl = $question->ggbturl ?: 0;
         $applet = <<<EOD
 <article id=$appletparametersid
   data-parameters=$question->ggbparameters
@@ -183,12 +186,18 @@ class qtype_geogebra_renderer extends qtype_renderer {
   data-height=$height
   data-isurlggb=$isurlggb
   data-urlggb=$urlggb
+  data-ggbturl=$ggbturl
   data-scalingcontainerclass=$scalingcontainerclass
 </article>
 EOD;
         $result .= $applet;
         echo "<script>function debugcode(){debugger;}</script>";
-        $this->page->requires->js_call_amd('qtype_geogebra/ggbq', 'init', array($appletparametersid));
+        if (isset($_GET['scratch'])&&
+            (strcmp(htmlspecialchars($_GET['scratch']),"1")==0)){
+            $this->page->requires->js_call_amd('qtype_geogebra/ggbq', 'scratchinit', array($appletparametersid));
+        }else{
+            $this->page->requires->js_call_amd('qtype_geogebra/ggbq', 'init', array($appletparametersid));
+        }
 
         if ($qa->get_state() == question_state::$invalid) {
             $result .= html_writer::nonempty_tag('div',
@@ -200,6 +209,23 @@ EOD;
         }
 
         $result .= html_writer::end_div();
+        if($ggbturl!=0){
+            $button =html_writer::tag('button', 'Reload (stamped)',
+            array('class'=>'mod_quiz-next-nav btn btn-primary', 'type' => 'button',
+                //'onclick'=>'window.GGBQ.scratchjson('.$parjson.');'
+                //'onclick'=>'window.GGBQ.scratch("'.$appletparametersid.'")'
+                'onclick'=>'window.GGBQ.scratch()'
+                )
+            );
+            $result=$button.$result;
+        }
+        // twingsister
+        // $parjson = "{".$appletparametersid."}";
+        //$parjson=json_encode_advanced(array($appletparametersid), $sequential_keys = true, $quotes = true);
+        //echo $parjson;die;
+        //$scalingcontainerclass = $qa->get_qt_field_name('scalingcontainer');
+        //$result = html_writer::start_div($scalingcontainerclass);
+        //$result .= html_writer::end_div();
         return $result;
     }
 
