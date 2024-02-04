@@ -31,6 +31,7 @@
   		}
         function packStringified(a){
         //key:value%key:value FORMAT IS THIS!!! NO TRAILING %
+        // DECODED IN Liveviewgrid  locallib.php ggbTotal
 		 var results="";
 		 for(var key in a) {
   			var value = a[key];
