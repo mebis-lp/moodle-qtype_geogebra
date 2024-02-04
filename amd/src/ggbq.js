@@ -30,6 +30,7 @@
   		  return results;
   		}
         function packStringified(a){
+        //key:value%key:value FORMAT IS THIS!!! NO TRAILING %
 		 var results="";
 		 for(var key in a) {
   			var value = a[key];
