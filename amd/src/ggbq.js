@@ -21,6 +21,16 @@
 // alert("hello ggbq");
  //debugger; // eslint-disable-line
         //debugcode();
+
+        function cyclerepl(str,dic){
+         var alts=dic.length;
+         var result;
+         for(var i = 0;i<alts;i++){      
+           result=str.replace(dic[i],dic[ Date.now() % (alts-1)]);
+           if(str!=result){ return result;}
+		 }
+		 return str; //should not happen
+		}
         function unpackStringified(s){
 		 var couples=s.split("%");
 		 var results={};
@@ -105,6 +115,7 @@ define(['jquery'], function ($) {
         ggbDataset: [],
         //confirmedpage: false, //Twingsister the user says sees a correct page
         scratchit: false, //Twingsister turns init into a reload from file delete all what you have done 
+        scratchrandomizeit: false, //Twingsistere reload and randomize 
         scratchMark: false, 
         filename:"",
         //applet1,
@@ -119,23 +130,54 @@ define(['jquery'], function ($) {
                 	 }
                 	},
         // Twingsister load from filename
+        scratchrandomize: function (appletParametersID) {
+            window.GGBQ = this;
+        	window.GGBQ.scratchrandomizeit=true;
+        	window.GGBQ.init(appletParametersID); 
+        },
         scratchinit: function (appletParametersID) {
             window.GGBQ = this;
         	window.GGBQ.scratchit=true;
         	window.GGBQ.init(appletParametersID); 
         },
-        scratch: function () {
-			let url = window.location.href;    
-			if (url.indexOf('?') > -1){
-   				url += '&scratch=1'
-			} else {
-			   url += '?scratch=1'
-			}
-			//window.location.href = url;
-			//window.location.reload();
-			window.location.replace(url);
-			// window.location.hash = 'varA=some_value;varB=some_value';
-        	//window.GGBQ.init(appletParametersID); 
+        scratch: function (reloadggb) {
+        let url = window.location.href;    
+        url=url.replaceAll(/&scratch=./g,"");
+        url=url.replaceAll(/\?scratch=./g,"");
+        //var ggbDataset = document.getElementById(appletParametersID).dataset;
+        //var reloadggb=ggbDataset.reloadggb;//what to do with reload requests
+        // array('none'=>'none', 'ncon'=>'reload if not confirmed', 'rand'=>'reload and randomize','redo'=>'redo same exercise
+		switch (reloadggb.trim()) {
+  			case 'none':
+    		break;
+  			case 'ncon':
+    		break;
+  			case 'rand':
+        		if(confirm("This will reload this exercise with different numbers. All previous work on this exercise will be lost."))
+    				{
+						if (url.indexOf('?') > -1){
+   							url += '&scratch=2'
+						} else {
+						   url += '?scratch=2'
+						}
+						window.location.replace(url);
+        			}
+        	break;
+  			case 'redo':
+        		if(confirm("This will reload this exercise with same numbers. All previous work on this exercise will be lost.")){
+					if (url.indexOf('?') > -1){
+   						url += '&scratch=1'
+					} else { 
+					   url += '?scratch=1'
+					}
+					//window.location.href = url;
+					//window.location.reload();
+					window.location.replace(url);
+					// window.location.hash = 'varA=some_value;varB=some_value';
+        			//window.GGBQ.init(appletParametersID); 
+        			}
+    		break;
+    		}
         },
         init: function (appletParametersID) {
         	////this.scratchit=true;
@@ -143,7 +185,10 @@ define(['jquery'], function ($) {
             window.GGBQ = this;
             debugcode();
             var ggbDataset = document.getElementById(appletParametersID).dataset;
-			window.GGBQ.filename=ggbDataset.ggbturl;// the filename 
+            var reloadggb=ggbDataset.reloadggb;//what to do with reload requests
+            var urlprefixlist=ggbDataset.urlprefixlist;//list of prefixes of sites to daownload ggb from 
+            urlprefixlist=urlprefixlist.split(",");
+			window.GGBQ.filename=cyclerepl(ggbDataset.ggbturl,urlprefixlist);// the filename fron a randomized repo
             var slot = ggbDataset.slot;
             // Add current scaling container to the object store for being able to access it later on.
             scalingContainers[slot] = ggbDataset.scalingcontainerclass;
@@ -185,7 +230,9 @@ define(['jquery'], function ($) {
 					window.GGBQ.scratchMark=false;
                  }
                 } else {alert("Applet not found, please reload this page");location.reload();}
+                //alert("loaded:".window.GGBQ.filename)
             };
+
             
             // jquery doesn't handle the colon : but later we expect a jquery optject, so ...
             this.b64input[slot] = $(document.getElementById(ggbDataset.b64input));
@@ -220,6 +267,16 @@ define(['jquery'], function ($) {
             } else {
                 parameters.randomSeed = ggbDataset.seed;
             } 
+			if(window.GGBQ.scratchrandomizeit){
+					window.GGBQ.scratchMark=true;
+					window.GGBQ.scratchrandomizeit=false;
+                	parameters.randomSeed=Math.floor((Math.random() * 1000) + 1);
+					var httpurl = window.GGBQ.filename;
+                	if(httpurl.startsWith('http')){
+						delete parameters.ggbBase64;
+						parameters.filename=httpurl
+					}
+			}	
             //alert("Calling with random "+parameters.randomSeed.toString());
             if (!ggbDataset.forcedimensions || ggbDataset.forcedimensions === '0') {
                 parameters.scaleContainerClass = scalingContainers[slot];
@@ -251,6 +308,9 @@ define(['jquery'], function ($) {
         debugcode(); //
             	var GGBAppletname ;
             	var codebase ;
+            	// the comma separated list of prefixes in URL for the GGB file
+            	var urlprefixlist=ggbDataset.urlprefixlist;
+            	//alert(urlprefixlist);
 
             if (!ggbDataset.isurlggb||ggbDataset.isurlggb === "0") {
              GGBAppletname = 'https://www.geogebra.org/apps/deployggb.js';
@@ -293,7 +353,7 @@ define(['jquery'], function ($) {
 			});
             // Check if seed have been manually set. The default would be "no"
 			    //})
-			    //}
+			    //
             //	GGBApplet=
             //       define([GGBAppletname], function (GGBobj) {return GGBobj;});
             //alert("applet creation");debugger;

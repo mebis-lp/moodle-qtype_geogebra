@@ -30,7 +30,8 @@ $string['answermissing'] = 'The answer in the response is missing. Probably Java
 $string['answervar'] = 'Variables for automatic grading';
 $string['answervar_help'] = 'For automatic grading: A name of a boolean object in GeoGebra which is true if the student solved the question (partly). Sums up all grades for all boolean variables. The question is correct if any combination exceeds 100%, but there should be at least one combination which sums up to exactly 100%. Leave blank for manual grading.';
 $string['applet_advanced_settings'] = 'Advanced Settings...';
-
+$string['reloadggb'] = 'Control the reload button';
+$string['reloadggb_help'] = 'You can add a reload button to your question or not. If there is this button the user might be enabled to reload the same question or it can be enabled just to ask for a newly randomized instance.';
 $string['seeditornot'] = 'Add a custom seed';
 $string['seeditornot_help'] = 'By default the GeoGebra random generator gives a different sequence of random values for each exercise instance. If you provide a POSITIVE integer seed this is used and therefore the same random sequence is used to instantiate the question. Each student gets the same exercise. Zero IS NOT a valid seed';
 $string['seeditornotenable'] = 'Enable ad-hoc seeding';
@@ -105,3 +106,5 @@ $string['width'] = 'Width';
 $string['widthnotzero'] = 'You have to specify a value greater than zero for the width';
 $string['width_help'] = 'By default the GeoGebra applet will be scaled automatically to fit the quiz layout. If for some reasons this does not fit your needs, you can specify width and height manually. If the values are too high students will see a scrollbar on small screens to display the full applet.';
 $string['willbereadfromfile'] = 'Will be read from GeoGebra... (see help button)';
+$string['ggbURLPrefixAlt_desc'] = 'comma separated list of URL prefixes for the library of ggb files. If loading fails an alternate URL is tried.';
+$string['ggbURLPrefixAlt'] = 'URL prefixes ggb(s).';

@@ -56,7 +56,7 @@ class backup_qtype_geogebra_plugin extends backup_qtype_plugin {
                     'constraints', 'isexercise',
         'forcedimensions','width','height',
                     "seeditornot","seed",
-                    "isurlggb","urlggb"
+                    "isurlggb","urlggb","reloadggb"
                 ));
         // Now the own qtype tree.
         $pluginwrapper->add_child($geogebra);

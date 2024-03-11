@@ -155,6 +155,7 @@ class qtype_geogebra_renderer extends qtype_renderer {
         $appletparametersid = $qa->get_qt_field_name('applet_parameters');
         $forcedimensions = $question->forcedimensions ?: 0;
         $seeditornot = $question->seeditornot ?: 0;
+        $reloadggb = $question->reloadggb ?: 0; //default to 0
         $seed = $question->seed ?: 0;// here generate a particular seed out of $questions->seed
         $seed=$this->remapSeed($seed);
         $width = $question->width ?: 0;
@@ -164,6 +165,7 @@ class qtype_geogebra_renderer extends qtype_renderer {
         //$isurlggbact = $question->isurlggbact ?: 0;
         //$urlggbact = $question->urlggbact ?: 0;
         $ggbturl = $question->ggbturl ?: 0;
+        $urlprefixlist=get_config('qtype_geogebra')->ggbURLPrefixAlt;
         $applet = <<<EOD
 <article id=$appletparametersid
   data-parameters=$question->ggbparameters
@@ -181,11 +183,13 @@ class qtype_geogebra_renderer extends qtype_renderer {
   data-lang=$lang
   data-forcedimensions=$forcedimensions
   data-seeditornot=$seeditornot
+  data-reloadggb=$reloadggb;
   data-seed=$seed
   data-width=$width
   data-height=$height
   data-isurlggb=$isurlggb
   data-urlggb=$urlggb
+  data-urlprefixlist=$urlprefixlist
   data-ggbturl=$ggbturl
   data-scalingcontainerclass=$scalingcontainerclass
 </article>
@@ -195,10 +199,12 @@ EOD;
         if (isset($_GET['scratch'])&&
             (strcmp(htmlspecialchars($_GET['scratch']),"1")==0)){
             $this->page->requires->js_call_amd('qtype_geogebra/ggbq', 'scratchinit', array($appletparametersid));
-        }else{
+        }else if (isset($_GET['scratch'])&&
+            (strcmp(htmlspecialchars($_GET['scratch']),"2")==0)){
+            $this->page->requires->js_call_amd('qtype_geogebra/ggbq', 'scratchrandomize', array($appletparametersid));
+        } else {
             $this->page->requires->js_call_amd('qtype_geogebra/ggbq', 'init', array($appletparametersid));
         }
-
         if ($qa->get_state() == question_state::$invalid) {
             $result .= html_writer::nonempty_tag('div',
                 $question->get_validation_error(array('answer' => $answercurrent,
@@ -209,12 +215,13 @@ EOD;
         }
 
         $result .= html_writer::end_div();
-        if($ggbturl!=0){
-            $button =html_writer::tag('button', 'Reload (stamped)',
+        //echo trim($reloadggb); echo  $ggbturl;die;
+        if(($ggbturl!=0) && strcmp(trim($reloadggb),"none")!=0){
+            $button =html_writer::tag('button', 'Reload',
             array('class'=>'mod_quiz-next-nav btn btn-primary', 'type' => 'button',
                 //'onclick'=>'window.GGBQ.scratchjson('.$parjson.');'
                 //'onclick'=>'window.GGBQ.scratch("'.$appletparametersid.'")'
-                'onclick'=>'window.GGBQ.scratch()'
+                'onclick'=>'window.GGBQ.scratch("'.$reloadggb.'")'
                 )
             );
             $result=$button.$result;

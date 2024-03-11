@@ -121,5 +121,14 @@ function xmldb_qtype_geogebra_upgrade($oldversion) {
         // Geogebra savepoint reached.
         upgrade_plugin_savepoint(true, 2024030200, 'qtype', 'geogebra');
     }
+    if ($oldversion < 2025011301) {
+        $table = new xmldb_table('qtype_geogebra_options');
+        //$field = new xmldb_field('reloadggb', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'urlggb');
+        $field = new xmldb_field('reloadggb', XMLDB_TYPE_CHAR, '32', null, XMLDB_NOTNULL, null, null, 'urlggb');
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        upgrade_plugin_savepoint(true, 2025011301, 'qtype', 'geogebra');
+    }
     return true;
 }

@@ -65,6 +65,7 @@ class qtype_geogebra_question extends question_graded_automatically {
     public $seed;
     public $isurlggb;
     public $urlggb;
+    public $reloadggb;
     //public $isurlggbact;
     //public $urlggbact;
 

@@ -38,7 +38,7 @@ class qtype_geogebra_edit_form extends question_edit_form {
 
     public $qtypeobj;
 
-    public $reload = false;
+    public $reload = false;//nothing todo wiith reloadggb this is a URL param when the test mustbe reloaded
 
     public $ggbturl;
 
@@ -149,6 +149,14 @@ class qtype_geogebra_edit_form extends question_edit_form {
         $mform->setType('urlggb', PARAM_URL);
         $mform->addHelpButton('urlggb', 'urlggb', 'qtype_geogebra');
         $mform->hideIf('urlggb', 'isurlggb');
+        // Add reload ggb button control
+        $mform->addElement('select', 'reloadggb', get_string('reloadggb', 'qtype_geogebra'),
+            array('none'=>'none', 'rand'=>'reload and randomize','redo'=>'redo same exercise'));;
+        $mform->addHelpButton('reloadggb', 'reloadggb', 'qtype_geogebra');
+        //$mform->addElement('advcheckbox', 'reload', get_string('reload', 'qtype_geogebra'),
+        //    get_string('reload', 'qtype_geogebra'));
+        //$mform->setDefault('reload', 0);
+        
         // Add randomization seed
         $mform->addElement('advcheckbox', 'seeditornot', get_string('seeditornotenable', 'qtype_geogebra'),
             get_string('seeditornot', 'qtype_geogebra'));
