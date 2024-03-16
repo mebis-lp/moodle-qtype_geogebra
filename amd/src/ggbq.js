@@ -226,7 +226,8 @@ define(['jquery'], function ($) {
              	//ggbApplet.setPerspective("GD");
                     }
 				if(window.GGBQ.scratchMark){
-					ggbApplet.evalCommand('Text("QUIZ RELOADED")');
+					ggbApplet.evalCommand('mark=Text("QUIZ RELOADED")');
+					ggbApplet.setFixed('mark',true,false);// marka RELOADED  cannot be deleted
 					window.GGBQ.scratchMark=false;
                  }
                 } else {alert("Applet not found, please reload this page");location.reload();}
