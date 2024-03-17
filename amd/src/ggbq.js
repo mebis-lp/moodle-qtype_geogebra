@@ -118,7 +118,7 @@ define(['jquery'], function ($) {
         scratchrandomizeit: false, //Twingsistere reload and randomize 
         scratchMark: false, 
         filename:"",
-        //applet1,
+       //applet1,
         checkLoading: function (appletParametersID){return;
                 	 if(!this.confirmedpage){
                 		if(confirm("if something loaded (could be an empty cartesian plane) say ok")){
@@ -226,8 +226,8 @@ define(['jquery'], function ($) {
              	//ggbApplet.setPerspective("GD");
                     }
 				if(window.GGBQ.scratchMark){
-					ggbApplet.evalCommand('mark=Text("QUIZ RELOADED")');
-					ggbApplet.setFixed('mark',true,false);// marka RELOADED  cannot be deleted
+					ggbApplet.evalCommand('mark=Text("QUIZ RELOADED",(0,-2))');
+					ggbApplet.setFixed('mark',true,false);// mark RELOADED  cannot be deleted
 					window.GGBQ.scratchMark=false;
                  }
                 } else {alert("Applet not found, please reload this page");location.reload();}
@@ -364,7 +364,8 @@ define(['jquery'], function ($) {
             $('#responseform').on('submit', this.preGetBase64andCheck);
 
             // Do wep really need this $(document.getElementById(ggbDataset.div)).on('mouseleave', this.getBase64andCheck);
-            $(document.getElementById(ggbDataset.div)).on('mouseleave', this.getBase64andCheck);
+            //$(document.getElementById(ggbDataset.div)).on('mouseleave', this.getBase64andCheck);
+            // ADD LINE ABOVE TO HAVE SAVING ON EVERY MOUSE MOVE OUT OF EXERCISE (HEAVY)
 
             this.currentvals[slot] = ggbDataset.vars;
             this.answerinput[slot] = $(document.getElementById(ggbDataset.answerinput));
@@ -384,7 +385,16 @@ define(['jquery'], function ($) {
 
 
         //confirmedpage=false,``
-        preGetBase64andCheck: function() {this.getBase64andCheck();},
+        // called upon submit
+        preGetBase64andCheck: function() {
+            //for (var i = 0; i < window.GGBQ.answerinput.length; i++) {
+           //     var ggbApplet = window['ggbApplet' + i];
+           //     if (typeof ggbApplet !== "undefined" && ggbApplet.hasOwnProperty("getBase64")) {
+                // in ggbAApplet do some bookeping because the user pressed next page
+           //     }
+            //}
+        	this.getBase64andCheck();
+        },
         
         getBase64andCheck: function() {
         debugcode();
