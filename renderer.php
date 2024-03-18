@@ -216,6 +216,11 @@ EOD;
 
         $result .= html_writer::end_div();
         //echo trim($reloadggb); echo  $ggbturl;die;
+        $buttonSave =html_writer::tag('button', 'Save my work',
+            array('class'=>'mod_quiz-next-nav btn btn-primary', 'type' => 'button',
+                'onclick'=>'window.GGBQ.preGetBase64andCheck()'
+                )
+            );
         if(($ggbturl!=0) && strcmp(trim($reloadggb),"none")!=0){
             $button =html_writer::tag('button', 'Reload',
             array('class'=>'mod_quiz-next-nav btn btn-primary', 'type' => 'button',
@@ -224,7 +229,7 @@ EOD;
                 'onclick'=>'window.GGBQ.scratch("'.$reloadggb.'")'
                 )
             );
-            $result=$button.$result;
+            $result=$buttonSave." ".$button.$result;
         }
         // twingsister
         // $parjson = "{".$appletparametersid."}";

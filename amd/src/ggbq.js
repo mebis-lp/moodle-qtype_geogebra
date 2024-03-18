@@ -118,6 +118,7 @@ define(['jquery'], function ($) {
         scratchrandomizeit: false, //Twingsistere reload and randomize 
         scratchMark: false, 
         filename:"",
+        timeout:0,
        //applet1,
         checkLoading: function (appletParametersID){return;
                 	 if(!this.confirmedpage){
@@ -146,7 +147,7 @@ define(['jquery'], function ($) {
         url=url.replaceAll(/\?scratch=./g,"");
         //var ggbDataset = document.getElementById(appletParametersID).dataset;
         //var reloadggb=ggbDataset.reloadggb;//what to do with reload requests
-        // array('none'=>'none', 'ncon'=>'reload if not confirmed', 'rand'=>'reload and randomize','redo'=>'redo same exercise
+        // array'none'=>'none', 'ncon'=>'reload if not confirmed', 'rand'=>'reload and randomize','redo'=>'redo same exercise
 		switch (reloadggb.trim()) {
   			case 'none':
     		break;
@@ -180,6 +181,7 @@ define(['jquery'], function ($) {
     		}
         },
         init: function (appletParametersID) {
+        	timeout=setTimeout(this.preGetBase64andCheck,60000)
         	////this.scratchit=true;
         	//this.confirmedpage=false;//Twingsister
             window.GGBQ = this;
@@ -353,7 +355,7 @@ define(['jquery'], function ($) {
             	applet1.inject(ggbDataset.div, "preferHTML5");
 			});
             // Check if seed have been manually set. The default would be "no"
-			    //})
+			    //)
 			    //
             //	GGBApplet=
             //       define([GGBAppletname], function (GGBobj) {return GGBobj;});
@@ -361,7 +363,7 @@ define(['jquery'], function ($) {
             //var applet1 = new GGBApplet(parameters, views, ggbDataset.html5NoWebSimple);
             //NO applet1.setHTML5Codebase("https://cdn.geogebra.org/apps/5.0.541.0/web3d");
 
-            $('#responseform').on('submit', this.preGetBase64andCheck);
+            $('#responseform').on('submit', this.getBase64andCheck);
 
             // Do wep really need this $(document.getElementById(ggbDataset.div)).on('mouseleave', this.getBase64andCheck);
             //$(document.getElementById(ggbDataset.div)).on('mouseleave', this.getBase64andCheck);
@@ -386,17 +388,9 @@ define(['jquery'], function ($) {
 
         //confirmedpage=false,``
         // called upon submit
-        preGetBase64andCheck: function() {
-            //for (var i = 0; i < window.GGBQ.answerinput.length; i++) {
-           //     var ggbApplet = window['ggbApplet' + i];
-           //     if (typeof ggbApplet !== "undefined" && ggbApplet.hasOwnProperty("getBase64")) {
-                // in ggbAApplet do some bookeping because the user pressed next page
-           //     }
-            //}
-        	this.getBase64andCheck();
-        },
         
         getBase64andCheck: function() {
+        clearTimeout(timeout);
         debugcode();
         if(!confirm("Do you want to save your work?")){return;}
             for (var i = 0; i < window.GGBQ.answerinput.length; i++) {
@@ -448,6 +442,17 @@ define(['jquery'], function ($) {
                 }else{if(typeof ggbApplet !== "undefined"){alert("quiz not loaded");location.reload()}}
             }
         },
+                preGetBase64andCheck: function() {
+        	timeout=setTimeout(this.preGetBase64andCheck,60000);
+            //for (var i = 0; i < window.GGBQ.answerinput.length; i++) {
+           //     var ggbApplet = window['ggbApplet' + i];
+           //     if (typeof ggbApplet !== "undefined" && ggbApplet.hasOwnProperty("getBase64")) {
+                // in ggbAApplet do some bookeping because the user pressed next page
+           //     }
+            //}
+        	GGBQ.getBase64andCheck();
+        }
+//,
 
     };
 });
