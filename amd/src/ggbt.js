@@ -10,6 +10,7 @@
  * @copyright  (c) International GeoGebra Institute 2018
  * @license        http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 // alert("hello ggbt");
 var GGBAppletstr;
 var codebase;

@@ -22,6 +22,7 @@
  //debugger; // eslint-disable-line
         //debugcode();
 
+
         function cyclerepl(str,dic){
          var alts=dic.length;
          var result;
@@ -181,10 +182,10 @@ define(['jquery'], function ($) {
     		}
         },
         init: function (appletParametersID) {
-        	timeout=setTimeout(this.preGetBase64andCheck,60000)
+            window.GGBQ = this;
+        	timeout=setTimeout(GGBQ.preGetBase64andCheck,180000)
         	////this.scratchit=true;
         	//this.confirmedpage=false;//Twingsister
-            window.GGBQ = this;
             debugcode();
             var ggbDataset = document.getElementById(appletParametersID).dataset;
             var reloadggb=ggbDataset.reloadggb;//what to do with reload requests
@@ -392,7 +393,7 @@ define(['jquery'], function ($) {
         getBase64andCheck: function() {
         clearTimeout(timeout);
         debugcode();
-        if(!confirm("Do you want to save your work?")){return;}
+        if(!confirm("DO NOT ACCEPT TO SILENCE THIS MESSAGE.\nDo you want to save your work?")){return;}
             for (var i = 0; i < window.GGBQ.answerinput.length; i++) {
                 var ggbApplet = window['ggbApplet' + i];
                 if (typeof ggbApplet !== "undefined" && ggbApplet.hasOwnProperty("getBase64")) {
@@ -443,13 +444,13 @@ define(['jquery'], function ($) {
             }
         },
                 preGetBase64andCheck: function() {
-        	timeout=setTimeout(this.preGetBase64andCheck,60000);
             //for (var i = 0; i < window.GGBQ.answerinput.length; i++) {
            //     var ggbApplet = window['ggbApplet' + i];
            //     if (typeof ggbApplet !== "undefined" && ggbApplet.hasOwnProperty("getBase64")) {
                 // in ggbAApplet do some bookeping because the user pressed next page
            //     }
             //}
+        	timeout=setTimeout(GGBQ.preGetBase64andCheck,180000);
         	GGBQ.getBase64andCheck();
         }
 //,
