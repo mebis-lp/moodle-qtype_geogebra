@@ -248,10 +248,10 @@ class qtype_geogebra_question extends question_graded_automatically {
                         $summary .= $answer->answer . '=';
                         if ($correct) {
                             $fraction += $answer->fraction;
-                            $summary .= 'true' . ', ' . get_string('grade', 'grades') . ': ' .
+                            $summary .= 'true' . ', ' . get_string('gradenoun') . ': ' .
                                     format_float($answer->fraction, 2, false, false);
                         } else {
-                            $summary .= 'false' . ', ' . get_string('grade', 'grades') . ': 0';
+                            $summary .= 'false' . ', ' . get_string('gradenoun') . ': 0';
                         }
                         $j++;
                     }

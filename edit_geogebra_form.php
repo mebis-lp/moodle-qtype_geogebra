@@ -98,7 +98,7 @@ class qtype_geogebra_edit_form extends question_edit_form {
         $answeroptions[] = $mform->createElement('text', 'answer',
                 $label, array('size' => 40));
         $answeroptions[] = $mform->createElement('select', 'fraction',
-                get_string('grade', 'grades'), $gradeoptions);
+                get_string('gradenoun'), $gradeoptions);
         $repeated[0] = $mform->createElement('group', 'answeroptions',
                 $label, $answeroptions, null, false);
         $repeated[1] = $mform->createElement('hidden', 'feedback');
