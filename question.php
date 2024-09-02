@@ -229,9 +229,17 @@ class qtype_geogebra_question extends question_graded_automatically {
      * @return string a plain text summary of that response, that could be used in reports.
      */
     public function summarise_response(array $response) {
+        global $CFG;
         if (empty($this->answers) && !$this->isexercise) {
             return "Response graded manually";
         } else {
+            if ((int)$CFG->branch < 311) {
+                // Pre-3.11 string.
+                $gradestr = get_string('grade', 'grades');
+            } else {
+                // New string for "Grade", see MDL-71941.
+                $gradestr = get_string('gradenoun');
+            }
             $resp = $response['answer'];
             if ($resp === '' && !$this->isexercise) {
                 return get_string('noresponse', 'question');
@@ -248,10 +256,10 @@ class qtype_geogebra_question extends question_graded_automatically {
                         $summary .= $answer->answer . '=';
                         if ($correct) {
                             $fraction += $answer->fraction;
-                            $summary .= 'true' . ', ' . get_string('gradenoun') . ': ' .
+                            $summary .= 'true' . ', ' . $gradestr . ': ' .
                                     format_float($answer->fraction, 2, false, false);
                         } else {
-                            $summary .= 'false' . ', ' . get_string('gradenoun') . ': 0';
+                            $summary .= 'false' . ', ' . $gradestr . ': 0';
                         }
                         $j++;
                     }
