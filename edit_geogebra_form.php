@@ -92,13 +92,21 @@ class qtype_geogebra_edit_form extends question_edit_form {
      */
     protected function get_per_answer_fields($mform, $label, $gradeoptions,
             &$repeatedoptions, &$answersoption) {
+        global $CFG;
+        if ((int)$CFG->branch < 311) {
+            // Pre-3.11 string.
+            $gradestr = get_string('grade', 'grades');
+        } else {
+            // New string for "Grade", see MDL-71941.
+            $gradestr = get_string('gradenoun');
+        }
 
         $repeated = array();
         $answeroptions = array();
         $answeroptions[] = $mform->createElement('text', 'answer',
                 $label, array('size' => 40));
         $answeroptions[] = $mform->createElement('select', 'fraction',
-                get_string('grade', 'grades'), $gradeoptions);
+                $gradestr, $gradeoptions);
         $repeated[0] = $mform->createElement('group', 'answeroptions',
                 $label, $answeroptions, null, false);
         $repeated[1] = $mform->createElement('hidden', 'feedback');
